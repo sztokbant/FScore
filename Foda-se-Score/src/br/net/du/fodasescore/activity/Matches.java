@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,12 +38,19 @@ public class Matches extends Activity {
 		matchesList.setClickable(true);
 
 		matchesList.setOnItemClickListener(new OnItemClickListener() {
+			private Match selectedMatch;
+
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 				// TODO: dummy
-				Toast.makeText(Matches.this, "clicked on item " + id,
+				selectedMatch = (Match) adapter.getItem(position);
+				Toast.makeText(Matches.this, "Opening Match " + selectedMatch,
 						Toast.LENGTH_SHORT).show();
+
+				Intent match = new Intent(Matches.this, MatchActivity.class);
+				match.putExtra("selectedMatch", selectedMatch);
+				startActivity(match);
 			}
 		});
 

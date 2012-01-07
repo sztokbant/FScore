@@ -1,9 +1,10 @@
 package br.net.du.fodasescore.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Match {
+public class Match implements Serializable {
 
 	List<Player> players = new ArrayList<Player>();
 	List<Round> rounds = new ArrayList<Round>();
