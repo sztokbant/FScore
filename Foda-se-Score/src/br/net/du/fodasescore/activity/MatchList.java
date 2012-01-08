@@ -14,8 +14,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fodasescore.R;
 import br.net.du.fodasescore.model.Match;
+import br.net.du.fodasescore.model.Round;
 
-public class Matches extends Activity {
+public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
 	private ArrayAdapter<Match> adapter;
 
@@ -23,14 +24,23 @@ public class Matches extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.matches);
+		setContentView(R.layout.matchlist);
 
 		// TODO: dummy
-		matches.add(new Match());
-		matches.add(new Match());
-		matches.add(new Match());
+		Match m1 = new Match();
+		m1.addRound(new Round());
+		Match m2 = new Match();
+		m2.addRound(new Round());
+		m2.addRound(new Round());
+		Match m3 = new Match();
+		m3.addRound(new Round());
+		m3.addRound(new Round());
+		m3.addRound(new Round());
+		matches.add(m1);
+		matches.add(m2);
+		matches.add(m3);
 
-		final ListView matchesList = (ListView) findViewById(R.id_matches.matchesList);
+		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
 				android.R.layout.simple_list_item_1, matches);
 		matchesList.setAdapter(adapter);
@@ -45,10 +55,10 @@ public class Matches extends Activity {
 					int position, long id) {
 				// TODO: dummy
 				selectedMatch = (Match) adapter.getItem(position);
-				Toast.makeText(Matches.this, "Opening Match " + selectedMatch,
+				Toast.makeText(MatchList.this, "Opening Match " + selectedMatch,
 						Toast.LENGTH_SHORT).show();
 
-				Intent match = new Intent(Matches.this, MatchActivity.class);
+				Intent match = new Intent(MatchList.this, RoundList.class);
 				match.putExtra("selectedMatch", selectedMatch);
 				startActivity(match);
 			}

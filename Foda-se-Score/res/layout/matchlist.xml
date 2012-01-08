@@ -10,7 +10,7 @@
         android:text="@string/hello" />
 
     <ListView
-		android:id = "@+id_matches/matchesList"
+		android:id = "@+id_matchlist/matchlist"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

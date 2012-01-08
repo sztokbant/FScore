@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Match implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	List<Player> players = new ArrayList<Player>();
 	List<Round> rounds = new ArrayList<Round>();
 
@@ -19,5 +21,9 @@ public class Match implements Serializable {
 
 	public void addRound(Round round) {
 		rounds.add(round);
+	}
+
+	public List<Round> getRounds() {
+		return rounds;
 	}
 }
