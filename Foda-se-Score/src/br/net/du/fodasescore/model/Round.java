@@ -12,4 +12,8 @@ public class Round implements Serializable {
 
 	public Round() {
 	}
+
+	public String toString() {
+		return "this is a Round in a Match";
+	}
 }

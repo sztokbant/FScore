@@ -26,4 +26,8 @@ public class Match implements Serializable {
 	public List<Round> getRounds() {
 		return rounds;
 	}
+
+	public String toString() {
+		return "this is a Match";
+	}
 }
