@@ -21,6 +21,10 @@ public class Match implements Serializable {
 		return this;
 	}
 
+	public Set<Player> getPlayers() {
+		return players;
+	}
+
 	public void addRound(Round round) {
 		rounds.add(round);
 	}

@@ -1,8 +1,10 @@
 package br.net.du.fodasescore.activity;
 
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,18 +13,33 @@ import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabContentFactory;
 import android.widget.Toast;
 import br.net.du.fodasescore.R;
 import br.net.du.fodasescore.model.Match;
 import br.net.du.fodasescore.model.Player;
 import br.net.du.fodasescore.model.Round;
 
-public class RoundList extends Activity {
-	private Match match;
+// Tabs based on tutorial on http://joshclemm.com/blog/?p=59
+public class RoundList extends TabActivity implements OnTabChangeListener {
 
+	// used by "Add Player"
 	public static final int CONTACT_SELECTED_RESULT_ID = 1;
+
+	public static final String ROUNDS_TAB_TAG = "Rounds";
+	public static final String PLAYERS_TAB_TAG = "Players";
+
+	private ListView roundList;
+	private ListView playerList;
+
+	private TabHost tabHost;
+
+	private Match match;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,13 +47,39 @@ public class RoundList extends Activity {
 
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
-		List<Round> rounds = match.getRounds();
-		final ListView roundList = (ListView) findViewById(R.id_roundlist.roundlist);
-		ArrayAdapter<Round> adapter = new ArrayAdapter<Round>(this,
-				android.R.layout.simple_list_item_1, rounds);
-		roundList.setAdapter(adapter);
+		tabHost = getTabHost();
+		tabHost.setOnTabChangedListener(this);
 
+		List<Round> rounds = match.getRounds();
+		roundList = (ListView) findViewById(R.id_match.roundlist);
+		ArrayAdapter<Round> roundAdapter = new ArrayAdapter<Round>(this,
+				android.R.layout.simple_list_item_1, rounds);
+		roundList.setAdapter(roundAdapter);
 		roundList.setClickable(true);
+
+		// TODO: handling as 'Object', check this!
+		List<Object> players = Arrays.asList(match.getPlayers().toArray());
+		playerList = (ListView) findViewById(R.id_match.playerlist);
+		ArrayAdapter<Object> playerAdapter = new ArrayAdapter<Object>(this,
+				android.R.layout.simple_list_item_1, players);
+		roundList.setAdapter(playerAdapter);
+		roundList.setClickable(true);
+
+		// add views to tab host
+		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
+				.setIndicator(ROUNDS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return roundList;
+					}
+				}));
+		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
+				.setIndicator(PLAYERS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return playerList;
+					}
+				}));
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +125,17 @@ public class RoundList extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}
 			}
+		}
+	}
+
+	@Override
+	public void onTabChanged(String tabName) {
+		if (tabName.equals(PLAYERS_TAB_TAG)) {
+			Toast.makeText(this, "selected Player's tab", Toast.LENGTH_SHORT)
+					.show();
+		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
+			Toast.makeText(this, "selected Round's tab", Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 }
