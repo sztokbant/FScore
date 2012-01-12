@@ -1,6 +1,6 @@
 package br.net.du.fodasescore.activity;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -56,10 +56,12 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 				android.R.layout.simple_list_item_1, rounds);
 		roundList.setClickable(true);
 
-		// TODO: handling as 'Object', check this!
-		List<Object> players = Arrays.asList(match.getPlayers().toArray());
+		List<Player> players = new ArrayList<Player>();
+		for (Player p : match.getPlayers()) {
+			players.add(p);
+		}
 		playerList = (ListView) findViewById(R.id_match.playerlist);
-		final ArrayAdapter<Object> playerAdapter = new ArrayAdapter<Object>(
+		final ArrayAdapter<Player> playerAdapter = new ArrayAdapter<Player>(
 				this, android.R.layout.simple_list_item_1, players);
 		roundList.setClickable(true);
 
