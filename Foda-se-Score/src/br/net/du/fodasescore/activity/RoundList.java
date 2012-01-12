@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fodasescore.R;
 import br.net.du.fodasescore.model.Match;
+import br.net.du.fodasescore.model.Player;
 import br.net.du.fodasescore.model.Round;
 
 public class RoundList extends Activity {
@@ -76,7 +77,9 @@ public class RoundList extends Activity {
 					int nameIndex = c
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
 					String name = c.getString(nameIndex);
-					Toast.makeText(this, name, 2000).show();
+					match.withPlayer(new Player(name));
+					Toast.makeText(this, "Added player: " + name,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		}

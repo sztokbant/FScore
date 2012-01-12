@@ -1,6 +1,6 @@
 package br.net.du.fodasescore.model;
 
-public class Player {
+public class Player implements Comparable<Player> {
 	private long id;
 	private String name = null;
 
@@ -26,5 +26,10 @@ public class Player {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	@Override
+	public int compareTo(Player other) {
+		return this.name.compareTo(other.getName());
 	}
 }
