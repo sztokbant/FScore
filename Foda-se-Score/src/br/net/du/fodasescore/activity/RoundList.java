@@ -52,17 +52,15 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 
 		List<Round> rounds = match.getRounds();
 		roundList = (ListView) findViewById(R.id_match.roundlist);
-		ArrayAdapter<Round> roundAdapter = new ArrayAdapter<Round>(this,
+		final ArrayAdapter<Round> roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
-		roundList.setAdapter(roundAdapter);
 		roundList.setClickable(true);
 
 		// TODO: handling as 'Object', check this!
 		List<Object> players = Arrays.asList(match.getPlayers().toArray());
 		playerList = (ListView) findViewById(R.id_match.playerlist);
-		ArrayAdapter<Object> playerAdapter = new ArrayAdapter<Object>(this,
-				android.R.layout.simple_list_item_1, players);
-		roundList.setAdapter(playerAdapter);
+		final ArrayAdapter<Object> playerAdapter = new ArrayAdapter<Object>(
+				this, android.R.layout.simple_list_item_1, players);
 		roundList.setClickable(true);
 
 		// add views to tab host
@@ -70,6 +68,7 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 				.setIndicator(ROUNDS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
+						roundList.setAdapter(roundAdapter);
 						return roundList;
 					}
 				}));
@@ -77,6 +76,7 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 				.setIndicator(PLAYERS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
+						playerList.setAdapter(playerAdapter);
 						return playerList;
 					}
 				}));
