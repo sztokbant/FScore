@@ -1,4 +1,4 @@
-package br.net.du.fodasescore.activity;
+package br.net.du.fscore.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import br.net.du.fodasescore.R;
-import br.net.du.fodasescore.model.Match;
-import br.net.du.fodasescore.model.Round;
+import br.net.du.fscore.R;
+import br.net.du.fscore.model.Match;
+import br.net.du.fscore.model.Round;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();

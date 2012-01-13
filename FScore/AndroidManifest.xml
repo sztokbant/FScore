@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.net.du.fodasescore"
+    package="br.net.du.fscore"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:label="Round List"
-            android:name=".activity.RoundList" >
+            android:name="br.net.du.fscore.activity.RoundList" >
         </activity>
     </application>
 

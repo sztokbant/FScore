@@ -1,4 +1,4 @@
-package br.net.du.fodasescore.model;
+package br.net.du.fscore.model;
 
 import java.io.Serializable;
 import java.util.List;

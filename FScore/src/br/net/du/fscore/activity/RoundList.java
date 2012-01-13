@@ -1,4 +1,4 @@
-package br.net.du.fodasescore.activity;
+package br.net.du.fscore.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.Toast;
-import br.net.du.fodasescore.R;
-import br.net.du.fodasescore.model.Match;
-import br.net.du.fodasescore.model.Player;
-import br.net.du.fodasescore.model.Round;
+import br.net.du.fscore.R;
+import br.net.du.fscore.model.Match;
+import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.Round;
 
 // Tabs based on tutorial on http://joshclemm.com/blog/?p=59
 public class RoundList extends TabActivity implements OnTabChangeListener {

@@ -1,10 +1,10 @@
-package br.net.du.fodasescore.persist;
+package br.net.du.fscore.persist;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import br.net.du.fodasescore.model.Player;
+import br.net.du.fscore.model.Player;
 
 public class PlayerDAO extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
