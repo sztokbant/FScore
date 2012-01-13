@@ -32,4 +32,8 @@ public class Player implements Comparable<Player> {
 	public int compareTo(Player other) {
 		return this.name.compareTo(other.getName());
 	}
+
+	public String toString() {
+		return name;
+	}
 }
