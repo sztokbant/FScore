@@ -64,7 +64,6 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 				.setIndicator(ROUNDS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
-						roundList.setAdapter(roundAdapter);
 						return roundList;
 					}
 				}));
@@ -73,7 +72,6 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 				.setIndicator(PLAYERS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
-						playerList.setAdapter(playerAdapter);
 						return playerList;
 					}
 				}));
