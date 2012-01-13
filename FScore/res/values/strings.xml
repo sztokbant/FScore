@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, Matches!</string>
-    <string name="app_name">Foda-se Score</string>
+    <string name="hello">Hello World, FScore!</string>
+    <string name="app_name">FScore</string>
 
 </resources>
