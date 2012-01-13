@@ -35,7 +35,9 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 	public static final String PLAYERS_TAB_TAG = "Players";
 
 	private ListView roundList;
+	private ArrayAdapter<Round> roundAdapter;
 	private ListView playerList;
+	private ArrayAdapter<Player> playerAdapter;
 
 	private TabHost tabHost;
 
@@ -50,22 +52,14 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);
 
-		List<Round> rounds = match.getRounds();
 		roundList = (ListView) findViewById(R.id_match.roundlist);
-		final ArrayAdapter<Round> roundAdapter = new ArrayAdapter<Round>(this,
-				android.R.layout.simple_list_item_1, rounds);
 		roundList.setClickable(true);
+		updateRoundsList();
 
-		List<Player> players = new ArrayList<Player>();
-		for (Player p : match.getPlayers()) {
-			players.add(p);
-		}
 		playerList = (ListView) findViewById(R.id_match.playerlist);
-		final ArrayAdapter<Player> playerAdapter = new ArrayAdapter<Player>(
-				this, android.R.layout.simple_list_item_1, players);
-		roundList.setClickable(true);
+		playerList.setClickable(true);
+		updatePlayersList();
 
-		// add views to tab host
 		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
 				.setIndicator(ROUNDS_TAB_TAG)
 				.setContent(new TabContentFactory() {
@@ -74,6 +68,7 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 						return roundList;
 					}
 				}));
+
 		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
 				.setIndicator(PLAYERS_TAB_TAG)
 				.setContent(new TabContentFactory() {
@@ -82,6 +77,23 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 						return playerList;
 					}
 				}));
+	}
+
+	private void updateRoundsList() {
+		List<Round> rounds = match.getRounds();
+		roundAdapter = new ArrayAdapter<Round>(this,
+				android.R.layout.simple_list_item_1, rounds);
+		roundList.setAdapter(roundAdapter);
+	}
+
+	private void updatePlayersList() {
+		List<Player> players = new ArrayList<Player>();
+		for (Player p : match.getPlayers()) {
+			players.add(p);
+		}
+		playerAdapter = new ArrayAdapter<Player>(this,
+				android.R.layout.simple_list_item_1, players);
+		playerList.setAdapter(playerAdapter);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,8 +115,7 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
-			Toast.makeText(RoundList.this, "'Add Player'", Toast.LENGTH_SHORT)
-					.show();
+			// Add Player
 		}
 		return false;
 	}
@@ -123,8 +134,7 @@ public class RoundList extends TabActivity implements OnTabChangeListener {
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
 					String name = c.getString(nameIndex);
 					match.withPlayer(new Player(name));
-					Toast.makeText(this, "Added player: " + name,
-							Toast.LENGTH_SHORT).show();
+					updatePlayersList();
 				}
 			}
 		}
