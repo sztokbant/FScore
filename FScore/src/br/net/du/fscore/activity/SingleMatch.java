@@ -61,30 +61,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);
 
-		roundList = (ListView) findViewById(R.id_match.roundlist);
-		roundList.setClickable(true);
 		loadRoundsList();
-
-		playerList = (ListView) findViewById(R.id_match.playerlist);
-		playerList.setClickable(true);
 		loadPlayersList();
-
-		playerList.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, int position, long id) {
-				// for context menu title
-				lastClickedName = match.getPlayers().get(position).getName();
-
-				// for editing/deleting
-				selectedPlayer = (Player) playerAdapter.getItem(position);
-
-				// won't consume the action
-				return false;
-			}
-		});
-
-		registerForContextMenu(playerList);
 
 		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
 				.setIndicator(ROUNDS_TAB_TAG)
@@ -139,6 +117,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void loadRoundsList() {
+		roundList = (ListView) findViewById(R.id_match.roundlist);
+		roundList.setClickable(true);
+
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
@@ -146,10 +127,30 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void loadPlayersList() {
+		playerList = (ListView) findViewById(R.id_match.playerlist);
+		playerList.setClickable(true);
+
 		List<Player> players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerList.setAdapter(playerAdapter);
+
+		playerList.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for context menu title
+				lastClickedName = match.getPlayers().get(position).getName();
+
+				// for editing/deleting
+				selectedPlayer = (Player) playerAdapter.getItem(position);
+
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(playerList);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -190,7 +191,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
 					String name = c.getString(nameIndex);
 					match.withPlayer(new Player(name));
-					playerAdapter.notifyDataSetChanged();
+					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+						playerAdapter.notifyDataSetChanged();
+					}
 				}
 			}
 		}
@@ -199,6 +202,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	public void onTabChanged(String tabName) {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
+			playerAdapter.notifyDataSetChanged();
+
 			Toast.makeText(
 					this,
 					"selected Player's tab (total: "
