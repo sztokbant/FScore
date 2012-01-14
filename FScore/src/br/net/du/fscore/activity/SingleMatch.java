@@ -54,7 +54,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.roundlist);
+		setContentView(R.layout.singlematch);
 
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
@@ -151,6 +151,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem addPlayer = menu.add(0, 0, 0, "Add Player");
+		MenuItem addRound = menu.add(0, 1, 0, "Add Round");
 
 		addPlayer.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
@@ -161,8 +162,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				return false;
 			}
 		});
-
-		MenuItem addRound = menu.add(0, 1, 0, "Add Round");
 
 		addRound.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
