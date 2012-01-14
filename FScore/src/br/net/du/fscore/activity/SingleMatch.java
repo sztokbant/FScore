@@ -118,8 +118,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void loadRoundsList() {
 		roundList = (ListView) findViewById(R.id_match.roundlist);
-		roundList.setClickable(true);
-
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
@@ -128,8 +126,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void loadPlayersList() {
 		playerList = (ListView) findViewById(R.id_match.playerlist);
-		playerList.setClickable(true);
-
 		List<Player> players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
@@ -156,12 +152,22 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem addPlayer = menu.add(0, 0, 0, "Add Player");
 
-		final Intent chooser = new Intent(Intent.ACTION_PICK,
-				ContactsContract.Contacts.CONTENT_URI);
 		addPlayer.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				Intent chooser = new Intent(Intent.ACTION_PICK,
+						ContactsContract.Contacts.CONTENT_URI);
 				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
+				return false;
+			}
+		});
+
+		MenuItem addRound = menu.add(0, 1, 0, "Add Round");
+
+		addRound.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// TODO: start NewRound activity
 				return false;
 			}
 		});
@@ -173,6 +179,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// Add Player
+		} else if (item.getItemId() == 1) {
+			// Add Round
 		}
 		return false;
 	}
