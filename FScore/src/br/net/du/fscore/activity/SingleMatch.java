@@ -1,19 +1,25 @@
 package br.net.du.fscore.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -39,6 +45,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	private ListView playerList;
 	private ArrayAdapter<Player> playerAdapter;
 
+	private String lastClickedName = "";
+	private Player selectedPlayer;
+
 	private TabHost tabHost;
 
 	private Match match;
@@ -60,6 +69,24 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		playerList.setClickable(true);
 		updatePlayersList();
 
+		playerList.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for context menu title
+				lastClickedName = match.getPlayersAsList().get(position)
+						.getName();
+
+				// for editing/deleting
+				selectedPlayer = (Player) playerAdapter.getItem(position);
+
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(playerList);
+
 		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
 				.setIndicator(ROUNDS_TAB_TAG)
 				.setContent(new TabContentFactory() {
@@ -77,6 +104,42 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				}));
 	}
 
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
+		menu.setHeaderTitle(lastClickedName);
+
+		MenuItem delete = menu.add(0, 0, 0, "Delete");
+
+		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(SingleMatch.this).setTitle("Delete")
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(
+										SingleMatch.this,
+										"Deleting " + selectedPlayer.getName()
+												+ "...", Toast.LENGTH_SHORT)
+										.show();
+
+								// DAO code goes here!
+
+								// it's not necessary to reload the full list
+								match.getPlayers().remove(selectedPlayer);
+								// playerAdapter.notifyDataSetChanged();
+								updatePlayersList();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		});
+	}
+
 	private void updateRoundsList() {
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
@@ -85,10 +148,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void updatePlayersList() {
-		List<Player> players = new ArrayList<Player>();
-		for (Player p : match.getPlayers()) {
-			players.add(p);
-		}
+		List<Player> players = match.getPlayersAsList();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerList.setAdapter(playerAdapter);

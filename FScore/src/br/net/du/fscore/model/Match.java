@@ -36,4 +36,12 @@ public class Match implements Serializable {
 	public String toString() {
 		return "this is a Match";
 	}
+
+	public List<Player> getPlayersAsList() {
+		List<Player> players = new ArrayList<Player>();
+		for (Player p : getPlayers()) {
+			players.add(p);
+		}
+		return players;
+	}
 }
