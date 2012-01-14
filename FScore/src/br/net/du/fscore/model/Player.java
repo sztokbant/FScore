@@ -8,10 +8,6 @@ public class Player implements Comparable<Player> {
 		this.name = name;
 	}
 
-	public boolean isPersistent() {
-		return getId() != 0;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -39,5 +35,9 @@ public class Player implements Comparable<Player> {
 
 	public String toString() {
 		return name;
+	}
+
+	public boolean isPersistent() {
+		return getId() != 0;
 	}
 }

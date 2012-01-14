@@ -2,10 +2,13 @@ package br.net.du.fscore.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -14,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
-import br.net.du.fscore.model.Round;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
@@ -25,20 +27,6 @@ public class MatchList extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
-
-		// TODO: dummy
-		Match m1 = new Match();
-		m1.addRound(new Round());
-		Match m2 = new Match();
-		m2.addRound(new Round());
-		m2.addRound(new Round());
-		Match m3 = new Match();
-		m3.addRound(new Round());
-		m3.addRound(new Round());
-		m3.addRound(new Round());
-		matches.add(m1);
-		matches.add(m2);
-		matches.add(m3);
 
 		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
@@ -52,13 +40,31 @@ public class MatchList extends Activity {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 				selectedMatch = (Match) adapter.getItem(position);
-				Toast.makeText(MatchList.this, "Opening Match " + selectedMatch,
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(MatchList.this,
+						"Opening Match " + selectedMatch, Toast.LENGTH_SHORT)
+						.show();
 
 				Intent match = new Intent(MatchList.this, SingleMatch.class);
 				match.putExtra("selectedMatch", selectedMatch);
 				startActivity(match);
 			}
 		});
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem newMatch = menu.add(0, 0, 0, "New Match");
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			// New Match
+			matches.add(new Match("Match "
+					+ Integer.toString(new Random().nextInt())));
+			adapter.notifyDataSetChanged();
+		}
+		return false;
 	}
 }
