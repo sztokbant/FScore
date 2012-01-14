@@ -33,6 +33,10 @@ public class Player implements Comparable<Player> {
 		return this.name.compareTo(other.getName());
 	}
 
+	public boolean equals(Player other) {
+		return this.compareTo(other) == 0;
+	}
+
 	public String toString() {
 		return name;
 	}

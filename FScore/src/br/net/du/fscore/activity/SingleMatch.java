@@ -63,19 +63,18 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 		roundList = (ListView) findViewById(R.id_match.roundlist);
 		roundList.setClickable(true);
-		updateRoundsList();
+		loadRoundsList();
 
 		playerList = (ListView) findViewById(R.id_match.playerlist);
 		playerList.setClickable(true);
-		updatePlayersList();
+		loadPlayersList();
 
 		playerList.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
 				// for context menu title
-				lastClickedName = match.getPlayersAsList().get(position)
-						.getName();
+				lastClickedName = match.getPlayers().get(position).getName();
 
 				// for editing/deleting
 				selectedPlayer = (Player) playerAdapter.getItem(position);
@@ -130,8 +129,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 								// it's not necessary to reload the full list
 								match.getPlayers().remove(selectedPlayer);
-								// playerAdapter.notifyDataSetChanged();
-								updatePlayersList();
+								playerAdapter.notifyDataSetChanged();
 							}
 						}).setNegativeButton("No", null).show();
 
@@ -140,15 +138,15 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		});
 	}
 
-	private void updateRoundsList() {
+	private void loadRoundsList() {
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
 		roundList.setAdapter(roundAdapter);
 	}
 
-	private void updatePlayersList() {
-		List<Player> players = match.getPlayersAsList();
+	private void loadPlayersList() {
+		List<Player> players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerList.setAdapter(playerAdapter);
@@ -192,7 +190,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
 					String name = c.getString(nameIndex);
 					match.withPlayer(new Player(name));
-					updatePlayersList();
+					playerAdapter.notifyDataSetChanged();
 				}
 			}
 		}
