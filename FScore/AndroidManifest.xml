@@ -14,14 +14,12 @@
             android:name=".activity.MatchList" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:label="Round List"
-            android:name="br.net.du.fscore.activity.RoundList" >
-        </activity>
+            android:label="Match"
+            android:name="br.net.du.fscore.activity.SingleMatch" />
     </application>
 
 </manifest>

@@ -58,7 +58,7 @@ public class MatchList extends Activity {
 				Toast.makeText(MatchList.this, "Opening Match " + selectedMatch,
 						Toast.LENGTH_SHORT).show();
 
-				Intent match = new Intent(MatchList.this, RoundList.class);
+				Intent match = new Intent(MatchList.this, SingleMatch.class);
 				match.putExtra("selectedMatch", selectedMatch);
 				startActivity(match);
 			}

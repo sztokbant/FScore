@@ -26,7 +26,7 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.Round;
 
 // Tabs based on tutorial on http://joshclemm.com/blog/?p=59
-public class RoundList extends TabActivity implements OnTabChangeListener {
+public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	// used by "Add Player"
 	public static final int CONTACT_SELECTED_RESULT_ID = 1;
