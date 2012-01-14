@@ -45,15 +45,12 @@ public class MatchList extends Activity {
 				android.R.layout.simple_list_item_1, matches);
 		matchesList.setAdapter(adapter);
 
-		matchesList.setClickable(true);
-
 		matchesList.setOnItemClickListener(new OnItemClickListener() {
 			private Match selectedMatch;
 
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				// TODO: dummy
 				selectedMatch = (Match) adapter.getItem(position);
 				Toast.makeText(MatchList.this, "Opening Match " + selectedMatch,
 						Toast.LENGTH_SHORT).show();
@@ -63,6 +60,5 @@ public class MatchList extends Activity {
 				startActivity(match);
 			}
 		});
-
 	}
 }
