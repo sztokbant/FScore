@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
+import br.net.du.fscore.persist.MatchDAO;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
@@ -58,11 +59,30 @@ public class MatchList extends Activity {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		refreshMatchList();
+	}
+
+	private void refreshMatchList() {
+		MatchDAO dao = new MatchDAO(this);
+		matches.clear();
+		matches.addAll(dao.getList());
+		dao.close();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// New Match
-			matches.add(new Match("Match "
-					+ Integer.toString(new Random().nextInt())));
+			Match match = new Match("Match "
+					+ Integer.toString(new Random().nextInt()));
+			matches.add(match);
+
+			MatchDAO dao = new MatchDAO(this);
+			dao.save(match);
+			dao.close();
+
 			adapter.notifyDataSetChanged();
 		}
 		return false;

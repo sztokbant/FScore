@@ -1,7 +1,11 @@
 package br.net.du.fscore.persist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import br.net.du.fscore.model.Match;
@@ -9,6 +13,7 @@ import br.net.du.fscore.model.Match;
 public class MatchDAO extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String TABLE = "match";
+	private static final String[] COLUMNS = { "id", "name", "date" };
 
 	public MatchDAO(Context context) {
 		super(context, "Match", null, DATABASE_VERSION);
@@ -58,5 +63,32 @@ public class MatchDAO extends SQLiteOpenHelper {
 	public void delete(Match match) {
 		String[] whereArgs = new String[] { Long.toString(match.getId()) };
 		getWritableDatabase().delete(TABLE, "id=?", whereArgs);
+	}
+
+	public List<Match> getList() {
+		List<Match> myList = new ArrayList<Match>();
+
+		Cursor cursor = getWritableDatabase().query(TABLE, COLUMNS,
+				null,   // where
+				null,   // values
+				null,   // group by
+				null,   // having
+				null);  // order by
+
+		while (cursor.moveToNext()) {
+			String name = cursor.getString(1);
+			Match match = new Match(name);
+			match.setId(Long.parseLong(cursor.getString(0)));
+			// TODO: solve this date issue...
+//			Date d = new Date(cursor.getString(2));
+//			Calendar date = Calendar.getInstance().setTime(d);
+//			match.setDate(date);
+			myList.add(match);
+		}
+
+		// must always be closed
+		cursor.close();
+
+		return myList;
 	}
 }
