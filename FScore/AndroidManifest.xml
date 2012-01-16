@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:label="Match"
-            android:name="br.net.du.fscore.activity.SingleMatch" />
+            android:name=".activity.SingleMatch" />
     </application>
 
 </manifest>

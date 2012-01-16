@@ -23,6 +23,11 @@ public class Match implements Serializable, Comparable<Match> {
 		date = Calendar.getInstance();
 	}
 
+	public Match(String name, Calendar date) {
+		this.name = name;
+		this.date = date;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -70,7 +75,7 @@ public class Match implements Serializable, Comparable<Match> {
 	}
 
 	public String toString() {
-		return name + DateFormat.format(" (dd-MM-yyyy)", date);
+		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
 	}
 
 	@Override

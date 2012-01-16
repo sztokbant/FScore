@@ -1,7 +1,5 @@
 package br.net.du.fscore.persist;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import br.net.du.fscore.model.Match;
 
 public class MatchDAO extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String TABLE = "match";
 	private static final String[] COLUMNS = { "id", "name", "date" };
 
@@ -28,7 +26,7 @@ public class MatchDAO extends SQLiteOpenHelper {
 		sb.append("CREATE TABLE " + TABLE + " ");
 		sb.append("(id INTEGER PRIMARY KEY, ");
 		sb.append("name TEXT NOT NULL, ");
-		sb.append("date DATETIME NOT NULL);");
+		sb.append("date INTEGER NOT NULL);");
 
 		db.execSQL(sb.toString());
 	}
@@ -44,7 +42,7 @@ public class MatchDAO extends SQLiteOpenHelper {
 
 		// values.put("id", a.getId()); // WRONG!
 		values.put("name", match.getName());
-		values.put("date", match.getDate().toString());
+		values.put("date", match.getDate().getTimeInMillis());
 
 		return values;
 	}
@@ -71,29 +69,20 @@ public class MatchDAO extends SQLiteOpenHelper {
 	public List<Match> getList() {
 		List<Match> myList = new ArrayList<Match>();
 
-		Cursor cursor = getWritableDatabase().query(TABLE, COLUMNS,
-				null,   // where
-				null,   // values
-				null,   // group by
-				null,   // having
-				null);  // order by
+		Cursor cursor = getReadableDatabase().query(TABLE, COLUMNS, null, // where
+				null, // values
+				null, // group by
+				null, // having
+				null); // order by
 
 		while (cursor.moveToNext()) {
 			String name = cursor.getString(1);
-			Match match = new Match(name);
-			match.setId(Long.parseLong(cursor.getString(0)));
 
-			String dateString = cursor.getString(2);
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy-MM-dd hh:mm:ss");
 			Calendar date = Calendar.getInstance();
-			try {
-				date.setTime(formatter.parse(dateString));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			match.setDate(date);
+			date.setTimeInMillis(cursor.getLong(2));
+
+			Match match = new Match(name, date);
+			match.setId(Long.parseLong(cursor.getString(0)));
 
 			myList.add(match);
 		}
