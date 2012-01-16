@@ -5,13 +5,20 @@ import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,6 +29,7 @@ import br.net.du.fscore.persist.MatchDAO;
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
 	private ArrayAdapter<Match> adapter;
+	private Match selectedMatch;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -50,6 +58,20 @@ public class MatchList extends Activity {
 				startActivity(match);
 			}
 		});
+
+		matchesList.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for context menu title and deleting
+				selectedMatch = matches.get(position);
+
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(matchesList);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,4 +109,42 @@ public class MatchList extends Activity {
 		}
 		return false;
 	}
+
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
+		menu.setHeaderTitle(selectedMatch.getName());
+
+		MenuItem delete = menu.add(0, 0, 0, "Delete");
+
+		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(MatchList.this).setTitle("Delete")
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(
+										MatchList.this,
+										"Deleting " + selectedMatch.getName()
+												+ "...", Toast.LENGTH_SHORT)
+										.show();
+
+								MatchDAO dao = new MatchDAO(MatchList.this);
+								dao.delete(selectedMatch);
+								dao.close();
+
+								// it's not necessary to reload the full list
+								matches.remove(selectedMatch);
+								adapter.notifyDataSetChanged();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		});
+	}
+
 }
