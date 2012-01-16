@@ -1,6 +1,9 @@
 package br.net.du.fscore.persist;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -79,10 +82,19 @@ public class MatchDAO extends SQLiteOpenHelper {
 			String name = cursor.getString(1);
 			Match match = new Match(name);
 			match.setId(Long.parseLong(cursor.getString(0)));
-			// TODO: solve this date issue...
-//			Date d = new Date(cursor.getString(2));
-//			Calendar date = Calendar.getInstance().setTime(d);
-//			match.setDate(date);
+
+			String dateString = cursor.getString(2);
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"yyyy-MM-dd hh:mm:ss");
+			Calendar date = Calendar.getInstance();
+			try {
+				date.setTime(formatter.parse(dateString));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			match.setDate(date);
+
 			myList.add(match);
 		}
 
