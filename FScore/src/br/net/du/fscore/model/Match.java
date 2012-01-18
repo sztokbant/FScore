@@ -18,14 +18,9 @@ public class Match implements Serializable, Comparable<Match> {
 	List<Player> players = new ArrayList<Player>();
 	List<Round> rounds = new ArrayList<Round>();
 
-	public Match(String name) {
-		this.name = name;
+	public Match() {
+		name = "";
 		date = Calendar.getInstance();
-	}
-
-	public Match(String name, Calendar date) {
-		this.name = name;
-		this.date = date;
 	}
 
 	public String getName() {

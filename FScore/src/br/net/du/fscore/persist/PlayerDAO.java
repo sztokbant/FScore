@@ -7,11 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import br.net.du.fscore.model.Player;
 
 public class PlayerDAO extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 1;
+
 	private static final String TABLE = "player";
 
 	public PlayerDAO(Context context) {
-		super(context, "Player", null, DATABASE_VERSION);
+		super(context, DataConstants.DATABASE_NAME, null,
+				DataManagerImpl.DATABASE_VERSION);
 	}
 
 	@Override

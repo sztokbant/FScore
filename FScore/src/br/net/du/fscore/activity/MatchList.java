@@ -24,18 +24,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
-import br.net.du.fscore.persist.MatchDAO;
+import br.net.du.fscore.persist.DataManagerImpl;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
 	private ArrayAdapter<Match> adapter;
 	private Match selectedMatch;
+	private DataManagerImpl dataManager;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
+
+		dataManager = new DataManagerImpl(this);
 
 		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
@@ -87,24 +90,17 @@ public class MatchList extends Activity {
 	}
 
 	private void refreshMatchList() {
-		MatchDAO dao = new MatchDAO(this);
-		matches.clear();
-		matches.addAll(dao.getAll());
-		dao.close();
+		matches.addAll(dataManager.getAllMatches());
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// New Match
-			Match match = new Match("Match "
-					+ Integer.toString(new Random().nextInt()));
+			Match match = new Match();
+			match.setName("Match " + Integer.toString(new Random().nextInt()));
 			matches.add(match);
-
-			MatchDAO dao = new MatchDAO(this);
-			dao.save(match);
-			dao.close();
-
+			dataManager.saveMatch(match);
 			adapter.notifyDataSetChanged();
 		}
 		return false;
@@ -132,9 +128,7 @@ public class MatchList extends Activity {
 												+ "...", Toast.LENGTH_SHORT)
 										.show();
 
-								MatchDAO dao = new MatchDAO(MatchList.this);
-								dao.delete(selectedMatch);
-								dao.close();
+								dataManager.deleteMatch(selectedMatch.getId());
 
 								// it's not necessary to reload the full list
 								matches.remove(selectedMatch);

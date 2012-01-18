@@ -10,7 +10,7 @@ public class OpenHelper extends SQLiteOpenHelper {
 
 	OpenHelper(final Context context) {
 		super(context, DataConstants.DATABASE_NAME, null,
-				DataManager.DATABASE_VERSION);
+				DataManagerImpl.DATABASE_VERSION);
 		this.context = context;
 	}
 
