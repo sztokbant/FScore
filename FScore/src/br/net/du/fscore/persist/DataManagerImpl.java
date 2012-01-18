@@ -10,7 +10,7 @@ import br.net.du.fscore.model.Player;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 0;
+	public static final int DATABASE_VERSION = 1;
 
 	private Context context;
 

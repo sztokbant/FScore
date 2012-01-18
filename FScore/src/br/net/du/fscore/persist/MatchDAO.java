@@ -98,11 +98,10 @@ public class MatchDAO implements Dao<Match> {
 
 		if (cursor != null) {
 			match = new Match();
-			match.setId(cursor.getLong(0));
-			match.setName(cursor.getString(1));
+			match.setName(cursor.getString(0));
 
 			Calendar date = Calendar.getInstance();
-			date.setTimeInMillis(cursor.getLong(2));
+			date.setTimeInMillis(cursor.getLong(1));
 			match.setDate(date);
 		}
 

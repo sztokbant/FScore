@@ -77,8 +77,4 @@ public class Match implements Serializable, Comparable<Match> {
 	public int compareTo(Match other) {
 		return this.date.compareTo(other.getDate());
 	}
-
-	public boolean isPersistent() {
-		return getId() != 0;
-	}
 }
