@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import br.net.du.fscore.model.Match;
 
-public class MatchDAO extends SQLiteOpenHelper {
+public class MatchDAO extends SQLiteOpenHelper implements Dao<Match> {
 	private static final int DATABASE_VERSION = 2;
 	private static final String TABLE = "match";
 	private static final String[] COLUMNS = { "id", "name", "date" };
@@ -47,7 +47,7 @@ public class MatchDAO extends SQLiteOpenHelper {
 		return values;
 	}
 
-	public void save(Match match) {
+	public long save(Match match) {
 		SQLiteDatabase writableDatabase = getWritableDatabase();
 
 		if (!match.isPersistent()) {
@@ -59,6 +59,8 @@ public class MatchDAO extends SQLiteOpenHelper {
 			writableDatabase.update(TABLE, toContentValues(match), "id=?",
 					whereArgs);
 		}
+
+		return match.getId();
 	}
 
 	public void delete(Match match) {
@@ -66,7 +68,7 @@ public class MatchDAO extends SQLiteOpenHelper {
 		getWritableDatabase().delete(TABLE, "id=?", whereArgs);
 	}
 
-	public List<Match> getList() {
+	public List<Match> getAll() {
 		List<Match> myList = new ArrayList<Match>();
 
 		Cursor cursor = getReadableDatabase().query(TABLE, COLUMNS, null, // where
@@ -91,5 +93,16 @@ public class MatchDAO extends SQLiteOpenHelper {
 		cursor.close();
 
 		return myList;
+	}
+
+	@Override
+	public void update(Match match) {
+		save(match);
+	}
+
+	@Override
+	public Match get(long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

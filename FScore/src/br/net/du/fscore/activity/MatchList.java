@@ -89,7 +89,7 @@ public class MatchList extends Activity {
 	private void refreshMatchList() {
 		MatchDAO dao = new MatchDAO(this);
 		matches.clear();
-		matches.addAll(dao.getList());
+		matches.addAll(dao.getAll());
 		dao.close();
 	}
 
