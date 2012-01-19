@@ -77,4 +77,14 @@ public class Match implements Serializable, Comparable<Match> {
 	public int compareTo(Match other) {
 		return this.date.compareTo(other.getDate());
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof Match)) {
+			return false;
+		}
+
+		return this.name == ((Match) other).getName()
+				&& this.date == ((Match) other).getDate();
+	}
 }

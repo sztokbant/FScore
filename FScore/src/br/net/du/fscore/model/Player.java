@@ -31,15 +31,16 @@ public class Player implements Serializable, Comparable<Player> {
 		return this.name.compareTo(other.getName());
 	}
 
-	public boolean equals(Player other) {
-		return this.compareTo(other) == 0;
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof Player)) {
+			return false;
+		}
+
+		return this.compareTo((Player) other) == 0;
 	}
 
 	public String toString() {
 		return name;
-	}
-
-	public boolean isPersistent() {
-		return getId() != 0;
 	}
 }

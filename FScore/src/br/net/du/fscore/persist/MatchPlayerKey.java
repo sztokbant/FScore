@@ -24,4 +24,14 @@ public class MatchPlayerKey {
 	public void setPlayerId(long playerId) {
 		this.playerId = playerId;
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof MatchPlayerKey)) {
+			return false;
+		}
+
+		return this.matchId == ((MatchPlayerKey) other).getMatchId()
+				&& this.playerId == ((MatchPlayerKey) other).getPlayerId();
+	}
 }
