@@ -1,0 +1,13 @@
+TECHNICAL DEBTS
+
+Methods to refactor:
+* MatchList.onCreateContextMenu()
+* SingleMatch.onCreateContextMenu()
+* SingleMatch.onActivityResult()
+
+Toast.show() DEBUG calls to be removed:
+* SingleMatch.onTabChanged()
+
+DB:
+* MatchPlayerDAO.isOrphan() query SHOULD "LIMIT 1"
+* PlayerDAO.find() SHOULD use query() instead of rawQuery()
