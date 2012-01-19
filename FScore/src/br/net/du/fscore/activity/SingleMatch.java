@@ -30,6 +30,7 @@ import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.persist.DataManagerImpl;
 
 // Tabs based on tutorial on http://joshclemm.com/blog/?p=59
 public class SingleMatch extends TabActivity implements OnTabChangeListener {
@@ -52,9 +53,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private Match match;
 
+	private DataManagerImpl dataManager;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlematch);
+
+		dataManager = new DataManagerImpl(this);
 
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
@@ -103,10 +108,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 												+ "...", Toast.LENGTH_SHORT)
 										.show();
 
-								// DAO code goes here!
-
 								// it's not necessary to reload the full list
 								match.getPlayers().remove(selectedPlayer);
+								dataManager.saveMatch(match);
 								playerAdapter.notifyDataSetChanged();
 							}
 						}).setNegativeButton("No", null).show();
@@ -114,6 +118,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				return true;
 			}
 		});
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (dataManager != null) {
+			dataManager.closeDb();
+		}
 	}
 
 	private void loadRoundsList() {
@@ -200,6 +212,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					Player player = new Player();
 					player.setName(name);
 					match.withPlayer(player);
+					dataManager.saveMatch(match);
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
 						playerAdapter.notifyDataSetChanged();
 					}

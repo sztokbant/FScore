@@ -6,6 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
 

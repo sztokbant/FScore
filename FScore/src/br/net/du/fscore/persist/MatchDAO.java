@@ -28,10 +28,16 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public long save(Match match) {
-		insertStatement.clearBindings();
-		insertStatement.bindString(1, match.getName());
-		insertStatement.bindLong(2, match.getDate().getTimeInMillis());
-		return insertStatement.executeInsert();
+		if (match.getId() == 0) {
+			insertStatement.clearBindings();
+			insertStatement.bindString(1, match.getName());
+			insertStatement.bindLong(2, match.getDate().getTimeInMillis());
+			match.setId(insertStatement.executeInsert());
+		} else {
+			this.update(match);
+		}
+
+		return match.getId();
 	}
 
 	@Override

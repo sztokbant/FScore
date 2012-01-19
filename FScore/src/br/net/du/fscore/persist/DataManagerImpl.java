@@ -1,5 +1,6 @@
 package br.net.du.fscore.persist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -12,7 +13,7 @@ import br.net.du.fscore.model.Player;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 
 	private Context context;
 
@@ -44,7 +45,13 @@ public class DataManagerImpl implements DataManager {
 
 	@Override
 	public List<Match> getAllMatches() {
-		return matchDao.getAll();
+		List<Match> matches = new ArrayList<Match>();
+
+		for (Match match : matchDao.getAll()) {
+			matches.add(this.getMatch(match.getId()));
+		}
+
+		return matches;
 	}
 
 	@Override

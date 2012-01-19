@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
+import android.util.Log;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
@@ -26,9 +27,15 @@ public class PlayerDAO implements Dao<Player> {
 	}
 
 	public long save(Player player) {
-		insertStatement.clearBindings();
-		insertStatement.bindString(1, player.getName());
-		return insertStatement.executeInsert();
+		if (player.getId() == 0) {
+			insertStatement.clearBindings();
+			insertStatement.bindString(1, player.getName());
+			player.setId(insertStatement.executeInsert());
+		} else {
+			this.update(player);
+		}
+
+		return player.getId();
 	}
 
 	@Override
@@ -67,8 +74,8 @@ public class PlayerDAO implements Dao<Player> {
 	public List<Player> getAll() {
 		List<Player> myList = new ArrayList<Player>();
 
-		Cursor cursor = db.query(PlayerTable.TABLE_NAME,
-				new String[] { PlayerColumns.NAME }, null, // where
+		Cursor cursor = db.query(PlayerTable.TABLE_NAME, new String[] {
+				BaseColumns._ID, PlayerColumns.NAME }, null, // where
 				null, // values
 				null, // group by
 				null, // having
@@ -111,7 +118,8 @@ public class PlayerDAO implements Dao<Player> {
 
 		if (cursor != null) {
 			player = new Player();
-			player.setName(cursor.getString(0));
+			player.setId(cursor.getLong(0));
+			player.setName(cursor.getString(1));
 		}
 
 		return player;
@@ -121,7 +129,7 @@ public class PlayerDAO implements Dao<Player> {
 		ContentValues values = new ContentValues();
 
 		// values.put("id", a.getId()); // WRONG!
-		values.put("name", player.getName());
+		values.put(PlayerColumns.NAME, player.getName());
 
 		return values;
 	}

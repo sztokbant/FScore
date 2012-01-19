@@ -1,6 +1,8 @@
 package br.net.du.fscore.model;
 
-public class Player implements Comparable<Player> {
+import java.io.Serializable;
+
+public class Player implements Serializable, Comparable<Player> {
 	private long id;
 	private String name;
 
