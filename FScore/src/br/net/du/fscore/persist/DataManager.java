@@ -27,5 +27,5 @@ public interface DataManager {
 
 	public void deletePlayer(Player player);
 
-	void close();
+	void closeDb();
 }

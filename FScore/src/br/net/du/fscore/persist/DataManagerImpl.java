@@ -127,8 +127,10 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
-	public void close() {
-		db.close();
+	public void closeDb() {
+		if (db.isOpen()) {
+			db.close();
+		}
 	}
 
 	public class OpenHelper extends SQLiteOpenHelper {

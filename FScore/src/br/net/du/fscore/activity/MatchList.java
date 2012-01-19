@@ -93,7 +93,7 @@ public class MatchList extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		if (dataManager != null) {
-			dataManager.close();
+			dataManager.closeDb();
 		}
 	}
 
