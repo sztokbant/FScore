@@ -72,7 +72,7 @@ public class MatchDAO implements Dao<Match> {
 		List<Match> myList = new ArrayList<Match>();
 
 		Cursor cursor = db.query(MatchTable.TABLE_NAME, new String[] {
-				MatchColumns.NAME, MatchColumns.DATE }, null, // where
+				BaseColumns._ID, MatchColumns.NAME, MatchColumns.DATE }, null, // where
 				null, // values
 				null, // group by
 				null, // having
@@ -98,10 +98,12 @@ public class MatchDAO implements Dao<Match> {
 
 		if (cursor != null) {
 			match = new Match();
-			match.setName(cursor.getString(0));
+			match.setId(cursor.getLong(0));
+
+			match.setName(cursor.getString(1));
 
 			Calendar date = Calendar.getInstance();
-			date.setTimeInMillis(cursor.getLong(1));
+			date.setTimeInMillis(cursor.getLong(2));
 			match.setDate(date);
 		}
 
@@ -112,8 +114,8 @@ public class MatchDAO implements Dao<Match> {
 		ContentValues values = new ContentValues();
 
 		// values.put("id", a.getId()); // WRONG!
-		values.put("name", match.getName());
-		values.put("date", match.getDate().getTimeInMillis());
+		values.put(MatchColumns.NAME, match.getName());
+		values.put(MatchColumns.DATE, match.getDate().getTimeInMillis());
 
 		return values;
 	}
