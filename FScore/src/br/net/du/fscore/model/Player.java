@@ -2,10 +2,10 @@ package br.net.du.fscore.model;
 
 public class Player implements Comparable<Player> {
 	private long id;
-	private String name = null;
+	private String name;
 
-	public Player(String name) {
-		this.name = name;
+	public Player() {
+		name = "";
 	}
 
 	public String getName() {

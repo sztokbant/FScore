@@ -89,8 +89,18 @@ public class MatchList extends Activity {
 		refreshMatchList();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (dataManager != null) {
+			dataManager.close();
+		}
+	}
+
 	private void refreshMatchList() {
+		matches.clear();
 		matches.addAll(dataManager.getAllMatches());
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -140,5 +150,4 @@ public class MatchList extends Activity {
 			}
 		});
 	}
-
 }

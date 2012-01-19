@@ -3,8 +3,10 @@ package br.net.du.fscore.persist;
 import java.util.List;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 
@@ -18,9 +20,7 @@ public class DataManagerImpl implements DataManager {
 
 	private PlayerDAO playerDao;
 	private MatchDAO matchDao;
-
-	// TODO
-	// private MatchPlayerDAO matchPlayerDao;
+	private MatchPlayerDAO matchPlayerDao;
 
 	public DataManagerImpl(Context context) {
 		this.context = context;
@@ -28,19 +28,17 @@ public class DataManagerImpl implements DataManager {
 		SQLiteOpenHelper openHelper = new OpenHelper(this.context);
 		db = openHelper.getWritableDatabase();
 
+		playerDao = new PlayerDAO(db);
 		matchDao = new MatchDAO(db);
-		// TODO
-		// playerDAO = new PlayerDAO(db);
-		// matchPlayerDAO = new MatchPlayerDAO(db);
+		matchPlayerDao = new MatchPlayerDAO(db);
 	}
 
 	@Override
 	public Match getMatch(long matchId) {
 		Match match = matchDao.get(matchId);
-		// TODO
-		// if (match != null) {
-		// match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
-		// }
+		if (match != null) {
+			match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
+		}
 		return match;
 	}
 
@@ -56,13 +54,27 @@ public class DataManagerImpl implements DataManager {
 			db.beginTransaction();
 			matchId = matchDao.save(match);
 
-			// TODO
-			// if (match.getPlayers().size() > 0) {
-			// }
+			if (match.getPlayers().size() > 0) {
+				for (Player player : match.getPlayers()) {
+					long playerId = 0L;
+					Player dbPlayer = playerDao.find(player.getName());
+					if (dbPlayer == null) {
+						playerId = playerDao.save(player);
+					} else {
+						playerId = dbPlayer.getId();
+					}
+
+					MatchPlayerKey key = new MatchPlayerKey(matchId, playerId);
+					if (!matchPlayerDao.exists(key)) {
+						matchPlayerDao.save(key);
+					}
+				}
+			}
 
 			db.setTransactionSuccessful();
-			// } catch (SQLException e) {
-			// TODO
+		} catch (SQLException e) {
+			Log.e("FScore", "Error saving match (transaction rolled back)", e);
+			matchId = 0L;
 		} finally {
 			db.endTransaction();
 		}
@@ -77,13 +89,16 @@ public class DataManagerImpl implements DataManager {
 			db.beginTransaction();
 			Match match = getMatch(matchId);
 			if (match != null) {
-				// TODO
+				for (Player player : match.getPlayers()) {
+					matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
+							player.getId()));
+				}
+				matchDao.delete(match);
 			}
-			matchDao.delete(match);
 			db.setTransactionSuccessful();
 			result = true;
-			// } catch (SQLException e) {
-			// TODO
+		} catch (SQLException e) {
+			Log.e("FScore", "Error deleting match (transaction rolled back)", e);
 		} finally {
 			db.endTransaction();
 		}
@@ -93,26 +108,57 @@ public class DataManagerImpl implements DataManager {
 
 	@Override
 	public Player getPlayer(long playerId) {
-		// TODO Auto-generated method stub
-		return null;
+		return playerDao.get(playerId);
 	}
 
 	@Override
 	public List<Player> getAllPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+		return playerDao.getAll();
 	}
 
 	@Override
 	public long savePlayer(Player player) {
-		// TODO Auto-generated method stub
-		return 0;
+		return playerDao.save(player);
 	}
 
 	@Override
 	public void deletePlayer(Player player) {
-		// TODO Auto-generated method stub
-
+		playerDao.delete(player);
 	}
 
+	@Override
+	public void close() {
+		db.close();
+	}
+
+	public class OpenHelper extends SQLiteOpenHelper {
+		private Context context;
+
+		OpenHelper(final Context context) {
+			super(context, DataConstants.DATABASE_NAME, null,
+					DataManagerImpl.DATABASE_VERSION);
+			this.context = context;
+		}
+
+		// onOpen available if needed
+		@Override
+		public void onOpen(final SQLiteDatabase db) {
+			super.onOpen(db);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+			PlayerTable.onCreate(db);
+			MatchTable.onCreate(db);
+			MatchPlayerTable.onCreate(db);
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, final int oldVersion,
+				final int newVersion) {
+			MatchPlayerTable.onUpgrade(db, oldVersion, newVersion);
+			MatchTable.onUpgrade(db, oldVersion, newVersion);
+			PlayerTable.onUpgrade(db, oldVersion, newVersion);
+		}
+	}
 }

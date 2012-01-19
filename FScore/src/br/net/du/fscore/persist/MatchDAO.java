@@ -23,7 +23,7 @@ public class MatchDAO implements Dao<Match> {
 
 	public MatchDAO(SQLiteDatabase db) {
 		this.db = db;
-		insertStatement = db.compileStatement(MatchDAO.INSERT);
+		insertStatement = db.compileStatement(INSERT);
 	}
 
 	@Override

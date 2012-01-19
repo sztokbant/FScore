@@ -26,4 +26,6 @@ public interface DataManager {
 	public long savePlayer(Player player);
 
 	public void deletePlayer(Player player);
+
+	void close();
 }
