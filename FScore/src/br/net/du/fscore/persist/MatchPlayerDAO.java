@@ -53,7 +53,7 @@ public class MatchPlayerDAO {
 		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
 				new String[] { MatchPlayerColumns.MATCH_ID,
 						MatchPlayerColumns.PLAYER_ID },
-				MatchPlayerColumns.MATCH_ID + " = ?, "
+				MatchPlayerColumns.MATCH_ID + " = ? AND "
 						+ MatchPlayerColumns.PLAYER_ID + " = ?", // where
 				new String[] { String.valueOf(key.getMatchId()),
 						String.valueOf(key.getPlayerId()) }, // values
@@ -76,7 +76,7 @@ public class MatchPlayerDAO {
 		if (key != null) {
 			db.delete(
 					MatchPlayerTable.TABLE_NAME,
-					MatchPlayerColumns.MATCH_ID + " = ?, "
+					MatchPlayerColumns.MATCH_ID + " = ? AND "
 							+ MatchPlayerColumns.PLAYER_ID + " = ?",
 					new String[] { String.valueOf(key.getMatchId()),
 							String.valueOf(key.getPlayerId()) });
