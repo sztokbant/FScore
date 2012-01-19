@@ -209,6 +209,12 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					int nameIndex = c
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
 					String name = c.getString(nameIndex);
+
+					// sanity check
+					if (name == null) {
+						name = "(Unknown)";
+					}
+
 					Player player = new Player();
 					player.setName(name);
 					match.withPlayer(player);
