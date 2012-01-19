@@ -87,4 +87,12 @@ public class Match implements Serializable, Comparable<Match> {
 		return this.name == ((Match) other).getName()
 				&& this.date == ((Match) other).getDate();
 	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + (name == null ? 0 : name.hashCode());
+		hash = hash * 31 + (date == null ? 0 : date.hashCode());
+		return hash;
+	}
 }

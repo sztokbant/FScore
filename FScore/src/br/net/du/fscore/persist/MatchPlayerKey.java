@@ -34,4 +34,12 @@ public class MatchPlayerKey {
 		return this.matchId == ((MatchPlayerKey) other).getMatchId()
 				&& this.playerId == ((MatchPlayerKey) other).getPlayerId();
 	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = (int) (hash * 31 + matchId);
+		hash = (int) (hash * 31 + playerId);
+		return hash;
+	}
 }

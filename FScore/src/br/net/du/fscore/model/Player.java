@@ -43,4 +43,11 @@ public class Player implements Serializable, Comparable<Player> {
 	public String toString() {
 		return name;
 	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + (name == null ? 0 : name.hashCode());
+		return hash;
+	}
 }
