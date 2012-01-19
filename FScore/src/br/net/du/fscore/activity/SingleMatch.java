@@ -129,7 +129,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void loadRoundsList() {
-		roundList = (ListView) findViewById(R.id_match.roundlist);
+		roundList = new ListView(this);
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
@@ -137,7 +137,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void loadPlayersList() {
-		playerList = (ListView) findViewById(R.id_match.playerlist);
+		playerList = new ListView(this);
 		List<Player> players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
