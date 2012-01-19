@@ -61,6 +61,7 @@ public class DataManagerImpl implements DataManager {
 			db.beginTransaction();
 			matchId = matchDao.save(match);
 
+			// stores players in object on db
 			if (match.getPlayers().size() > 0) {
 				for (Player player : match.getPlayers()) {
 					long playerId = 0L;
@@ -75,6 +76,18 @@ public class DataManagerImpl implements DataManager {
 					if (!matchPlayerDao.exists(key)) {
 						matchPlayerDao.save(key);
 					}
+				}
+			}
+
+			// removes from db players not in object
+			List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
+					.getId());
+			dbRemainingPlayers.removeAll(match.getPlayers());
+			if (dbRemainingPlayers.size() > 0) {
+				for (Player player : dbRemainingPlayers) {
+					matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
+							player.getId()));
+					Log.i("FScore", "deleted player " + player);
 				}
 			}
 
