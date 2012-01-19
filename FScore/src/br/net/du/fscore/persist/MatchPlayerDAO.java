@@ -6,7 +6,6 @@ import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
 
@@ -64,6 +63,16 @@ public class MatchPlayerDAO {
 				null);
 
 		return cursor.moveToFirst();
+	}
+
+	public boolean isOrphan(Player player) {
+		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME, new String[] {
+				MatchPlayerColumns.MATCH_ID, MatchPlayerColumns.PLAYER_ID },
+				MatchPlayerColumns.PLAYER_ID + " = ?",
+				new String[] { String.valueOf(player.getId()) }, null, null,
+				null, null);
+
+		return !cursor.moveToFirst();
 	}
 
 	public long save(MatchPlayerKey key) {

@@ -87,6 +87,9 @@ public class DataManagerImpl implements DataManager {
 				for (Player player : dbRemainingPlayers) {
 					matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
 							player.getId()));
+					if (matchPlayerDao.isOrphan(player)) {
+						this.deletePlayer(player);
+					}
 					Log.i("FScore", "deleted player " + player);
 				}
 			}
