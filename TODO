@@ -1,13 +1,19 @@
 TECHNICAL DEBTS
 
-Methods to refactor:
+Code smells:
 * MatchList.onCreateContextMenu()
 * SingleMatch.onCreateContextMenu()
 * SingleMatch.onActivityResult()
+* MatchList: Convert MenuItem's "Magic Numbers" into enums
+* SingleMatch: Convert MenuItem's "Magic Numbers" into enums
 
-Toast.show() DEBUG calls to be removed:
-* SingleMatch.onTabChanged()
+Interface:
+* Remove Toast.show() DEBUG calls from SingleMatch.onTabChanged()
 
 DB:
 * MatchPlayerDAO.isOrphan() query SHOULD "LIMIT 1"
 * PlayerDAO.find() SHOULD use query() instead of rawQuery()
+
+Model:
+* Implement methods equals() and hashCode() in Round
+* Implement methods equals() and hashCode() in PlayerRound
