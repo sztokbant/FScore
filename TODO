@@ -6,7 +6,6 @@ Code smells:
 * SingleMatch.onCreateContextMenu()
 * SingleMatch.onActivityResult()
 * SingleMatch: Convert MenuItem's "Magic Numbers" into enums
-* DataManagerImpl: Convert to constant hard-coded "FScore" Strings in Log
 * DataManagerImpl: Extract 'store..' and 'remove..' methods from saveMatch()
 
 Model:

@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 
@@ -90,13 +91,15 @@ public class DataManagerImpl implements DataManager {
 					if (matchPlayerDao.isOrphan(player)) {
 						this.deletePlayer(player);
 					}
-					Log.i("FScore", "deleted player " + player);
+					Log.i(context.getResources().getString(R.string.app_name),
+							"deleted player " + player);
 				}
 			}
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Log.e("FScore", "Error saving match (transaction rolled back)", e);
+			Log.e(context.getResources().getString(R.string.app_name),
+					"Error saving match (transaction rolled back)", e);
 			matchId = 0L;
 		} finally {
 			db.endTransaction();
@@ -121,7 +124,8 @@ public class DataManagerImpl implements DataManager {
 			db.setTransactionSuccessful();
 			result = true;
 		} catch (SQLException e) {
-			Log.e("FScore", "Error deleting match (transaction rolled back)", e);
+			Log.e(context.getResources().getString(R.string.app_name),
+					"Error deleting match (transaction rolled back)", e);
 		} finally {
 			db.endTransaction();
 		}
