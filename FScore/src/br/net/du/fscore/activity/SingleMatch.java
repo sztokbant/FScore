@@ -231,17 +231,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public void onTabChanged(String tabName) {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
 			playerAdapter.notifyDataSetChanged();
-
-			Toast.makeText(
-					this,
-					"selected Player's tab (total: "
-							+ match.getPlayers().size() + ")",
-					Toast.LENGTH_SHORT).show();
 		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
-			Toast.makeText(
-					this,
-					"selected Round's tab (total: " + match.getRounds().size()
-							+ ")", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

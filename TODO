@@ -11,9 +11,6 @@ Code smells:
 * PlayerDAO.find() SHOULD use query() instead of rawQuery()
 * persistence/*Columns classes SHOULD have a "String[] get()" metdod to be used by DAOs
 
-Interface:
-* Remove Toast.show() DEBUG calls from SingleMatch.onTabChanged()
-
 DB:
 * MatchPlayerDAO.isOrphan() query SHOULD "LIMIT 1"
 
