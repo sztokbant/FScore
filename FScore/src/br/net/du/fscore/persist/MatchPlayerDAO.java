@@ -10,9 +10,9 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
 
 public class MatchPlayerDAO {
-	private static final String INSERT = "INSERT INTO "
-			+ MatchPlayerTable.TABLE_NAME + "(" + MatchPlayerColumns.MATCH_ID
-			+ ", " + MatchPlayerColumns.PLAYER_ID + ") VALUES (?, ?)";
+	private static final String INSERT = "INSERT INTO " + MatchPlayerTable.NAME
+			+ "(" + MatchPlayerColumns.MATCH_ID + ", "
+			+ MatchPlayerColumns.PLAYER_ID + ") VALUES (?, ?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
@@ -25,7 +25,7 @@ public class MatchPlayerDAO {
 	public List<Player> getPlayers(long matchId) {
 		List<Player> myList = new ArrayList<Player>();
 
-		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
+		Cursor cursor = db.query(MatchPlayerTable.NAME,
 				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
 				new String[] { String.valueOf(matchId) }, // values
 				null, // group by
@@ -49,7 +49,7 @@ public class MatchPlayerDAO {
 	}
 
 	public boolean exists(MatchPlayerKey key) {
-		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
+		Cursor cursor = db.query(MatchPlayerTable.NAME,
 				MatchPlayerColumns.get(),
 				MatchPlayerColumns.MATCH_ID + " = ? AND "
 						+ MatchPlayerColumns.PLAYER_ID + " = ?", // where
@@ -64,7 +64,7 @@ public class MatchPlayerDAO {
 	}
 
 	public boolean isOrphan(Player player) {
-		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
+		Cursor cursor = db.query(MatchPlayerTable.NAME,
 				MatchPlayerColumns.get(),
 				MatchPlayerColumns.PLAYER_ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
@@ -83,7 +83,7 @@ public class MatchPlayerDAO {
 	public void delete(MatchPlayerKey key) {
 		if (key != null) {
 			db.delete(
-					MatchPlayerTable.TABLE_NAME,
+					MatchPlayerTable.NAME,
 					MatchPlayerColumns.MATCH_ID + " = ? AND "
 							+ MatchPlayerColumns.PLAYER_ID + " = ?",
 					new String[] { String.valueOf(key.getMatchId()),

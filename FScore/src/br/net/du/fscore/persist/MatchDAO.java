@@ -14,9 +14,8 @@ import br.net.du.fscore.persist.MatchTable.MatchColumns;
 
 public class MatchDAO implements Dao<Match> {
 
-	private static final String INSERT = "INSERT INTO " + MatchTable.TABLE_NAME
-			+ "(" + MatchColumns.NAME + ", " + MatchColumns.DATE
-			+ ") VALUES (?, ?)";
+	private static final String INSERT = "INSERT INTO " + MatchTable.NAME + "("
+			+ MatchColumns.NAME + ", " + MatchColumns.DATE + ") VALUES (?, ?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
@@ -42,15 +41,14 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public void update(Match match) {
-		db.update(MatchTable.TABLE_NAME, toContentValues(match),
-				BaseColumns._ID + " = ?",
-				new String[] { String.valueOf(match.getId()) });
+		db.update(MatchTable.NAME, toContentValues(match), BaseColumns._ID
+				+ " = ?", new String[] { String.valueOf(match.getId()) });
 	}
 
 	@Override
 	public void delete(Match match) {
 		if (match.getId() > 0) {
-			db.delete(MatchTable.TABLE_NAME, BaseColumns._ID + " = ?",
+			db.delete(MatchTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(match.getId()) });
 		}
 	}
@@ -58,7 +56,7 @@ public class MatchDAO implements Dao<Match> {
 	@Override
 	public Match get(long id) {
 		Match match = null;
-		Cursor cursor = db.query(MatchTable.TABLE_NAME, MatchColumns.get(),
+		Cursor cursor = db.query(MatchTable.NAME, MatchColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
 				null, null, null, "1");
 		if (cursor.moveToFirst()) {
@@ -76,8 +74,7 @@ public class MatchDAO implements Dao<Match> {
 	public List<Match> getAll() {
 		List<Match> myList = new ArrayList<Match>();
 
-		Cursor cursor = db.query(MatchTable.TABLE_NAME, MatchColumns.get(),
-				null, // where
+		Cursor cursor = db.query(MatchTable.NAME, MatchColumns.get(), null, // where
 				null, // values
 				null, // group by
 				null, // having

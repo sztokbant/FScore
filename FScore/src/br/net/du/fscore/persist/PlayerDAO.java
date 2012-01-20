@@ -14,9 +14,8 @@ import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
 public class PlayerDAO implements Dao<Player> {
 
-	private static final String INSERT = "INSERT INTO "
-			+ PlayerTable.TABLE_NAME + "(" + PlayerColumns.NAME
-			+ ") VALUES (?)";
+	private static final String INSERT = "INSERT INTO " + PlayerTable.NAME
+			+ "(" + PlayerColumns.NAME + ") VALUES (?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
@@ -40,14 +39,13 @@ public class PlayerDAO implements Dao<Player> {
 
 	@Override
 	public void update(Player player) {
-		db.update(PlayerTable.TABLE_NAME, toContentValues(player),
-				BaseColumns._ID + " = ?",
-				new String[] { String.valueOf(player.getId()) });
+		db.update(PlayerTable.NAME, toContentValues(player), BaseColumns._ID
+				+ " = ?", new String[] { String.valueOf(player.getId()) });
 	}
 
 	public void delete(Player player) {
 		if (player.getId() > 0) {
-			db.delete(MatchTable.TABLE_NAME, BaseColumns._ID + " = ?",
+			db.delete(MatchTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(player.getId()) });
 		}
 	}
@@ -55,7 +53,7 @@ public class PlayerDAO implements Dao<Player> {
 	@Override
 	public Player get(long id) {
 		Player player = null;
-		Cursor cursor = db.query(PlayerTable.TABLE_NAME, PlayerColumns.get(),
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
 				null, null, null, "1");
 		if (cursor.moveToFirst()) {
@@ -73,8 +71,7 @@ public class PlayerDAO implements Dao<Player> {
 	public List<Player> getAll() {
 		List<Player> myList = new ArrayList<Player>();
 
-		Cursor cursor = db.query(PlayerTable.TABLE_NAME, PlayerColumns.get(),
-				null, // where
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(), null, // where
 				null, // values
 				null, // group by
 				null, // having
@@ -97,9 +94,8 @@ public class PlayerDAO implements Dao<Player> {
 
 	public Player find(String name) {
 		long playerId = 0L;
-		String sql = "SELECT " + BaseColumns._ID + " FROM "
-				+ PlayerTable.TABLE_NAME + " WHERE " + PlayerColumns.NAME
-				+ " = ? LIMIT 1";
+		String sql = "SELECT " + BaseColumns._ID + " FROM " + PlayerTable.NAME
+				+ " WHERE " + PlayerColumns.NAME + " = ? LIMIT 1";
 		Cursor cursor = db.rawQuery(sql, new String[] { name });
 		if (cursor.moveToFirst()) {
 			playerId = cursor.getLong(0);
