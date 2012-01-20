@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
-import android.util.Log;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
@@ -94,9 +93,15 @@ public class PlayerDAO implements Dao<Player> {
 
 	public Player find(String name) {
 		long playerId = 0L;
-		String sql = "SELECT " + BaseColumns._ID + " FROM " + PlayerTable.NAME
-				+ " WHERE " + PlayerColumns.NAME + " = ? LIMIT 1";
-		Cursor cursor = db.rawQuery(sql, new String[] { name });
+
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
+				PlayerColumns.NAME + " = ?", // where
+				new String[] { name }, // values
+				null, // group by
+				null, // having
+				null, // order by
+				"1"); // limit
+
 		if (cursor.moveToFirst()) {
 			playerId = cursor.getLong(0);
 		}
