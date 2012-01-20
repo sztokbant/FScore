@@ -62,39 +62,8 @@ public class DataManagerImpl implements DataManager {
 			db.beginTransaction();
 			matchId = matchDao.save(match);
 
-			// stores players in object on db
-			if (match.getPlayers().size() > 0) {
-				for (Player player : match.getPlayers()) {
-					long playerId = 0L;
-					Player dbPlayer = playerDao.find(player.getName());
-					if (dbPlayer == null) {
-						playerId = playerDao.save(player);
-					} else {
-						playerId = dbPlayer.getId();
-					}
-
-					MatchPlayerKey key = new MatchPlayerKey(matchId, playerId);
-					if (!matchPlayerDao.exists(key)) {
-						matchPlayerDao.save(key);
-					}
-				}
-			}
-
-			// removes from db players not in object
-			List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
-					.getId());
-			dbRemainingPlayers.removeAll(match.getPlayers());
-			if (dbRemainingPlayers.size() > 0) {
-				for (Player player : dbRemainingPlayers) {
-					matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
-							player.getId()));
-					if (matchPlayerDao.isOrphan(player)) {
-						this.deletePlayer(player);
-					}
-					Log.i(context.getResources().getString(R.string.app_name),
-							"deleted player " + player);
-				}
-			}
+			storeNewPlayersForMatch(match);
+			eraseRemovedPlayersFromMatch(match);
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
@@ -106,6 +75,43 @@ public class DataManagerImpl implements DataManager {
 		}
 
 		return matchId;
+	}
+
+	private void eraseRemovedPlayersFromMatch(Match match) {
+		List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
+				.getId());
+		dbRemainingPlayers.removeAll(match.getPlayers());
+		if (dbRemainingPlayers.size() > 0) {
+			for (Player player : dbRemainingPlayers) {
+				matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
+						player.getId()));
+				if (matchPlayerDao.isOrphan(player)) {
+					this.deletePlayer(player);
+				}
+				Log.i(context.getResources().getString(R.string.app_name),
+						"deleted player " + player);
+			}
+		}
+	}
+
+	private void storeNewPlayersForMatch(Match match) {
+		if (match.getPlayers().size() > 0) {
+			for (Player player : match.getPlayers()) {
+				long playerId = 0L;
+				Player dbPlayer = playerDao.find(player.getName());
+				if (dbPlayer == null) {
+					playerId = playerDao.save(player);
+				} else {
+					playerId = dbPlayer.getId();
+				}
+
+				MatchPlayerKey key = new MatchPlayerKey(match.getId(),
+						playerId);
+				if (!matchPlayerDao.exists(key)) {
+					matchPlayerDao.save(key);
+				}
+			}
+		}
 	}
 
 	@Override

@@ -6,7 +6,6 @@ Code smells:
 * SingleMatch.onCreateContextMenu()
 * SingleMatch.onActivityResult()
 * SingleMatch: Convert MenuItem's "Magic Numbers" into enums
-* DataManagerImpl: Extract 'store..' and 'remove..' methods from saveMatch()
 
 Model:
 * Implement methods equals() and hashCode() in Round
