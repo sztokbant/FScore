@@ -70,7 +70,8 @@ public class MatchPlayerDAO {
 				MatchPlayerColumns.MATCH_ID, MatchPlayerColumns.PLAYER_ID },
 				MatchPlayerColumns.PLAYER_ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
-				null, null);
+				null,
+				"1"); // limit
 
 		return !cursor.moveToFirst();
 	}
