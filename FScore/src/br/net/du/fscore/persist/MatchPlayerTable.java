@@ -10,6 +10,10 @@ public final class MatchPlayerTable {
 	public static class MatchPlayerColumns {
 		public static final String MATCH_ID = "match_id";
 		public static final String PLAYER_ID = "player_id";
+
+		public static String[] get() {
+			return new String[] { MATCH_ID, PLAYER_ID };
+		}
 	}
 
 	public static void onCreate(SQLiteDatabase db) {

@@ -9,7 +9,6 @@ Code smells:
 * DataManagerImpl: Convert to constant hard-coded "FScore" Strings in Log
 * DataManagerImpl: Extract 'store..' and 'remove..' methods from saveMatch()
 * PlayerDAO.find() SHOULD use query() instead of rawQuery()
-* persistence/*Columns classes SHOULD have a "String[] get()" metdod to be used by DAOs
 
 Model:
 * Implement methods equals() and hashCode() in Round

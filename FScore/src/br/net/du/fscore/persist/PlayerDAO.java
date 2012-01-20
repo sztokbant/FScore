@@ -55,8 +55,7 @@ public class PlayerDAO implements Dao<Player> {
 	@Override
 	public Player get(long id) {
 		Player player = null;
-		Cursor cursor = db.query(PlayerTable.TABLE_NAME, new String[] {
-				BaseColumns._ID, PlayerColumns.NAME },
+		Cursor cursor = db.query(PlayerTable.TABLE_NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
 				null, null, null, "1");
 		if (cursor.moveToFirst()) {
@@ -74,8 +73,8 @@ public class PlayerDAO implements Dao<Player> {
 	public List<Player> getAll() {
 		List<Player> myList = new ArrayList<Player>();
 
-		Cursor cursor = db.query(PlayerTable.TABLE_NAME, new String[] {
-				BaseColumns._ID, PlayerColumns.NAME }, null, // where
+		Cursor cursor = db.query(PlayerTable.TABLE_NAME, PlayerColumns.get(),
+				null, // where
 				null, // values
 				null, // group by
 				null, // having

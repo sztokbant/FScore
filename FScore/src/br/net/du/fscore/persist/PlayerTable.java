@@ -9,6 +9,10 @@ public final class PlayerTable {
 
 	public static class PlayerColumns implements BaseColumns {
 		public static final String NAME = "name";
+
+		public static String[] get() {
+			return new String[] { BaseColumns._ID, NAME };
+		}
 	}
 
 	public static void onCreate(SQLiteDatabase db) {

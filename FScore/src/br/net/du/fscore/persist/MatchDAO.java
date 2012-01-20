@@ -58,8 +58,7 @@ public class MatchDAO implements Dao<Match> {
 	@Override
 	public Match get(long id) {
 		Match match = null;
-		Cursor cursor = db.query(MatchTable.TABLE_NAME, new String[] {
-				BaseColumns._ID, MatchColumns.NAME, MatchColumns.DATE },
+		Cursor cursor = db.query(MatchTable.TABLE_NAME, MatchColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
 				null, null, null, "1");
 		if (cursor.moveToFirst()) {
@@ -77,8 +76,8 @@ public class MatchDAO implements Dao<Match> {
 	public List<Match> getAll() {
 		List<Match> myList = new ArrayList<Match>();
 
-		Cursor cursor = db.query(MatchTable.TABLE_NAME, new String[] {
-				BaseColumns._ID, MatchColumns.NAME, MatchColumns.DATE }, null, // where
+		Cursor cursor = db.query(MatchTable.TABLE_NAME, MatchColumns.get(),
+				null, // where
 				null, // values
 				null, // group by
 				null, // having

@@ -25,9 +25,8 @@ public class MatchPlayerDAO {
 	public List<Player> getPlayers(long matchId) {
 		List<Player> myList = new ArrayList<Player>();
 
-		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME, new String[] {
-				MatchPlayerColumns.MATCH_ID, MatchPlayerColumns.PLAYER_ID },
-				MatchPlayerColumns.MATCH_ID + " = ?", // where
+		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
+				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
 				new String[] { String.valueOf(matchId) }, // values
 				null, // group by
 				null, // having
@@ -51,8 +50,7 @@ public class MatchPlayerDAO {
 
 	public boolean exists(MatchPlayerKey key) {
 		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
-				new String[] { MatchPlayerColumns.MATCH_ID,
-						MatchPlayerColumns.PLAYER_ID },
+				MatchPlayerColumns.get(),
 				MatchPlayerColumns.MATCH_ID + " = ? AND "
 						+ MatchPlayerColumns.PLAYER_ID + " = ?", // where
 				new String[] { String.valueOf(key.getMatchId()),
@@ -66,12 +64,11 @@ public class MatchPlayerDAO {
 	}
 
 	public boolean isOrphan(Player player) {
-		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME, new String[] {
-				MatchPlayerColumns.MATCH_ID, MatchPlayerColumns.PLAYER_ID },
+		Cursor cursor = db.query(MatchPlayerTable.TABLE_NAME,
+				MatchPlayerColumns.get(),
 				MatchPlayerColumns.PLAYER_ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
-				null,
-				"1"); // limit
+				null, "1"); // limit
 
 		return !cursor.moveToFirst();
 	}

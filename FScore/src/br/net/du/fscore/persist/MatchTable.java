@@ -10,6 +10,10 @@ public final class MatchTable {
 	public static class MatchColumns implements BaseColumns {
 		public static final String NAME = "name";
 		public static final String DATE = "date";
+
+		public static String[] get() {
+			return new String[] { BaseColumns._ID, NAME, DATE };
+		}
 	}
 
 	public static void onCreate(SQLiteDatabase db) {
