@@ -27,7 +27,7 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public long save(Match match) {
-		if (match.getId() == 0) {
+		if (!match.isPersistent()) {
 			insertStatement.clearBindings();
 			insertStatement.bindString(1, match.getName());
 			insertStatement.bindLong(2, match.getDate().getTimeInMillis());
@@ -41,8 +41,8 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public void update(Match match) {
-		db.update(MatchTable.NAME, toContentValues(match), BaseColumns._ID
-				+ " = ?", new String[] { String.valueOf(match.getId()) });
+//		db.update(MatchTable.NAME, toContentValues(match), BaseColumns._ID
+//				+ " = ?", new String[] { String.valueOf(match.getId()) });
 	}
 
 	@Override
