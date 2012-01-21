@@ -24,13 +24,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
+import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
 	private ArrayAdapter<Match> adapter;
 	private Match selectedMatch;
-	private DataManagerImpl dataManager;
+	private DataManager dataManager;
 
 	/** Called when the activity is first created. */
 	@Override
