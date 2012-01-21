@@ -47,7 +47,7 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public void delete(Match match) {
-		if (match.getId() > 0) {
+		if (match.isPersistent()) {
 			db.delete(MatchTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(match.getId()) });
 		}

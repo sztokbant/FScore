@@ -50,4 +50,8 @@ public class Player implements Serializable, Comparable<Player> {
 		hash = hash * 31 + (name == null ? 0 : name.hashCode());
 		return hash;
 	}
+
+	public boolean isPersistent() {
+		return this.getId() != 0;
+	}
 }

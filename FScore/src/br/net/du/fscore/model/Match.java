@@ -95,4 +95,8 @@ public class Match implements Serializable, Comparable<Match> {
 		hash = hash * 31 + (date == null ? 0 : date.hashCode());
 		return hash;
 	}
+
+	public boolean isPersistent() {
+		return this.getId() != 0;
+	}
 }

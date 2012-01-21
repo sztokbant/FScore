@@ -83,8 +83,8 @@ public class DataManagerImpl implements DataManager {
 		dbRemainingPlayers.removeAll(match.getPlayers());
 		if (dbRemainingPlayers.size() > 0) {
 			for (Player player : dbRemainingPlayers) {
-				matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
-						player.getId()));
+				matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
+						.getId()));
 				if (matchPlayerDao.isOrphan(player)) {
 					this.deletePlayer(player);
 				}
@@ -97,16 +97,17 @@ public class DataManagerImpl implements DataManager {
 	private void storeNewPlayersForMatch(Match match) {
 		if (match.getPlayers().size() > 0) {
 			for (Player player : match.getPlayers()) {
-				long playerId = 0L;
-				Player dbPlayer = playerDao.find(player.getName());
-				if (dbPlayer == null) {
-					playerId = playerDao.save(player);
-				} else {
-					playerId = dbPlayer.getId();
+				if (!player.isPersistent()) {
+					Player dbPlayer = playerDao.find(player.getName());
+					if (dbPlayer == null) {
+						playerDao.save(player);
+					} else {
+						player = dbPlayer;
+					}
 				}
 
 				MatchPlayerKey key = new MatchPlayerKey(match.getId(),
-						playerId);
+						player.getId());
 				if (!matchPlayerDao.exists(key)) {
 					matchPlayerDao.save(key);
 				}
