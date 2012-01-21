@@ -3,6 +3,8 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 
 public class Player implements Serializable, Comparable<Player> {
+	private static final long serialVersionUID = 1L;
+
 	private long id;
 	private String name;
 
