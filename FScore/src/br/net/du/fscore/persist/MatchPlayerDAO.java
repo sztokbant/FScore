@@ -85,11 +85,13 @@ public class MatchPlayerDAO {
 		return isOrphan;
 	}
 
-	public long save(MatchPlayerKey key) {
-		insertStatement.clearBindings();
-		insertStatement.bindLong(1, key.getMatchId());
-		insertStatement.bindLong(2, key.getPlayerId());
-		return insertStatement.executeInsert();
+	public void save(MatchPlayerKey key) {
+		if (!exists(key)) {
+			insertStatement.clearBindings();
+			insertStatement.bindLong(1, key.getMatchId());
+			insertStatement.bindLong(2, key.getPlayerId());
+			insertStatement.executeInsert();
+		}
 	}
 
 	public void delete(MatchPlayerKey key) {

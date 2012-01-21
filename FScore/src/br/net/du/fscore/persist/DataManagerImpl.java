@@ -89,7 +89,7 @@ public class DataManagerImpl implements DataManager {
 					this.deletePlayer(player);
 				}
 				Log.i(context.getResources().getString(R.string.app_name),
-						"deleted player " + player);
+						"deleted player [" + player + "]");
 			}
 		}
 	}
@@ -98,19 +98,22 @@ public class DataManagerImpl implements DataManager {
 		if (match.getPlayers().size() > 0) {
 			for (Player player : match.getPlayers()) {
 				if (!player.isPersistent()) {
+					Log.i(context.getResources().getString(R.string.app_name),
+							"storing player [" + player.getName() + "]");
 					Player dbPlayer = playerDao.find(player.getName());
 					if (dbPlayer == null) {
+						Log.i(context.getResources().getString(R.string.app_name),
+								"added new player [" + player.getName() + "]");
 						playerDao.save(player);
 					} else {
+						Log.i(context.getResources().getString(R.string.app_name),
+								"player already exists [" + player.getName() + "]");
 						player = dbPlayer;
 					}
 				}
 
-				MatchPlayerKey key = new MatchPlayerKey(match.getId(),
-						player.getId());
-				if (!matchPlayerDao.exists(key)) {
-					matchPlayerDao.save(key);
-				}
+				matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
+						.getId()));
 			}
 		}
 	}
@@ -127,6 +130,9 @@ public class DataManagerImpl implements DataManager {
 							player.getId()));
 				}
 				matchDao.delete(match);
+
+				Log.i(context.getResources().getString(R.string.app_name),
+						"deleted match [" + match + "]");
 			}
 			db.setTransactionSuccessful();
 			result = true;
