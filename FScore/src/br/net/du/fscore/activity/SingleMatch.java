@@ -47,8 +47,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	private ListView playerList;
 	private ArrayAdapter<Player> playerAdapter;
 
-	private String lastClickedName = "";
 	private Player selectedPlayer;
+	private Round selectedRound;
 
 	private TabHost tabHost;
 
@@ -89,27 +89,60 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle(lastClickedName);
+		if (view == playerList) {
+			menu.setHeaderTitle(selectedPlayer.toString());
+			MenuItem delete = menu.add(0, 0, 0, "Delete");
+			delete.setOnMenuItemClickListener(playerDeleteClickListener());
+		} else if (view == roundList) {
+			menu.setHeaderTitle(selectedRound.toString());
+			MenuItem delete = menu.add(0, 0, 0, "Delete");
+			delete.setOnMenuItemClickListener(roundDeleteClickListener());
+		}
+	}
 
-		MenuItem delete = menu.add(0, 0, 0, "Delete");
-
-		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+	private OnMenuItemClickListener roundDeleteClickListener() {
+		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// delete
-				new AlertDialog.Builder(SingleMatch.this).setTitle("Delete")
+				new AlertDialog.Builder(SingleMatch.this)
+						.setTitle("Delete " + selectedRound)
 						.setMessage("Are you sure?")
 						.setPositiveButton("Yes", new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								Toast.makeText(
-										SingleMatch.this,
-										"Deleting " + selectedPlayer.getName()
-												+ "...", Toast.LENGTH_SHORT)
-										.show();
+								Toast.makeText(SingleMatch.this,
+										"Deleting " + selectedRound + "...",
+										Toast.LENGTH_SHORT).show();
 
-								// it's not necessary to reload the full list
+								match.getRounds().remove(selectedRound);
+								dataManager.saveMatch(match);
+								roundAdapter.notifyDataSetChanged();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		};
+	}
+
+	private OnMenuItemClickListener playerDeleteClickListener() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(SingleMatch.this)
+						.setTitle("Delete" + selectedPlayer)
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(SingleMatch.this,
+										"Deleting " + selectedPlayer + "...",
+										Toast.LENGTH_SHORT).show();
+
 								match.getPlayers().remove(selectedPlayer);
 								dataManager.saveMatch(match);
 								playerAdapter.notifyDataSetChanged();
@@ -118,7 +151,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 				return true;
 			}
-		});
+		};
 	}
 
 	@Override
@@ -135,6 +168,19 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
 		roundList.setAdapter(roundAdapter);
+
+		roundList.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for editing/deleting
+				selectedRound = (Round) roundAdapter.getItem(position);
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(roundList);
 	}
 
 	private void loadPlayersList() {
@@ -148,12 +194,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
-				// for context menu title
-				lastClickedName = match.getPlayers().get(position).getName();
-
 				// for editing/deleting
 				selectedPlayer = (Player) playerAdapter.getItem(position);
-
 				// won't consume the action
 				return false;
 			}
@@ -179,7 +221,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		addRound.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// TODO: start NewRound activity
+				match.addRound(new Round());
+				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+					roundAdapter.notifyDataSetChanged();
+				}
 				return false;
 			}
 		});
@@ -233,6 +278,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
 			playerAdapter.notifyDataSetChanged();
 		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
+			roundAdapter.notifyDataSetChanged();
 		}
 	}
 }
