@@ -69,8 +69,8 @@ public class Match implements Serializable, Comparable<Match> {
 		this.id = id;
 	}
 
-	public String toString() {
-		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
+	public boolean isPersistent() {
+		return this.getId() != 0;
 	}
 
 	@Override
@@ -96,7 +96,8 @@ public class Match implements Serializable, Comparable<Match> {
 		return hash;
 	}
 
-	public boolean isPersistent() {
-		return this.getId() != 0;
+	public String toString() {
+		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
 	}
+
 }
