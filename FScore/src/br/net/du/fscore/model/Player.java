@@ -28,6 +28,10 @@ public class Player implements Serializable, Comparable<Player> {
 		this.id = id;
 	}
 
+	public boolean isPersistent() {
+		return this.getId() != 0;
+	}
+
 	@Override
 	public int compareTo(Player other) {
 		return this.name.compareTo(other.getName());
@@ -42,10 +46,6 @@ public class Player implements Serializable, Comparable<Player> {
 		return this.compareTo((Player) other) == 0;
 	}
 
-	public String toString() {
-		return name;
-	}
-
 	@Override
 	public int hashCode() {
 		int hash = 1;
@@ -53,7 +53,7 @@ public class Player implements Serializable, Comparable<Player> {
 		return hash;
 	}
 
-	public boolean isPersistent() {
-		return this.getId() != 0;
+	public String toString() {
+		return name;
 	}
 }
