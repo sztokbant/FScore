@@ -1,6 +1,7 @@
 package br.net.du.fscore.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Round implements Serializable, Comparable<Round> {
@@ -12,6 +13,7 @@ public class Round implements Serializable, Comparable<Round> {
 	List<PlayerRound> data = null;
 
 	public Round() {
+		data = new ArrayList<PlayerRound>();
 	}
 
 	public int getNumberOfCards() {
