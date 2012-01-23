@@ -84,8 +84,16 @@ public class Match implements Serializable, Comparable<Match> {
 			return false;
 		}
 
-		return this.name == ((Match) other).getName()
-				&& this.date == ((Match) other).getDate();
+		Match otherMatch = (Match) other;
+
+		if (!this.name.equals(otherMatch.getName())
+				|| this.date != otherMatch.getDate()
+				|| !this.players.equals(otherMatch.getPlayers())
+				|| !this.rounds.equals(otherMatch.getRounds())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

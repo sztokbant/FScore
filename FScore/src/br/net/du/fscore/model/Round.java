@@ -60,8 +60,9 @@ public class Round implements Serializable, Comparable<Round> {
 			return false;
 		}
 
-		if (this.numberOfCards == ((Round) other).getNumberOfCards()
-				&& this.data.equals(((Round) other).getData())) {
+		Round otherRound = (Round) other;
+		if (this.numberOfCards == otherRound.getNumberOfCards()
+				&& this.data.equals(otherRound.getData())) {
 			return true;
 		}
 
