@@ -3,6 +3,8 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 
 public class Player implements Serializable, Comparable<Player> {
+	private static final long serialVersionUID = 1L;
+
 	private long id;
 	private String name;
 
@@ -26,6 +28,10 @@ public class Player implements Serializable, Comparable<Player> {
 		this.id = id;
 	}
 
+	public boolean isPersistent() {
+		return this.getId() != 0;
+	}
+
 	@Override
 	public int compareTo(Player other) {
 		return this.name.compareTo(other.getName());
@@ -40,14 +46,14 @@ public class Player implements Serializable, Comparable<Player> {
 		return this.compareTo((Player) other) == 0;
 	}
 
-	public String toString() {
-		return name;
-	}
-
 	@Override
 	public int hashCode() {
 		int hash = 1;
 		hash = hash * 31 + (name == null ? 0 : name.hashCode());
 		return hash;
+	}
+
+	public String toString() {
+		return name;
 	}
 }

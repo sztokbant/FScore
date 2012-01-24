@@ -69,8 +69,8 @@ public class Match implements Serializable, Comparable<Match> {
 		this.id = id;
 	}
 
-	public String toString() {
-		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
+	public boolean isPersistent() {
+		return this.getId() != 0;
 	}
 
 	@Override
@@ -84,8 +84,16 @@ public class Match implements Serializable, Comparable<Match> {
 			return false;
 		}
 
-		return this.name == ((Match) other).getName()
-				&& this.date == ((Match) other).getDate();
+		Match otherMatch = (Match) other;
+
+		if (!this.name.equals(otherMatch.getName())
+				|| this.date != otherMatch.getDate()
+				|| !this.players.equals(otherMatch.getPlayers())
+				|| !this.rounds.equals(otherMatch.getRounds())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -95,4 +103,9 @@ public class Match implements Serializable, Comparable<Match> {
 		hash = hash * 31 + (date == null ? 0 : date.hashCode());
 		return hash;
 	}
+
+	public String toString() {
+		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
+	}
+
 }

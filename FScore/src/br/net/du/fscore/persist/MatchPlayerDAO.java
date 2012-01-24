@@ -60,7 +60,13 @@ public class MatchPlayerDAO {
 				null, // order by
 				null);
 
-		return cursor.moveToFirst();
+		boolean exists = cursor.moveToFirst();
+
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+
+		return exists;
 	}
 
 	public boolean isOrphan(Player player) {
@@ -70,14 +76,22 @@ public class MatchPlayerDAO {
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, "1"); // limit
 
-		return !cursor.moveToFirst();
+		boolean isOrphan = !cursor.moveToFirst();
+
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+
+		return isOrphan;
 	}
 
-	public long save(MatchPlayerKey key) {
-		insertStatement.clearBindings();
-		insertStatement.bindLong(1, key.getMatchId());
-		insertStatement.bindLong(2, key.getPlayerId());
-		return insertStatement.executeInsert();
+	public void save(MatchPlayerKey key) {
+		if (!exists(key)) {
+			insertStatement.clearBindings();
+			insertStatement.bindLong(1, key.getMatchId());
+			insertStatement.bindLong(2, key.getPlayerId());
+			insertStatement.executeInsert();
+		}
 	}
 
 	public void delete(MatchPlayerKey key) {
