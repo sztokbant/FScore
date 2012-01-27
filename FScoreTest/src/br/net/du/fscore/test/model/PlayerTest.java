@@ -5,20 +5,33 @@ import br.net.du.fscore.model.Player;
 
 public class PlayerTest extends AndroidTestCase {
 
-	public void testEqualNamesImplyEquivalence() {
+	private Player player1;
+	private Player player2;
+
+	public void setUp() {
 		String name = "Player Name";
-		Player player1 = new Player();
-		player1.setName(name);
-		Player player2 = new Player();
-		player2.setName(name);
+		player1 = new Player(name);
+		player2 = new Player(name);
+	}
+
+	public void testEquals() {
 		assertEquals(player1, player2);
 	}
 
+	public void testHashCode() {
+		assertEquals(player1.hashCode(), player2.hashCode());
+	}
+
+	public void testEqualsForSameObject() {
+		assertEquals(player1, player1);
+	}
+
+	public void testHashCodeForSameObject() {
+		assertEquals(player1.hashCode(), player1.hashCode());
+	}
+
 	public void testDifferentNamesImplyDifference() {
-		Player player1 = new Player();
-		player1.setName("Player 1");
-		Player player2 = new Player();
-		player2.setName("Player 2");
+		player2.setName("Other Player");
 		assertFalse(player1.equals(player2));
 	}
 }

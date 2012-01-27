@@ -15,6 +15,10 @@ public class PlayerRound implements Comparable<PlayerRound> {
 	}
 
 	public void setPlayer(Player player) {
+		if (player == null) {
+			throw new NullPointerException("Player cannot be null");
+		}
+
 		this.player = player;
 	}
 
@@ -36,12 +40,7 @@ public class PlayerRound implements Comparable<PlayerRound> {
 
 	@Override
 	public int compareTo(PlayerRound other) {
-		if (this.equals(other)) {
-			return 0;
-		}
-
-		// TODO: implement this false return properly
-		return -1;
+		return this.player.compareTo(other.getPlayer());
 	}
 
 	@Override
@@ -62,12 +61,15 @@ public class PlayerRound implements Comparable<PlayerRound> {
 
 	@Override
 	public int hashCode() {
-		// TODO implement it properly
-		return 0;
+		int hash = 1;
+		hash = hash * 31 + bet;
+		hash = hash * 31 + wins;
+		hash = hash * 31 + (player == null ? 0 : player.hashCode());
+		return hash;
 	}
 
 	public String toString() {
-		return "a PlayerRound";
+		return "PlayerRound: " + player.toString() + " [" + bet + ", "
+				+ wins + "]";
 	}
-
 }

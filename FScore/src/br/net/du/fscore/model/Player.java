@@ -12,6 +12,10 @@ public class Player implements Serializable, Comparable<Player> {
 		name = "";
 	}
 
+	public Player(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -43,7 +47,7 @@ public class Player implements Serializable, Comparable<Player> {
 			return false;
 		}
 
-		return this.compareTo((Player) other) == 0;
+		return this.name.equals(((Player) other).getName());
 	}
 
 	@Override
