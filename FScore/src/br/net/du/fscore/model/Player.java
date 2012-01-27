@@ -8,12 +8,8 @@ public class Player implements Serializable, Comparable<Player> {
 	private long id;
 	private String name;
 
-	public Player() {
-		name = "";
-	}
-
 	public Player(String name) {
-		this.name = name;
+		this.setName(name);
 	}
 
 	public String getName() {
@@ -21,6 +17,10 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	public void setName(String name) {
+		if (name == null) {
+			throw new NullPointerException("Name cannot be null");
+		}
+
 		this.name = name;
 	}
 

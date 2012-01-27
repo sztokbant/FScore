@@ -117,9 +117,8 @@ public class PlayerDAO implements Dao<Player> {
 		Player player = null;
 
 		if (cursor != null) {
-			player = new Player();
+			player = new Player(cursor.getString(1));
 			player.setId(cursor.getLong(0));
-			player.setName(cursor.getString(1));
 		}
 
 		return player;
