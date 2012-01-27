@@ -10,11 +10,13 @@ import br.net.du.fscore.persist.DataManagerImpl;
 public class PlayerTableTest extends TestCase {
 
 	protected void setUp() throws Exception {
+          /* WRONG! check this: http://stackoverflow.com/questions/2095695/android-unit-tests-requiring-context
 		super.setUp();
 		Context context = new Activity();
 		SQLiteOpenHelper openHelper = new DataManagerImpl(context).new OpenHelper(
 				context, true);
 		SQLiteDatabase db = openHelper.getWritableDatabase();
+          */
 	}
 
 	public void testOnCreate() {
