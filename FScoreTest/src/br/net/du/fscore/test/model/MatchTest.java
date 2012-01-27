@@ -22,7 +22,10 @@ public class MatchTest extends AndroidTestCase {
 	private Match match1;
 	private Match match2;
 
-	public void setUp() {
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
 		String name = "Player Name";
 		player1 = new Player(name);
 		player2 = new Player(name);

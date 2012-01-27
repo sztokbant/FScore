@@ -8,7 +8,10 @@ public class PlayerTest extends AndroidTestCase {
 	private Player player1;
 	private Player player2;
 
-	public void setUp() {
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
 		String name = "Player Name";
 		player1 = new Player(name);
 		player2 = new Player(name);

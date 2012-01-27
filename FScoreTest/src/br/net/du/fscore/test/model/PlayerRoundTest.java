@@ -8,7 +8,10 @@ public class PlayerRoundTest extends TestCase {
 	private PlayerRound playerRound1;
 	private PlayerRound playerRound2;
 
-	public void setUp() {
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
 		playerRound1 = new PlayerRound(new Player("Player One"));
 		playerRound1.setBet(7);
 		playerRound1.setWins(4);

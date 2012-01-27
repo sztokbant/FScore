@@ -13,7 +13,10 @@ public class RoundTest extends AndroidTestCase {
 	private PlayerRound playerRound1;
 	private PlayerRound playerRound2;
 
-	public void setUp() {
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
 		round1 = new Round(7);
 		round2 = new Round(7);
 
