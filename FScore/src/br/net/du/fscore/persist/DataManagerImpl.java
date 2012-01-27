@@ -102,12 +102,14 @@ public class DataManagerImpl implements DataManager {
 							"storing player [" + player.getName() + "]");
 					Player dbPlayer = playerDao.find(player.getName());
 					if (dbPlayer == null) {
-						Log.i(context.getResources().getString(R.string.app_name),
-								"added new player [" + player.getName() + "]");
+						Log.i(context.getResources().getString(
+								R.string.app_name), "added new player ["
+								+ player.getName() + "]");
 						playerDao.save(player);
 					} else {
-						Log.i(context.getResources().getString(R.string.app_name),
-								"player already exists [" + player.getName() + "]");
+						Log.i(context.getResources().getString(
+								R.string.app_name), "player already exists ["
+								+ player.getName() + "]");
 						player = dbPlayer;
 					}
 				}
@@ -177,7 +179,12 @@ public class DataManagerImpl implements DataManager {
 		private Context context;
 
 		OpenHelper(final Context context) {
-			super(context, DataConstants.DATABASE_NAME, null,
+			this(context, false);
+		}
+
+		public OpenHelper(final Context context, boolean useDebugDatabase) {
+			super(context, useDebugDatabase ? DataConstants.DEBUG_DATABASE_NAME
+					: DataConstants.DATABASE_NAME, null,
 					DataManagerImpl.DATABASE_VERSION);
 			this.context = context;
 		}
