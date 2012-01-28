@@ -1,30 +1,39 @@
 package br.net.du.fscore.test.persist;
 
-import junit.framework.TestCase;
-import android.app.Activity;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.test.AndroidTestCase;
 import br.net.du.fscore.persist.DataManagerImpl;
+import br.net.du.fscore.persist.PlayerTable;
 
-public class PlayerTableTest extends TestCase {
+public class PlayerTableTest extends AndroidTestCase {
 
+	SQLiteDatabase db;
+
+	@Override
 	protected void setUp() throws Exception {
-          /* WRONG! check this: http://stackoverflow.com/questions/2095695/android-unit-tests-requiring-context
 		super.setUp();
-		Context context = new Activity();
-		SQLiteOpenHelper openHelper = new DataManagerImpl(context).new OpenHelper(
-				context, true);
-		SQLiteDatabase db = openHelper.getWritableDatabase();
-          */
+
+		DataManagerImpl dataManager = new DataManagerImpl(getContext());
+		SQLiteOpenHelper openHelper = dataManager.new OpenHelper(getContext(),
+				true);
+		db = openHelper.getWritableDatabase();
+
+		dropTable();
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		dropTable();
+		db.close();
+	}
+
+	private void dropTable() {
+		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
 	}
 
 	public void testOnCreate() {
-		fail("Not yet implemented");
+		PlayerTable.onCreate(db);
+		// TODO test something here...
 	}
-
-	public void testOnUpgrade() {
-		fail("Not yet implemented");
-	}
-
 }
