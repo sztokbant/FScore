@@ -17,10 +17,6 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	public void setName(String name) {
-		if (name == null) {
-			throw new NullPointerException("Name cannot be null");
-		}
-
 		this.name = name;
 	}
 

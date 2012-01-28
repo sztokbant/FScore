@@ -15,10 +15,6 @@ public class PlayerRound implements Comparable<PlayerRound> {
 	}
 
 	public void setPlayer(Player player) {
-		if (player == null) {
-			throw new NullPointerException("Player cannot be null");
-		}
-
 		this.player = player;
 	}
 
@@ -69,7 +65,7 @@ public class PlayerRound implements Comparable<PlayerRound> {
 	}
 
 	public String toString() {
-		return "PlayerRound: " + player.toString() + " [" + bet + ", "
-				+ wins + "]";
+		return "PlayerRound: " + player.toString() + " [" + bet + ", " + wins
+				+ "]";
 	}
 }

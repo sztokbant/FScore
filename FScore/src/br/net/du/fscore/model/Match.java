@@ -107,5 +107,4 @@ public class Match implements Serializable, Comparable<Match> {
 	public String toString() {
 		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
 	}
-
 }
