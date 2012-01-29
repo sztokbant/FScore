@@ -87,6 +87,13 @@ public class MatchTest extends AndroidTestCase {
 		assertFalse(match1.equals(match2));
 	}
 
+	public void testSameDatesDifferentObjectsImplyEquivalence() {
+		Calendar otherCalendar = Calendar.getInstance();
+		otherCalendar.setTimeInMillis(match1.getDate().getTimeInMillis());
+		match2.setDate(otherCalendar);
+		assertEquals(match1, match2);
+	}
+
 	public void testDifferentPlayersImplyDifference() {
 		match2.withPlayer(new Player("Yet Another Player"));
 		assertFalse(match1.equals(match2));
