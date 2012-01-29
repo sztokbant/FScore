@@ -108,8 +108,7 @@ public class MatchList extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// New Match
-			Match match = new Match();
-			match.setName("Match " + Integer.toString(new Random().nextInt()));
+			Match match = new Match("Match " + Integer.toString(new Random().nextInt()));
 			matches.add(match);
 			dataManager.saveMatch(match);
 			adapter.notifyDataSetChanged();
