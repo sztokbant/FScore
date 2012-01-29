@@ -38,13 +38,13 @@ public class PlayerDAO implements Dao<Player> {
 
 	@Override
 	public void update(Player player) {
-//		db.update(PlayerTable.NAME, toContentValues(player), BaseColumns._ID
-//				+ " = ?", new String[] { String.valueOf(player.getId()) });
+		db.update(PlayerTable.NAME, toContentValues(player), BaseColumns._ID
+				+ " = ?", new String[] { String.valueOf(player.getId()) });
 	}
 
 	public void delete(Player player) {
 		if (player.isPersistent()) {
-			db.delete(MatchTable.NAME, BaseColumns._ID + " = ?",
+			db.delete(PlayerTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(player.getId()) });
 		}
 	}

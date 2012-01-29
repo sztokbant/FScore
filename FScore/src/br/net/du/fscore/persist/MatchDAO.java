@@ -41,8 +41,8 @@ public class MatchDAO implements Dao<Match> {
 
 	@Override
 	public void update(Match match) {
-//		db.update(MatchTable.NAME, toContentValues(match), BaseColumns._ID
-//				+ " = ?", new String[] { String.valueOf(match.getId()) });
+		db.update(MatchTable.NAME, toContentValues(match), BaseColumns._ID
+				+ " = ?", new String[] { String.valueOf(match.getId()) });
 	}
 
 	@Override
