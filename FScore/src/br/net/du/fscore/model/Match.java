@@ -12,14 +12,18 @@ public class Match implements Serializable, Comparable<Match> {
 
 	private static final long serialVersionUID = 1L;
 
-	private String name;
+	private String name = "";
 	private Calendar date;
 
 	List<Player> players = new ArrayList<Player>();
 	List<Round> rounds = new ArrayList<Round>();
 
+	public Match(String name) {
+		this.name = name;
+		date = Calendar.getInstance();
+	}
+
 	public Match() {
-		name = "";
 		date = Calendar.getInstance();
 	}
 
@@ -87,7 +91,7 @@ public class Match implements Serializable, Comparable<Match> {
 		Match otherMatch = (Match) other;
 
 		if (!this.name.equals(otherMatch.getName())
-				|| this.date != otherMatch.getDate()
+				|| !this.date.equals(otherMatch.getDate())
 				|| !this.players.equals(otherMatch.getPlayers())
 				|| !this.rounds.equals(otherMatch.getRounds())) {
 			return false;
