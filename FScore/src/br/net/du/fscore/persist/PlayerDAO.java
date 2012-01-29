@@ -46,6 +46,7 @@ public class PlayerDAO implements Dao<Player> {
 		if (player.isPersistent()) {
 			db.delete(PlayerTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(player.getId()) });
+			player.setId(0);
 		}
 	}
 

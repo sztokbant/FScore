@@ -50,6 +50,7 @@ public class MatchDAO implements Dao<Match> {
 		if (match.isPersistent()) {
 			db.delete(MatchTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(match.getId()) });
+			match.setId(0);
 		}
 	}
 
