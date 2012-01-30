@@ -56,6 +56,17 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testDelete() {
-		// TODO
+		MatchPlayerKey key = new MatchPlayerKey(7, 11);
+		dao.save(key);
+		dao.delete(key);
+
+		Cursor cursor = db.query(MatchPlayerTable.NAME, null, null, null, null,
+				null, null);
+
+		// asserts player was deleted properly
+		assertEquals(0, cursor.getCount());
+		assertFalse(cursor.moveToNext());
+
+		cursor.close();
 	}
 }

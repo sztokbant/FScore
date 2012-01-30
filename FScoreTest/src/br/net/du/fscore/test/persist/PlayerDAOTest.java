@@ -54,7 +54,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, null);
 
-		// asserts Player was saved properly
+		// asserts player was saved properly
 		assertEquals(1, cursor.getCount());
 		assertTrue(cursor.moveToNext());
 		assertEquals(1, cursor.getLong(0));
@@ -93,7 +93,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, null);
 
-		// asserts player was updated properly
+		// asserts player was deleted properly
 		assertEquals(0, cursor.getCount());
 		assertFalse(cursor.moveToNext());
 		assertEquals(0, player.getId());

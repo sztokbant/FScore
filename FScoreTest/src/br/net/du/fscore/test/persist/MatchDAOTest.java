@@ -54,7 +54,7 @@ public class MatchDAOTest extends AndroidTestCase {
 				new String[] { String.valueOf(match.getId()) }, null, null,
 				null, null);
 
-		// asserts Player was saved properly
+		// asserts match was saved properly
 		assertEquals(1, cursor.getCount());
 		assertTrue(cursor.moveToNext());
 		assertEquals(1, cursor.getLong(0));
@@ -75,7 +75,7 @@ public class MatchDAOTest extends AndroidTestCase {
 				new String[] { String.valueOf(match.getId()) }, null, null,
 				null, null);
 
-		// asserts player was updated properly
+		// asserts match was updated properly
 		assertEquals(1, cursor.getCount());
 		assertTrue(cursor.moveToNext());
 		assertEquals(1, cursor.getLong(0));
@@ -95,7 +95,7 @@ public class MatchDAOTest extends AndroidTestCase {
 				new String[] { String.valueOf(match.getId()) }, null, null,
 				null, null);
 
-		// asserts player was updated properly
+		// asserts match was deleted properly
 		assertEquals(0, cursor.getCount());
 		assertFalse(cursor.moveToNext());
 		assertEquals(0, match.getId());
