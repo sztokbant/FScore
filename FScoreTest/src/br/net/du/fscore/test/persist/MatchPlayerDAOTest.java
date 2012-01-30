@@ -1,5 +1,8 @@
 package br.net.du.fscore.test.persist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -9,6 +12,8 @@ import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerDAO;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.MatchPlayerTable;
+import br.net.du.fscore.persist.PlayerDAO;
+import br.net.du.fscore.persist.PlayerTable;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
@@ -87,6 +92,23 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testGetPlayers() {
-		// TODO
+		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
+		PlayerTable.onCreate(db);
+
+		List<Player> players = new ArrayList<Player>();
+		players.add(new Player("Dummy 1"));
+		players.add(new Player("Dummy 2"));
+		players.add(new Player("Dummy 3"));
+
+		PlayerDAO playerDao = new PlayerDAO(db);
+		for (Player p : players) {
+			playerDao.save(p);
+			key.setPlayerId(p.getId());
+			dao.save(key);
+		}
+
+		assertEquals(players, dao.getPlayers(key.getMatchId()));
+
+		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
 	}
 }
