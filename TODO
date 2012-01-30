@@ -1,7 +1,7 @@
 TECHNICAL DEBTS
 
 Bugs:
-* Deleting a Player named "??" sometimes deletes the match
+* Test suite is complaining about db.close() not being called
 
 Code smells:
 * MatchList.onCreateContextMenu()
