@@ -62,6 +62,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
+		dataManager = new DataManagerImpl(this);
+
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);
 
@@ -155,15 +157,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (dataManager != null) {
-			dataManager.closeDb();
-		}
+		dataManager.closeDb();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		dataManager = new DataManagerImpl(this);
+		dataManager.openDb();
 	}
 
 	private void loadRoundsList() {
@@ -251,15 +251,20 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		dataManager.openDb();
+
 		switch (requestCode) {
 		case (CONTACT_SELECTED_RESULT_ID):
 			if (resultCode == Activity.RESULT_OK) {
 				Uri contactData = data.getData();
-				Cursor c = managedQuery(contactData, null, null, null, null);
-				if (c.moveToFirst()) {
-					int nameIndex = c
+
+				Cursor cursor = managedQuery(contactData, null, null, null,
+						null);
+
+				if (cursor.moveToFirst()) {
+					int nameIndex = cursor
 							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
-					String name = c.getString(nameIndex);
+					String name = cursor.getString(nameIndex);
 
 					// sanity check
 					if (name == null) {
@@ -272,6 +277,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
 						playerAdapter.notifyDataSetChanged();
 					}
+				}
+
+				if (!cursor.isClosed()) {
+					cursor.close();
 				}
 			}
 		}

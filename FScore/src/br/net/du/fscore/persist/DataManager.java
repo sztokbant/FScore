@@ -7,6 +7,10 @@ import br.net.du.fscore.model.Player;
 
 public interface DataManager {
 
+	void closeDb();
+
+	void openDb();
+
 	// Match operations
 
 	public Match getMatch(long matchId);
@@ -15,7 +19,7 @@ public interface DataManager {
 
 	public long saveMatch(Match match);
 
-	public boolean deleteMatch(long matchId);
+	public boolean deleteMatch(Match match);
 
 	// Player operations
 
@@ -26,6 +30,4 @@ public interface DataManager {
 	public long savePlayer(Player player);
 
 	public void deletePlayer(Player player);
-
-	void closeDb();
 }

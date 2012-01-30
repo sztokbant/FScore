@@ -39,6 +39,8 @@ public class MatchList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
 
+		dataManager = new DataManagerImpl(this);
+
 		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
 				android.R.layout.simple_list_item_1, matches);
@@ -83,18 +85,16 @@ public class MatchList extends Activity {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		dataManager = new DataManagerImpl(this);
-		refreshMatchList();
+	protected void onPause() {
+		super.onPause();
+		dataManager.closeDb();
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		if (dataManager != null) {
-			dataManager.closeDb();
-		}
+	protected void onResume() {
+		super.onResume();
+		dataManager.openDb();
+		refreshMatchList();
 	}
 
 	private void refreshMatchList() {
@@ -138,7 +138,7 @@ public class MatchList extends Activity {
 												+ "...", Toast.LENGTH_SHORT)
 										.show();
 
-								dataManager.deleteMatch(selectedMatch.getId());
+								dataManager.deleteMatch(selectedMatch);
 
 								// it's not necessary to reload the full list
 								matches.remove(selectedMatch);

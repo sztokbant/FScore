@@ -27,12 +27,31 @@ public class DataManagerImpl implements DataManager {
 	public DataManagerImpl(Context context) {
 		this.context = context;
 
-		SQLiteOpenHelper openHelper = new OpenHelper(this.context);
-		db = openHelper.getWritableDatabase();
+		db = new OpenHelper(this.context).getWritableDatabase();
 
 		playerDao = new PlayerDAO(db);
 		matchDao = new MatchDAO(db);
 		matchPlayerDao = new MatchPlayerDAO(db);
+	}
+
+	@Override
+	public void closeDb() {
+		if (db != null && db.isOpen()) {
+			db.close();
+		}
+	}
+
+	@Override
+	public void openDb() {
+		if (!db.isOpen()) {
+			db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null,
+					SQLiteDatabase.OPEN_READWRITE);
+			// since we pass db into DAO, have to recreate DAO if db is
+			// re-opened
+			playerDao = new PlayerDAO(db);
+			matchDao = new MatchDAO(db);
+			matchPlayerDao = new MatchPlayerDAO(db);
+		}
 	}
 
 	@Override
@@ -121,17 +140,21 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
-	public boolean deleteMatch(long matchId) {
+	public boolean deleteMatch(Match match) {
 		boolean result = false;
 		try {
 			db.beginTransaction();
-			Match match = getMatch(matchId);
 			if (match != null) {
-				for (Player player : match.getPlayers()) {
-					matchPlayerDao.delete(new MatchPlayerKey(match.getId(),
-							player.getId()));
-				}
+				long matchId = match.getId();
+
 				matchDao.delete(match);
+				for (Player p : match.getPlayers()) {
+					matchPlayerDao
+							.delete(new MatchPlayerKey(matchId, p.getId()));
+					if (matchPlayerDao.isOrphan(p)) {
+						this.deletePlayer(p);
+					}
+				}
 
 				Log.i(context.getResources().getString(R.string.app_name),
 						"deleted match [" + match + "]");
@@ -166,13 +189,6 @@ public class DataManagerImpl implements DataManager {
 	@Override
 	public void deletePlayer(Player player) {
 		playerDao.delete(player);
-	}
-
-	@Override
-	public void closeDb() {
-		if (db.isOpen()) {
-			db.close();
-		}
 	}
 
 	public class OpenHelper extends SQLiteOpenHelper {
