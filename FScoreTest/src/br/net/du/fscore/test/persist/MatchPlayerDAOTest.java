@@ -12,6 +12,7 @@ import br.net.du.fscore.persist.MatchPlayerTable;
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
 	MatchPlayerDAO dao;
+	MatchPlayerKey key;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -25,6 +26,7 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 		MatchPlayerTable.onCreate(db);
 
 		dao = new MatchPlayerDAO(db);
+		key = new MatchPlayerKey(7, 11);
 	}
 
 	@Override
@@ -41,7 +43,6 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testSave() {
-		MatchPlayerKey key = new MatchPlayerKey(7, 11);
 		dao.save(key);
 
 		Cursor cursor = db.query(MatchPlayerTable.NAME, null, null, null, null,
@@ -56,7 +57,6 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testDelete() {
-		MatchPlayerKey key = new MatchPlayerKey(7, 11);
 		dao.save(key);
 		dao.delete(key);
 
@@ -68,5 +68,12 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 		assertFalse(cursor.moveToNext());
 
 		cursor.close();
+	}
+
+	public void testExists() {
+		dao.save(key);
+		assertTrue(dao.exists(key));
+		dao.delete(key);
+		assertFalse(dao.exists(key));
 	}
 }
