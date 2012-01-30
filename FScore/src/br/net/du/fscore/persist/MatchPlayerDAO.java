@@ -22,30 +22,24 @@ public class MatchPlayerDAO {
 		insertStatement = db.compileStatement(INSERT);
 	}
 
-	public List<Player> getPlayers(long matchId) {
-		List<Player> myList = new ArrayList<Player>();
-
-		Cursor cursor = db.query(MatchPlayerTable.NAME,
-				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
-				new String[] { String.valueOf(matchId) }, // values
-				null, // group by
-				null, // having
-				MatchPlayerColumns.PLAYER_ID, // order by
-				null);
-
-		if (cursor.moveToFirst()) {
-			PlayerDAO playerDAO = new PlayerDAO(db);
-			do {
-				Player player = playerDAO.get(cursor.getLong(1));
-				myList.add(player);
-			} while (cursor.moveToNext());
+	public void save(MatchPlayerKey key) {
+		if (!exists(key)) {
+			insertStatement.clearBindings();
+			insertStatement.bindLong(1, key.getMatchId());
+			insertStatement.bindLong(2, key.getPlayerId());
+			insertStatement.executeInsert();
 		}
+	}
 
-		if (!cursor.isClosed()) {
-			cursor.close();
+	public void delete(MatchPlayerKey key) {
+		if (key != null) {
+			db.delete(
+					MatchPlayerTable.NAME,
+					MatchPlayerColumns.MATCH_ID + " = ? AND "
+							+ MatchPlayerColumns.PLAYER_ID + " = ?",
+					new String[] { String.valueOf(key.getMatchId()),
+							String.valueOf(key.getPlayerId()) });
 		}
-
-		return myList;
 	}
 
 	public boolean exists(MatchPlayerKey key) {
@@ -85,23 +79,29 @@ public class MatchPlayerDAO {
 		return isOrphan;
 	}
 
-	public void save(MatchPlayerKey key) {
-		if (!exists(key)) {
-			insertStatement.clearBindings();
-			insertStatement.bindLong(1, key.getMatchId());
-			insertStatement.bindLong(2, key.getPlayerId());
-			insertStatement.executeInsert();
-		}
-	}
+	public List<Player> getPlayers(long matchId) {
+		List<Player> myList = new ArrayList<Player>();
 
-	public void delete(MatchPlayerKey key) {
-		if (key != null) {
-			db.delete(
-					MatchPlayerTable.NAME,
-					MatchPlayerColumns.MATCH_ID + " = ? AND "
-							+ MatchPlayerColumns.PLAYER_ID + " = ?",
-					new String[] { String.valueOf(key.getMatchId()),
-							String.valueOf(key.getPlayerId()) });
+		Cursor cursor = db.query(MatchPlayerTable.NAME,
+				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
+				new String[] { String.valueOf(matchId) }, // values
+				null, // group by
+				null, // having
+				MatchPlayerColumns.PLAYER_ID, // order by
+				null);
+
+		if (cursor.moveToFirst()) {
+			PlayerDAO playerDAO = new PlayerDAO(db);
+			do {
+				Player player = playerDAO.get(cursor.getLong(1));
+				myList.add(player);
+			} while (cursor.moveToNext());
 		}
+
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+
+		return myList;
 	}
 }
