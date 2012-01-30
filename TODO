@@ -1,8 +1,5 @@
 TECHNICAL DEBTS
 
-Bugs:
-* Test suite is complaining about db.close() not being called
-
 Code smells:
 * MatchList.onCreateContextMenu()
 * MatchList: Convert MenuItem's "Magic Numbers" into enums
@@ -12,7 +9,3 @@ Code smells:
 
 Interface:
 * Order of players right after adding a new player differs from right after loading a match
-
-Model:
-* Implement methods equals() and hashCode() in Round
-* Implement methods equals() and hashCode() in PlayerRound

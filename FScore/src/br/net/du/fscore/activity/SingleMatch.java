@@ -60,8 +60,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlematch);
 
-		dataManager = new DataManagerImpl(this);
-
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
 		tabHost = getTabHost();
@@ -155,11 +153,17 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+	protected void onPause() {
+		super.onPause();
 		if (dataManager != null) {
 			dataManager.closeDb();
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		dataManager = new DataManagerImpl(this);
 	}
 
 	private void loadRoundsList() {

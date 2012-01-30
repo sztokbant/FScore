@@ -39,8 +39,6 @@ public class MatchList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
 
-		dataManager = new DataManagerImpl(this);
-
 		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
 				android.R.layout.simple_list_item_1, matches);
@@ -87,12 +85,13 @@ public class MatchList extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		dataManager = new DataManagerImpl(this);
 		refreshMatchList();
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+	protected void onPause() {
+		super.onPause();
 		if (dataManager != null) {
 			dataManager.closeDb();
 		}
@@ -108,7 +107,8 @@ public class MatchList extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// New Match
-			Match match = new Match("Match " + Integer.toString(new Random().nextInt()));
+			Match match = new Match("Match "
+					+ Integer.toString(new Random().nextInt()));
 			matches.add(match);
 			dataManager.saveMatch(match);
 			adapter.notifyDataSetChanged();
