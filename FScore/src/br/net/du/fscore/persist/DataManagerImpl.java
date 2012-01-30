@@ -26,12 +26,7 @@ public class DataManagerImpl implements DataManager {
 
 	public DataManagerImpl(Context context) {
 		this.context = context;
-
-		db = new OpenHelper(this.context).getWritableDatabase();
-
-		playerDao = new PlayerDAO(db);
-		matchDao = new MatchDAO(db);
-		matchPlayerDao = new MatchPlayerDAO(db);
+		openDb();
 	}
 
 	@Override
@@ -43,9 +38,9 @@ public class DataManagerImpl implements DataManager {
 
 	@Override
 	public void openDb() {
-		if (!db.isOpen()) {
-			db = SQLiteDatabase.openDatabase(DataConstants.DATABASE_PATH, null,
-					SQLiteDatabase.OPEN_READWRITE);
+		if (db == null || !db.isOpen()) {
+			db = new OpenHelper(this.context).getWritableDatabase();
+
 			// since we pass db into DAO, have to recreate DAO if db is
 			// re-opened
 			playerDao = new PlayerDAO(db);
