@@ -1,5 +1,6 @@
 package br.net.du.fscore.test.persist;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.database.Cursor;
@@ -67,6 +68,11 @@ public class MatchDAOTest extends AndroidTestCase {
 
 	public void testSaveExisting() {
 		match.setName("Name Match");
+
+		Calendar date = Calendar.getInstance();
+		date.setTimeInMillis(date.getTimeInMillis() + 1000);
+		match.setDate(date);
+
 		dao.save(match);
 
 		Cursor cursor = db.query(MatchTable.NAME, new String[] {
