@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerDAO;
 import br.net.du.fscore.persist.MatchPlayerKey;
@@ -16,7 +17,7 @@ import br.net.du.fscore.persist.PlayerTable;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
-	DataManagerImpl dataManager;
+	DataManager dataManager;
 
 	MatchPlayerDAO dao;
 	MatchPlayerKey key;

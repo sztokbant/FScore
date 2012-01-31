@@ -3,6 +3,7 @@ package br.net.du.fscore.test.persist;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.PlayerTable;
 import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
@@ -10,7 +11,7 @@ import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 public class PlayerTableTest extends AndroidTestCase {
 
 	SQLiteDatabase db;
-	DataManagerImpl dataManager;
+	DataManager dataManager;
 
 	@Override
 	protected void setUp() throws Exception {

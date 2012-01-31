@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
+import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchDAO;
 import br.net.du.fscore.persist.MatchTable;
@@ -15,7 +16,7 @@ import br.net.du.fscore.persist.MatchTable.MatchColumns;
 
 public class MatchDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
-	DataManagerImpl dataManager;
+	DataManager dataManager;
 
 	MatchDAO dao;
 	Match match;

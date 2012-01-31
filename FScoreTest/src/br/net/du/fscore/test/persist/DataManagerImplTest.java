@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerTable;
 import br.net.du.fscore.persist.MatchTable;
@@ -11,7 +12,7 @@ import br.net.du.fscore.persist.PlayerTable;
 
 public class DataManagerImplTest extends AndroidTestCase {
 	SQLiteDatabase db;
-	DataManagerImpl dataManager;
+	DataManager dataManager;
 
 	protected void setUp() throws Exception {
 		super.setUp();
