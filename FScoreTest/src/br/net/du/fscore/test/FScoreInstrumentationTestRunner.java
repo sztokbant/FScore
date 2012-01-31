@@ -7,6 +7,7 @@ import br.net.du.fscore.test.model.MatchTest;
 import br.net.du.fscore.test.model.PlayerRoundTest;
 import br.net.du.fscore.test.model.PlayerTest;
 import br.net.du.fscore.test.model.RoundTest;
+import br.net.du.fscore.test.persist.DataManagerImplTest;
 import br.net.du.fscore.test.persist.MatchDAOTest;
 import br.net.du.fscore.test.persist.MatchPlayerDAOTest;
 import br.net.du.fscore.test.persist.MatchPlayerTableTest;
@@ -36,6 +37,8 @@ public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
 		suite.addTestSuite(PlayerDAOTest.class);
 		suite.addTestSuite(MatchDAOTest.class);
 		suite.addTestSuite(MatchPlayerDAOTest.class);
+
+		suite.addTestSuite(DataManagerImplTest.class);
 
 		return suite;
 	}

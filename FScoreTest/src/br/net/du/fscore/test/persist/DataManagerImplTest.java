@@ -50,7 +50,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 	}
 
 	public void testGetMatch() {
-
+		fail("Not yet implemented");
 	}
 
 	public void testGetAllMatches() {
