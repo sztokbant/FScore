@@ -19,11 +19,11 @@ public class DataManagerImplTest extends AndroidTestCase {
 				true);
 		db = openHelper.getWritableDatabase();
 
-		dataManager.dropAllTables();
+		//dataManager.dropAllTables();
 	}
 
 	protected void tearDown() throws Exception {
-		dataManager.dropAllTables();
+		//dataManager.dropAllTables();
 		dataManager.closeDb();
 		super.tearDown();
 	}
