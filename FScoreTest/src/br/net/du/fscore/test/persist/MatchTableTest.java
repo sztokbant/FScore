@@ -23,7 +23,6 @@ public class MatchTableTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		MatchTable.clear(db);
 		dataManager.closeDb();
 		super.tearDown();
 	}

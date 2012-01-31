@@ -5,6 +5,9 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManagerImpl;
+import br.net.du.fscore.persist.MatchPlayerTable;
+import br.net.du.fscore.persist.MatchTable;
+import br.net.du.fscore.persist.PlayerTable;
 
 public class DataManagerImplTest extends AndroidTestCase {
 	SQLiteDatabase db;
@@ -14,15 +17,18 @@ public class DataManagerImplTest extends AndroidTestCase {
 		super.setUp();
 		dataManager = new DataManagerImpl(getContext(), true);
 		db = dataManager.getDb();
-		dataManager.openDb();
-
-		dataManager.clearAllTables();
+		clearAllTables();
 	}
 
 	protected void tearDown() throws Exception {
-		dataManager.clearAllTables();
 		dataManager.closeDb();
 		super.tearDown();
+	}
+
+	public void clearAllTables() {
+		MatchPlayerTable.clear(db);
+		MatchTable.clear(db);
+		PlayerTable.clear(db);
 	}
 
 	public void testCloseDb() {

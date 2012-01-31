@@ -205,12 +205,6 @@ public class DataManagerImpl implements DataManager {
 		playerDao.delete(player);
 	}
 
-	public void clearAllTables() {
-		MatchPlayerTable.clear(db);
-		MatchTable.clear(db);
-		PlayerTable.clear(db);
-	}
-
 	public class OpenHelper extends SQLiteOpenHelper {
 		private Context context;
 

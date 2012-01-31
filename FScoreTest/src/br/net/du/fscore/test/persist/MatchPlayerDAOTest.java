@@ -29,14 +29,12 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 		dataManager.openDb();
 
 		MatchPlayerTable.clear(db);
-
 		dao = new MatchPlayerDAO(db);
 		key = new MatchPlayerKey(7, 11);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		MatchPlayerTable.clear(db);
 		dataManager.closeDb();
 		super.tearDown();
 	}

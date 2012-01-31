@@ -27,7 +27,6 @@ public class PlayerDAOTest extends AndroidTestCase {
 		dataManager.openDb();
 
 		PlayerTable.clear(db);
-
 		dao = new PlayerDAO(db);
 		player = new Player("Player Name");
 		dao.save(player);
@@ -35,7 +34,6 @@ public class PlayerDAOTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		PlayerTable.clear(db);
 		dataManager.closeDb();
 		super.tearDown();
 	}

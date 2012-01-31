@@ -28,7 +28,6 @@ public class MatchDAOTest extends AndroidTestCase {
 		dataManager.openDb();
 
 		MatchTable.clear(db);
-
 		dao = new MatchDAO(db);
 		match = new Match("Match Name");
 		dao.save(match);
@@ -36,7 +35,6 @@ public class MatchDAOTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		MatchTable.clear(db);
 		dataManager.closeDb();
 		super.tearDown();
 	}

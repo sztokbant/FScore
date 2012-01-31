@@ -23,7 +23,6 @@ public class PlayerTableTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		PlayerTable.clear(db);
 		dataManager.closeDb();
 		super.tearDown();
 	}
