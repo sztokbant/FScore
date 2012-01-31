@@ -34,7 +34,6 @@ public class DataManagerImplTest extends AndroidTestCase {
 	public void testCloseDb() {
 		assertTrue(dataManager.closeDb());
 		assertFalse(dataManager.closeDb());
-		dataManager.openDb();
 	}
 
 	public void testOpenDb() {
