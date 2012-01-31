@@ -205,7 +205,7 @@ public class DataManagerImpl implements DataManager {
 		playerDao.delete(player);
 	}
 
-	public class OpenHelper extends SQLiteOpenHelper {
+	private class OpenHelper extends SQLiteOpenHelper {
 		private Context context;
 
 		OpenHelper(final Context context, boolean useDebugDatabase) {
