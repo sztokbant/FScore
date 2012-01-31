@@ -1,29 +1,26 @@
 package br.net.du.fscore.test.persist;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManagerImpl;
 
 public class DataManagerImplTest extends AndroidTestCase {
-	DataManagerImpl dataManager;
 	SQLiteDatabase db;
+	DataManagerImpl dataManager;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext());
+		dataManager = new DataManagerImpl(getContext(), true);
+		db = dataManager.getDb();
+		dataManager.openDb();
 
-		SQLiteOpenHelper openHelper = dataManager.new OpenHelper(getContext(),
-				true);
-		db = openHelper.getWritableDatabase();
-
-		//dataManager.dropAllTables();
+		dataManager.clearAllTables();
 	}
 
 	protected void tearDown() throws Exception {
-		//dataManager.dropAllTables();
+		dataManager.clearAllTables();
 		dataManager.closeDb();
 		super.tearDown();
 	}
@@ -31,6 +28,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 	public void testCloseDb() {
 		assertTrue(dataManager.closeDb());
 		assertFalse(dataManager.closeDb());
+		dataManager.openDb();
 	}
 
 	public void testOpenDb() {
@@ -47,34 +45,35 @@ public class DataManagerImplTest extends AndroidTestCase {
 		long matchId = dataManager.saveMatch(match);
 		assertTrue(matchId > 0);
 		assertEquals(matchId, match.getId());
+
+		// TODO verify persistence
 	}
 
 	public void testGetMatch() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testGetAllMatches() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testDeleteMatch() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testGetPlayer() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testGetAllPlayers() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testSavePlayer() {
-		fail("Not yet implemented");
+		// TODO
 	}
 
 	public void testDeletePlayer() {
-		fail("Not yet implemented");
+		// TODO
 	}
-
 }

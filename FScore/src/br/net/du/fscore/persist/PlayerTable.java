@@ -28,6 +28,10 @@ public final class PlayerTable {
 	public static void onUpgrade(SQLiteDatabase db, int oldVersion,
 			int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
-		PlayerTable.onCreate(db);
+		onCreate(db);
+	}
+
+	public static void clear(SQLiteDatabase db) {
+		db.execSQL("DELETE FROM " + PlayerTable.NAME);
 	}
 }

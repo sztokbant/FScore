@@ -39,4 +39,8 @@ public final class MatchPlayerTable {
 		db.execSQL("DROP TABLE IF EXISTS " + MatchPlayerTable.NAME);
 		onCreate(db);
 	}
+
+	public static void clear(SQLiteDatabase db) {
+		db.execSQL("DELETE FROM " + MatchPlayerTable.NAME);
+	}
 }

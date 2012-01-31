@@ -24,9 +24,21 @@ public class DataManagerImpl implements DataManager {
 	private MatchDAO matchDao;
 	private MatchPlayerDAO matchPlayerDao;
 
+	private boolean useDebugDb = false;
+
 	public DataManagerImpl(Context context) {
 		this.context = context;
 		openDb();
+	}
+
+	public DataManagerImpl(Context context, boolean useDebugDb) {
+		this.context = context;
+		this.useDebugDb = useDebugDb;
+		openDb();
+	}
+
+	public SQLiteDatabase getDb() {
+		return db;
 	}
 
 	@Override
@@ -42,7 +54,7 @@ public class DataManagerImpl implements DataManager {
 	@Override
 	public boolean openDb() {
 		if (db == null || !db.isOpen()) {
-			db = new OpenHelper(this.context).getWritableDatabase();
+			db = new OpenHelper(this.context, useDebugDb).getWritableDatabase();
 
 			// since we pass db into DAO, have to recreate DAO if db is
 			// re-opened
@@ -193,14 +205,16 @@ public class DataManagerImpl implements DataManager {
 		playerDao.delete(player);
 	}
 
+	public void clearAllTables() {
+		MatchPlayerTable.clear(db);
+		MatchTable.clear(db);
+		PlayerTable.clear(db);
+	}
+
 	public class OpenHelper extends SQLiteOpenHelper {
 		private Context context;
 
-		OpenHelper(final Context context) {
-			this(context, false);
-		}
-
-		public OpenHelper(final Context context, boolean useDebugDatabase) {
+		OpenHelper(final Context context, boolean useDebugDatabase) {
 			super(context, useDebugDatabase ? DataConstants.DEBUG_DATABASE_NAME
 					: DataConstants.DATABASE_NAME, null,
 					DataManagerImpl.DATABASE_VERSION);

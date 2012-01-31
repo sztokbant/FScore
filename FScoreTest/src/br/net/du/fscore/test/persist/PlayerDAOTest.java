@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
@@ -15,19 +14,19 @@ import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
 public class PlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
+	DataManagerImpl dataManager;
+
 	PlayerDAO dao;
 	Player player;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		DataManagerImpl dataManager = new DataManagerImpl(getContext());
-		SQLiteOpenHelper openHelper = dataManager.new OpenHelper(getContext(),
-				true);
-		db = openHelper.getWritableDatabase();
+		dataManager = new DataManagerImpl(getContext(), true);
+		db = dataManager.getDb();
+		dataManager.openDb();
 
-		dropTable();
-		PlayerTable.onCreate(db);
+		PlayerTable.clear(db);
 
 		dao = new PlayerDAO(db);
 		player = new Player("Player Name");
@@ -36,15 +35,9 @@ public class PlayerDAOTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		dropTable();
-		if (db.isOpen()) {
-			db.close();
-		}
+		PlayerTable.clear(db);
+		dataManager.closeDb();
 		super.tearDown();
-	}
-
-	private void dropTable() {
-		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
 	}
 
 	public void testSaveNew() {

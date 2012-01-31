@@ -13,7 +13,6 @@ import br.net.du.fscore.test.persist.MatchPlayerDAOTest;
 import br.net.du.fscore.test.persist.MatchPlayerTableTest;
 import br.net.du.fscore.test.persist.MatchTableTest;
 import br.net.du.fscore.test.persist.PlayerDAOTest;
-import br.net.du.fscore.test.persist.PlayerRoundTableTest;
 import br.net.du.fscore.test.persist.PlayerTableTest;
 
 public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
@@ -30,7 +29,6 @@ public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
 		// Tables
 		suite.addTestSuite(PlayerTableTest.class);
 		suite.addTestSuite(MatchTableTest.class);
-		suite.addTestSuite(PlayerRoundTableTest.class);
 		suite.addTestSuite(MatchPlayerTableTest.class);
 
 		// DAOs

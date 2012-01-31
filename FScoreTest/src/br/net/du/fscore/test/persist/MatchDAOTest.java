@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
@@ -16,19 +15,19 @@ import br.net.du.fscore.persist.MatchTable.MatchColumns;
 
 public class MatchDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
+	DataManagerImpl dataManager;
+
 	MatchDAO dao;
 	Match match;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		DataManagerImpl dataManager = new DataManagerImpl(getContext());
-		SQLiteOpenHelper openHelper = dataManager.new OpenHelper(getContext(),
-				true);
-		db = openHelper.getWritableDatabase();
+		dataManager = new DataManagerImpl(getContext(), true);
+		db = dataManager.getDb();
+		dataManager.openDb();
 
-		dropTable();
-		MatchTable.onCreate(db);
+		MatchTable.clear(db);
 
 		dao = new MatchDAO(db);
 		match = new Match("Match Name");
@@ -37,15 +36,9 @@ public class MatchDAOTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		dropTable();
-		if (db.isOpen()) {
-			db.close();
-		}
+		MatchTable.clear(db);
+		dataManager.closeDb();
 		super.tearDown();
-	}
-
-	private void dropTable() {
-		db.execSQL("DROP TABLE IF EXISTS " + MatchTable.NAME);
 	}
 
 	public void testSaveNew() {

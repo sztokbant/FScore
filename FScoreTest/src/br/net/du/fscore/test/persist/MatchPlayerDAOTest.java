@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManagerImpl;
@@ -17,19 +16,19 @@ import br.net.du.fscore.persist.PlayerTable;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
+	DataManagerImpl dataManager;
+
 	MatchPlayerDAO dao;
 	MatchPlayerKey key;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		DataManagerImpl dataManager = new DataManagerImpl(getContext());
-		SQLiteOpenHelper openHelper = dataManager.new OpenHelper(getContext(),
-				true);
-		db = openHelper.getWritableDatabase();
+		dataManager = new DataManagerImpl(getContext(), true);
+		db = dataManager.getDb();
+		dataManager.openDb();
 
-		dropTable();
-		MatchPlayerTable.onCreate(db);
+		MatchPlayerTable.clear(db);
 
 		dao = new MatchPlayerDAO(db);
 		key = new MatchPlayerKey(7, 11);
@@ -37,15 +36,9 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		dropTable();
-		if (db.isOpen()) {
-			db.close();
-		}
+		MatchPlayerTable.clear(db);
+		dataManager.closeDb();
 		super.tearDown();
-	}
-
-	private void dropTable() {
-		db.execSQL("DROP TABLE IF EXISTS " + MatchPlayerTable.NAME);
 	}
 
 	public void testSave() {
@@ -92,8 +85,7 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testGetPlayers() {
-		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
-		PlayerTable.onCreate(db);
+		PlayerTable.clear(db);
 
 		List<Player> players = new ArrayList<Player>();
 		players.add(new Player("Dummy 1"));
@@ -109,6 +101,6 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 
 		assertEquals(players, dao.getPlayers(key.getMatchId()));
 
-		db.execSQL("DROP TABLE IF EXISTS " + PlayerTable.NAME);
+		PlayerTable.clear(db);
 	}
 }
