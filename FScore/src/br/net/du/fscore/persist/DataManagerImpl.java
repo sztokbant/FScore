@@ -17,14 +17,12 @@ public class DataManagerImpl implements DataManager {
 	public static final int DATABASE_VERSION = 2;
 
 	private Context context;
-
 	private SQLiteDatabase db;
+	private boolean useDebugDb = false;
 
 	private PlayerDAO playerDao;
 	private MatchDAO matchDao;
 	private MatchPlayerDAO matchPlayerDao;
-
-	private boolean useDebugDb = false;
 
 	public DataManagerImpl(Context context) {
 		this.context = context;
