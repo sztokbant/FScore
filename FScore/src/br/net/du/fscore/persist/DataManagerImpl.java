@@ -30,14 +30,17 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
-	public void closeDb() {
+	public boolean closeDb() {
 		if (db != null && db.isOpen()) {
 			db.close();
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override
-	public void openDb() {
+	public boolean openDb() {
 		if (db == null || !db.isOpen()) {
 			db = new OpenHelper(this.context).getWritableDatabase();
 
@@ -46,7 +49,11 @@ public class DataManagerImpl implements DataManager {
 			playerDao = new PlayerDAO(db);
 			matchDao = new MatchDAO(db);
 			matchPlayerDao = new MatchPlayerDAO(db);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override

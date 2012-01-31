@@ -7,9 +7,9 @@ import br.net.du.fscore.model.Player;
 
 public interface DataManager {
 
-	void closeDb();
+	boolean closeDb();
 
-	void openDb();
+	boolean openDb();
 
 	// Match operations
 
