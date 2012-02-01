@@ -77,6 +77,32 @@ public class DataManagerImplTest extends AndroidTestCase {
 		assertTrue(matchPlayerDao.exists(key));
 	}
 
+	public void testSaveAnExistingMatchAfterAddingAPlayer() {
+		Match match = new Match("Match Name");
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("A Second Player");
+
+		match.withPlayer(player1);
+		long matchId = dataManager.saveMatch(match);
+		match.withPlayer(player2);
+		dataManager.saveMatch(match);
+
+		long player1Id = player1.getId();
+		long player2Id = player2.getId();
+
+		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1Id);
+		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2Id);
+
+		assertTrue(player1.getId() > 0);
+		assertTrue(player2.getId() > 0);
+		assertEquals(2, match.getPlayers().size());
+		assertEquals(match.getPlayers().get(0), playerDao.get(player1Id));
+		assertEquals(match.getPlayers().get(1), playerDao.get(player2Id));
+		assertTrue(matchPlayerDao.exists(key1));
+		assertTrue(matchPlayerDao.exists(key2));
+		assertEquals(match, dataManager.getMatch(matchId));
+	}
+
 	public void testSaveAnExistingMatchAfterRemovingAPlayer() {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
