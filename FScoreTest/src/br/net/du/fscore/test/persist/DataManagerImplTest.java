@@ -151,6 +151,31 @@ public class DataManagerImplTest extends AndroidTestCase {
 		assertFalse(matchPlayerDao.exists(key));
 	}
 
+	public void testDeletingAMatchWontDeleteNonOrphanPlayers() {
+		Match match1 = new Match("Match One");
+		Match match2 = new Match("Match Two");
+		Player player = new Player("A Player");
+		match1.withPlayer(player);
+		match2.withPlayer(player);
+
+		long matchId1 = dataManager.saveMatch(match1);
+		long matchId2 = dataManager.saveMatch(match2);
+		long playerId = player.getId();
+
+		MatchPlayerKey key1 = new MatchPlayerKey(matchId1, playerId);
+		MatchPlayerKey key2 = new MatchPlayerKey(matchId2, playerId);
+
+		dataManager.deleteMatch(match1);
+
+		assertEquals(0, match1.getId());
+		assertEquals(playerId, player.getId());
+		assertNull(matchDao.get(matchId1));
+		assertEquals(match2, dataManager.getMatch(matchId2));
+		assertEquals(player, playerDao.get(playerId));
+		assertFalse(matchPlayerDao.exists(key1));
+		assertTrue(matchPlayerDao.exists(key2));
+	}
+
 	public void testSaveNewPlayer() {
 		Player player = new Player("A Player");
 		long playerId = dataManager.savePlayer(player);
