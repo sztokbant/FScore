@@ -97,7 +97,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 
 		assertEquals(matchId, match.getId());
 
-		// this will fail for the Id is updated for a copy of the object that is
+		// this will fail for the Id is updated on a copy of the object which is
 		// not in the list anymore
 		// assertEquals(0, player1.getId());
 
