@@ -14,7 +14,7 @@ import br.net.du.fscore.model.Player;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 2;
+	public static final int DATABASE_VERSION = 4;
 
 	private Context context;
 	private SQLiteDatabase db;
@@ -219,6 +219,7 @@ public class DataManagerImpl implements DataManager {
 			PlayerTable.onCreate(db);
 			MatchTable.onCreate(db);
 			MatchPlayerTable.onCreate(db);
+			RoundTable.onCreate(db);
 		}
 
 		@Override
@@ -227,6 +228,7 @@ public class DataManagerImpl implements DataManager {
 			MatchPlayerTable.onUpgrade(db, oldVersion, newVersion);
 			MatchTable.onUpgrade(db, oldVersion, newVersion);
 			PlayerTable.onUpgrade(db, oldVersion, newVersion);
+			RoundTable.onUpgrade(db, oldVersion, newVersion);
 		}
 	}
 }

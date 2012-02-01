@@ -14,6 +14,7 @@ import br.net.du.fscore.test.persist.MatchPlayerTableTest;
 import br.net.du.fscore.test.persist.MatchTableTest;
 import br.net.du.fscore.test.persist.PlayerDAOTest;
 import br.net.du.fscore.test.persist.PlayerTableTest;
+import br.net.du.fscore.test.persist.RoundTableTest;
 
 public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
 	@Override
@@ -30,6 +31,7 @@ public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
 		suite.addTestSuite(PlayerTableTest.class);
 		suite.addTestSuite(MatchTableTest.class);
 		suite.addTestSuite(MatchPlayerTableTest.class);
+		suite.addTestSuite(RoundTableTest.class);
 
 		// DAOs
 		suite.addTestSuite(PlayerDAOTest.class);
