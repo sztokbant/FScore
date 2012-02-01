@@ -97,7 +97,7 @@ public class DataManagerImpl implements DataManager {
 				matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
 						.getId()));
 				if (matchPlayerDao.isOrphan(player)) {
-					this.deletePlayer(player);
+					playerDao.delete(player);
 				}
 				Log.i(context.getResources().getString(R.string.app_name),
 						"deleted player [" + player + "]");
