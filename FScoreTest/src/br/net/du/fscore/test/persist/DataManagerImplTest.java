@@ -218,12 +218,15 @@ public class DataManagerImplTest extends AndroidTestCase {
 	}
 
 	public void testGetAllPlayers() {
-		Player player = new Player("A Player");
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("Another One");
 
 		List<Player> players = new ArrayList<Player>();
-		players.add(player);
+		players.add(player1);
+		players.add(player2);
 
-		dataManager.savePlayer(player);
+		dataManager.savePlayer(player1);
+		dataManager.savePlayer(player2);
 
 		assertEquals(players, dataManager.getAllPlayers());
 	}
