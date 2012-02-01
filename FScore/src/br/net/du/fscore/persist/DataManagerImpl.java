@@ -67,26 +67,6 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
-	public Match getMatch(long matchId) {
-		Match match = matchDao.get(matchId);
-		if (match != null) {
-			match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
-		}
-		return match;
-	}
-
-	@Override
-	public List<Match> getAllMatches() {
-		List<Match> matches = new ArrayList<Match>();
-
-		for (Match match : matchDao.getAll()) {
-			matches.add(this.getMatch(match.getId()));
-		}
-
-		return matches;
-	}
-
-	@Override
 	public long saveMatch(Match match) {
 		long matchId = 0L;
 		try {
@@ -152,6 +132,26 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
+	public Match getMatch(long matchId) {
+		Match match = matchDao.get(matchId);
+		if (match != null) {
+			match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
+		}
+		return match;
+	}
+
+	@Override
+	public List<Match> getAllMatches() {
+		List<Match> matches = new ArrayList<Match>();
+
+		for (Match match : matchDao.getAll()) {
+			matches.add(this.getMatch(match.getId()));
+		}
+
+		return matches;
+	}
+
+	@Override
 	public boolean deleteMatch(Match match) {
 		boolean result = false;
 		try {
@@ -184,6 +184,11 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	@Override
+	public long savePlayer(Player player) {
+		return playerDao.save(player);
+	}
+
+	@Override
 	public Player getPlayer(long playerId) {
 		return playerDao.get(playerId);
 	}
@@ -191,11 +196,6 @@ public class DataManagerImpl implements DataManager {
 	@Override
 	public List<Player> getAllPlayers() {
 		return playerDao.getAll();
-	}
-
-	@Override
-	public long savePlayer(Player player) {
-		return playerDao.save(player);
 	}
 
 	@Override

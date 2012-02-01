@@ -18,21 +18,21 @@ public interface DataManager {
 
 	// Match operations
 
+	public long saveMatch(Match match);
+
 	public Match getMatch(long matchId);
 
 	public List<Match> getAllMatches();
-
-	public long saveMatch(Match match);
 
 	public boolean deleteMatch(Match match);
 
 	// Player operations
 
+	public long savePlayer(Player player);
+
 	public Player getPlayer(long playerId);
 
 	public List<Player> getAllPlayers();
-
-	public long savePlayer(Player player);
 
 	public void deletePlayer(Player player);
 }
