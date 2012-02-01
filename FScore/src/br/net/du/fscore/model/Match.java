@@ -8,10 +8,10 @@ import java.util.List;
 import android.text.format.DateFormat;
 
 public class Match implements Serializable, Comparable<Match> {
-	private long id;
 
 	private static final long serialVersionUID = 1L;
 
+	private long id = 0;
 	private String name = "";
 	private Calendar date;
 
@@ -58,6 +58,7 @@ public class Match implements Serializable, Comparable<Match> {
 	}
 
 	public void addRound(Round round) {
+		round.setMatchId(this.getId());
 		rounds.add(round);
 	}
 

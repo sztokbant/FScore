@@ -8,20 +8,29 @@ public class Round implements Serializable, Comparable<Round> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
-	int numberOfCards = 0;
-	List<PlayerRound> playerRounds = null;
+	private long id = 0;
+	private long numberOfCards = 0;
+	private long matchId;
+	private List<PlayerRound> playerRounds = null;
 
-	public Round(int numberOfCards) {
+	public Round(long numberOfCards) {
 		this.numberOfCards = numberOfCards;
 		playerRounds = new ArrayList<PlayerRound>();
 	}
 
-	public int getNumberOfCards() {
+	public long getMatchId() {
+		return matchId;
+	}
+
+	public void setMatchId(long matchId) {
+		this.matchId = matchId;
+	}
+
+	public long getNumberOfCards() {
 		return numberOfCards;
 	}
 
-	public void setNumberOfCards(int numberOfCards) {
+	public void setNumberOfCards(long numberOfCards) {
 		this.numberOfCards = numberOfCards;
 	}
 
@@ -47,7 +56,7 @@ public class Round implements Serializable, Comparable<Round> {
 
 	@Override
 	public int compareTo(Round other) {
-		return new Integer(numberOfCards).compareTo(new Integer(other
+		return new Long(numberOfCards).compareTo(new Long(other
 				.getNumberOfCards()));
 	}
 
@@ -59,6 +68,7 @@ public class Round implements Serializable, Comparable<Round> {
 
 		Round otherRound = (Round) other;
 		if (this.numberOfCards == otherRound.getNumberOfCards()
+				&& this.matchId == otherRound.getMatchId()
 				&& this.playerRounds.equals(otherRound.getPlayerRounds())) {
 			return true;
 		}
@@ -70,7 +80,7 @@ public class Round implements Serializable, Comparable<Round> {
 	public int hashCode() {
 		int hash = 1;
 		hash = hash * 31 + (playerRounds == null ? 0 : playerRounds.hashCode());
-		hash = hash * 31 + numberOfCards;
+		hash = hash * 31 + (int) numberOfCards;
 		return hash;
 	}
 
