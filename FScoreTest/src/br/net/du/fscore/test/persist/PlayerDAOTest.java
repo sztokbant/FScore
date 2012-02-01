@@ -40,8 +40,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testSaveNew() {
-		Cursor cursor = db.query(PlayerTable.NAME, new String[] {
-				BaseColumns._ID, PlayerColumns.NAME },
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, null);
@@ -60,8 +59,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 		player.setName("Name Player");
 		dao.save(player);
 
-		Cursor cursor = db.query(PlayerTable.NAME, new String[] {
-				BaseColumns._ID, PlayerColumns.NAME },
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, null);
@@ -79,8 +77,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 	public void testDelete() {
 		dao.delete(player);
 
-		Cursor cursor = db.query(PlayerTable.NAME, new String[] {
-				BaseColumns._ID, PlayerColumns.NAME },
+		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?",
 				new String[] { String.valueOf(player.getId()) }, null, null,
 				null, null);
