@@ -11,7 +11,7 @@ public final class PlayerTable {
 		public static final String NAME = "name";
 
 		public static String[] get() {
-			return new String[] { BaseColumns._ID, NAME };
+			return new String[] { BaseColumns._ID, PlayerColumns.NAME };
 		}
 	}
 
