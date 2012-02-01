@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Player implements Serializable, Comparable<Player> {
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private long id = 0;
 	private String name;
 
 	public Player(String name) {
