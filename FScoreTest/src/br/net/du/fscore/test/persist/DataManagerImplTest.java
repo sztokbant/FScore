@@ -176,15 +176,4 @@ public class DataManagerImplTest extends AndroidTestCase {
 
 		assertEquals(players, dataManager.getAllPlayers());
 	}
-
-	public void testDeletePlayer() {
-		Player player = new Player("A Player");
-
-		long playerId = dataManager.savePlayer(player);
-
-		dataManager.deletePlayer(player);
-
-		assertEquals(0, player.getId());
-		assertNull(playerDao.get(playerId));
-	}
 }

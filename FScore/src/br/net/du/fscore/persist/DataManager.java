@@ -33,6 +33,4 @@ public interface DataManager {
 	public Player getPlayer(long playerId);
 
 	public List<Player> getAllPlayers();
-
-	public void deletePlayer(Player player);
 }

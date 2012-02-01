@@ -88,23 +88,6 @@ public class DataManagerImpl implements DataManager {
 		return matchId;
 	}
 
-	private void eraseRemovedPlayersFromMatch(Match match) {
-		List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
-				.getId());
-		dbRemainingPlayers.removeAll(match.getPlayers());
-		if (dbRemainingPlayers.size() > 0) {
-			for (Player player : dbRemainingPlayers) {
-				matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
-						.getId()));
-				if (matchPlayerDao.isOrphan(player)) {
-					playerDao.delete(player);
-				}
-				Log.i(context.getResources().getString(R.string.app_name),
-						"deleted player [" + player + "]");
-			}
-		}
-	}
-
 	private void storeNewPlayersForMatch(Match match) {
 		if (match.getPlayers().size() > 0) {
 			for (Player player : match.getPlayers()) {
@@ -127,6 +110,23 @@ public class DataManagerImpl implements DataManager {
 
 				matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
 						.getId()));
+			}
+		}
+	}
+
+	private void eraseRemovedPlayersFromMatch(Match match) {
+		List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
+				.getId());
+		dbRemainingPlayers.removeAll(match.getPlayers());
+		if (dbRemainingPlayers.size() > 0) {
+			for (Player player : dbRemainingPlayers) {
+				matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
+						.getId()));
+				if (matchPlayerDao.isOrphan(player)) {
+					playerDao.delete(player);
+				}
+				Log.i(context.getResources().getString(R.string.app_name),
+						"deleted player [" + player + "]");
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class DataManagerImpl implements DataManager {
 					matchPlayerDao
 							.delete(new MatchPlayerKey(matchId, p.getId()));
 					if (matchPlayerDao.isOrphan(p)) {
-						this.deletePlayer(p);
+						playerDao.delete(p);
 					}
 				}
 
@@ -196,11 +196,6 @@ public class DataManagerImpl implements DataManager {
 	@Override
 	public List<Player> getAllPlayers() {
 		return playerDao.getAll();
-	}
-
-	@Override
-	public void deletePlayer(Player player) {
-		playerDao.delete(player);
 	}
 
 	private class OpenHelper extends SQLiteOpenHelper {
