@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.persist;
+package br.net.du.fscore.test.persist.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.MatchPlayerDAO;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.MatchPlayerTable;
-import br.net.du.fscore.persist.PlayerDAO;
 import br.net.du.fscore.persist.PlayerTable;
+import br.net.du.fscore.persist.dao.MatchPlayerDAO;
+import br.net.du.fscore.persist.dao.PlayerDAO;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;

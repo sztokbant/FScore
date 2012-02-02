@@ -1,4 +1,4 @@
-package br.net.du.fscore.persist;
+package br.net.du.fscore.persist.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Match;
+import br.net.du.fscore.persist.MatchTable;
+import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.MatchTable.MatchColumns;
 
 public class MatchDAO implements Dao<Match> {

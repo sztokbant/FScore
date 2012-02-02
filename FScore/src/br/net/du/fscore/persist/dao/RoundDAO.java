@@ -1,4 +1,4 @@
-package br.net.du.fscore.persist;
+package br.net.du.fscore.persist.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.persist.RoundTable;
+import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.RoundTable.RoundColumns;
 
 public class RoundDAO implements Dao<Round> {

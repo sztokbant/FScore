@@ -1,4 +1,4 @@
-package br.net.du.fscore.persist;
+package br.net.du.fscore.persist.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.persist.MatchPlayerKey;
+import br.net.du.fscore.persist.MatchPlayerTable;
+import br.net.du.fscore.persist.PlayerTable;
+import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
 import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 

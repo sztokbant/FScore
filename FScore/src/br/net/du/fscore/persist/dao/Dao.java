@@ -1,4 +1,4 @@
-package br.net.du.fscore.persist;
+package br.net.du.fscore.persist.dao;
 
 import java.util.List;
 

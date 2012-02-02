@@ -1,4 +1,4 @@
-package br.net.du.fscore.persist;
+package br.net.du.fscore.persist.dao;
 
 import java.util.List;
 
@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
+import br.net.du.fscore.persist.PlayerRoundTable;
+import br.net.du.fscore.persist.PlayerTable;
+import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
 public class PlayerRoundDAO {

@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.persist;
+package br.net.du.fscore.test.persist.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.RoundDAO;
 import br.net.du.fscore.persist.RoundTable;
 import br.net.du.fscore.persist.RoundTable.RoundColumns;
+import br.net.du.fscore.persist.dao.RoundDAO;
 
 public class RoundDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
