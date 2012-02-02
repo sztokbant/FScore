@@ -6,14 +6,14 @@ import android.provider.BaseColumns;
 public class PlayerRoundTable {
 	public static final String NAME = "player_round";
 
-	public static class PlayerRoundColumns implements BaseColumns {
+	public static class PlayerRoundColumns {
 		public static final String ROUND_ID = "round_id";
 		public static final String PLAYER_ID = "player_id";
 		public static final String BET = "bet";
 		public static final String WINS = "wins";
 
 		public static String[] get() {
-			return new String[] { BaseColumns._ID, PlayerRoundColumns.ROUND_ID,
+			return new String[] { PlayerRoundColumns.ROUND_ID,
 					PlayerRoundColumns.PLAYER_ID, PlayerRoundColumns.BET,
 					PlayerRoundColumns.WINS };
 		}
@@ -22,7 +22,6 @@ public class PlayerRoundTable {
 	public static void onCreate(SQLiteDatabase db) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CREATE TABLE " + PlayerRoundTable.NAME + " (");
-		sb.append(BaseColumns._ID + " INTEGER PRIMARY KEY, ");
 		sb.append(PlayerRoundColumns.BET + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.WINS + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.ROUND_ID + " INTEGER NOT NULL, ");
