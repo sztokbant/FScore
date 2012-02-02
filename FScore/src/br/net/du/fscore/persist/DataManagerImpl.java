@@ -15,6 +15,7 @@ import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
+import br.net.du.fscore.persist.dao.PlayerRoundDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
 import br.net.du.fscore.persist.table.MatchTable;
@@ -24,7 +25,7 @@ import br.net.du.fscore.persist.table.RoundTable;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 6;
+	public static final int DATABASE_VERSION = 8;
 
 	private Context context;
 	private SQLiteDatabase db;
@@ -34,6 +35,7 @@ public class DataManagerImpl implements DataManager {
 	private MatchDAO matchDao;
 	private MatchPlayerDAO matchPlayerDao;
 	private RoundDAO roundDao;
+	private PlayerRoundDAO playerRoundDao;
 
 	public DataManagerImpl(Context context) {
 		this.context = context;
@@ -71,6 +73,7 @@ public class DataManagerImpl implements DataManager {
 			matchDao = new MatchDAO(db);
 			matchPlayerDao = new MatchPlayerDAO(db);
 			roundDao = new RoundDAO(db);
+			playerRoundDao = new PlayerRoundDAO(db);
 
 			return true;
 		}

@@ -8,16 +8,17 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
-import br.net.du.fscore.persist.table.PlayerTable;
-import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
+import br.net.du.fscore.persist.table.PlayerRoundTable.PlayerRoundColumns;
 
 public class PlayerRoundDAO {
 	private static final String INSERT = "INSERT INTO "
 			+ PlayerRoundTable.NAME
 			+ "("
 			+ new TableColumnsUtils()
-					.getAsCommaSeparatedStringWithoutFirstColumn(PlayerColumns
-							.get()) + ") VALUES (?, ?)";
+					.getAsCommaSeparatedString(PlayerRoundColumns.get())
+			+ ") VALUES "
+			+ new TableColumnsUtils()
+					.getQuestionMarks(PlayerRoundColumns.get());;
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
