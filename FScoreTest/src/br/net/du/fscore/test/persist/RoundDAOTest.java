@@ -1,5 +1,6 @@
 package br.net.du.fscore.test.persist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.database.Cursor;
@@ -96,6 +97,22 @@ public class RoundDAOTest extends AndroidTestCase {
 	public void testGet() {
 		Round round2 = dao.get(round.getId());
 		assertEquals(round, round2);
+	}
+
+	public void testGetRoundsForMatch() {
+		long matchId = 19;
+
+		List<Round> rounds = new ArrayList<Round>();
+		rounds.add(new Round(2));
+		rounds.add(new Round(3));
+		rounds.add(new Round(7));
+
+		for (Round r : rounds) {
+			r.setMatchId(matchId);
+			dao.save(r);
+		}
+
+		assertEquals(rounds, dao.getRoundsForMatch(matchId));
 	}
 
 	public void testGetAll() {

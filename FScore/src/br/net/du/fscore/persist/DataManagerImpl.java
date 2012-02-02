@@ -11,6 +11,7 @@ import android.util.Log;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.Round;
 
 public class DataManagerImpl implements DataManager {
 
@@ -23,6 +24,7 @@ public class DataManagerImpl implements DataManager {
 	private PlayerDAO playerDao;
 	private MatchDAO matchDao;
 	private MatchPlayerDAO matchPlayerDao;
+	private RoundDAO roundDao;
 
 	public DataManagerImpl(Context context) {
 		this.context = context;
@@ -59,6 +61,7 @@ public class DataManagerImpl implements DataManager {
 			playerDao = new PlayerDAO(db);
 			matchDao = new MatchDAO(db);
 			matchPlayerDao = new MatchPlayerDAO(db);
+			roundDao = new RoundDAO(db);
 
 			return true;
 		}
@@ -75,6 +78,8 @@ public class DataManagerImpl implements DataManager {
 
 			storeNewPlayersForMatch(match);
 			eraseRemovedPlayersFromMatch(match);
+			storeNewRoundsForMatch(match);
+			eraseRemovedRoundsFromMatch(match);
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
@@ -131,11 +136,34 @@ public class DataManagerImpl implements DataManager {
 		}
 	}
 
+	private void storeNewRoundsForMatch(Match match) {
+		if (match.getRounds().size() > 0) {
+			for (Round round : match.getRounds()) {
+				if (!round.isPersistent()) {
+					round.setMatchId(match.getId());
+					roundDao.save(round);
+				}
+			}
+		}
+	}
+
+	private void eraseRemovedRoundsFromMatch(Match match) {
+		List<Round> dbRemainingRounds = roundDao.getRoundsForMatch(match
+				.getId());
+		dbRemainingRounds.removeAll(match.getRounds());
+		if (dbRemainingRounds.size() > 0) {
+			for (Round round : dbRemainingRounds) {
+				roundDao.delete(round);
+			}
+		}
+	}
+
 	@Override
 	public Match getMatch(long matchId) {
 		Match match = matchDao.get(matchId);
 		if (match != null) {
 			match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
+			match.getRounds().addAll(roundDao.getRoundsForMatch(match.getId()));
 		}
 		return match;
 	}

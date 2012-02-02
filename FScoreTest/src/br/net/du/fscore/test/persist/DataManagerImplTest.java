@@ -110,6 +110,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 
 		assertTrue(player1.getId() > 0);
 		assertTrue(player2.getId() > 0);
+		assertTrue(player2.getId() > player1.getId());
 		assertEquals(2, match.getPlayers().size());
 		assertEquals(match.getPlayers().get(0), playerDao.get(player1Id));
 		assertEquals(match.getPlayers().get(1), playerDao.get(player2Id));
@@ -166,6 +167,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 
 		assertTrue(round1.getId() > 0);
 		assertTrue(round2.getId() > 0);
+		assertTrue(round2.getId() > round1.getId());
 		assertEquals(2, match.getRounds().size());
 		assertEquals(match.getRounds().get(0), roundDao.get(round1Id));
 		assertEquals(match.getRounds().get(1), roundDao.get(round2Id));

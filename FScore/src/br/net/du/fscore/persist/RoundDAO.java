@@ -71,6 +71,31 @@ public class RoundDAO implements Dao<Round> {
 		return round;
 	}
 
+	public List<Round> getRoundsForMatch(long matchId) {
+		List<Round> myList = new ArrayList<Round>();
+
+		Cursor cursor = db.query(RoundTable.NAME, RoundColumns.get(),
+				RoundColumns.MATCH_ID + " = ?", // where
+				new String[] { String.valueOf(matchId) }, // values
+				null, // group by
+				null, // having
+				BaseColumns._ID, // order by
+				null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				Round round = this.buildRoundFromCursor(cursor);
+				myList.add(round);
+			} while (cursor.moveToNext());
+		}
+
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+
+		return myList;
+	}
+
 	@Override
 	public List<Round> getAll() {
 		List<Round> myList = new ArrayList<Round>();
