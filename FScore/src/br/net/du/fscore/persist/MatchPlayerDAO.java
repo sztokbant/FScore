@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
+import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
 public class MatchPlayerDAO {
 	private static final String INSERT = "INSERT INTO "
@@ -15,7 +16,8 @@ public class MatchPlayerDAO {
 			+ "("
 			+ new TableColumnsUtils()
 					.getAsCommaSeparatedString(MatchPlayerColumns.get())
-			+ ") VALUES (?, ?)";
+			+ ") VALUES "
+			+ new TableColumnsUtils().getQuestionMarks(PlayerColumns.get());;
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;

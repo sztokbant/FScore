@@ -9,6 +9,28 @@ public class TableColumnsUtils {
 		return this.getAsCommaSeparatedString(columns, 1);
 	}
 
+	public String getQuestionMarks(String[] columns) {
+		return this.getQuestionMarks(columns, 0);
+	}
+
+	public String getQuestionMarksWithoutFirstColumn(String[] columns) {
+		return this.getQuestionMarks(columns, 1);
+	}
+
+	private String getQuestionMarks(String[] columns, int firstColumn) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(");
+		for (int i = firstColumn; i < columns.length; i++) {
+			sb.append("?");
+			if (i + 1 < columns.length) {
+				sb.append(", ");
+			}
+		}
+		sb.append(")");
+
+		return sb.toString();
+	}
+
 	private String getAsCommaSeparatedString(String[] columns, int firstColumn) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = firstColumn; i < columns.length; i++) {

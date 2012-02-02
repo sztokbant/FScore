@@ -19,7 +19,10 @@ public class MatchDAO implements Dao<Match> {
 			+ "("
 			+ new TableColumnsUtils()
 					.getAsCommaSeparatedStringWithoutFirstColumn(MatchColumns
-							.get()) + ") VALUES (?, ?)";
+							.get())
+			+ ") VALUES "
+			+ new TableColumnsUtils()
+					.getQuestionMarksWithoutFirstColumn(MatchColumns.get());
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;

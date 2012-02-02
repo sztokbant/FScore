@@ -18,7 +18,10 @@ public class RoundDAO implements Dao<Round> {
 			+ "("
 			+ new TableColumnsUtils()
 					.getAsCommaSeparatedStringWithoutFirstColumn(RoundColumns
-							.get()) + ") VALUES (?, ?)";
+							.get())
+			+ ") VALUES "
+			+ new TableColumnsUtils()
+					.getQuestionMarksWithoutFirstColumn(RoundColumns.get());;
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
