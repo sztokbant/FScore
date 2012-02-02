@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerKey;
-import br.net.du.fscore.persist.MatchPlayerTable;
-import br.net.du.fscore.persist.PlayerTable;
 import br.net.du.fscore.persist.TableColumnsUtils;
-import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
-import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
+import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.MatchPlayerTable.MatchPlayerColumns;
+import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
 
 public class MatchPlayerDAO {
 	private static final String INSERT = "INSERT INTO "

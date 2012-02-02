@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
-import br.net.du.fscore.persist.PlayerRoundTable;
-import br.net.du.fscore.persist.PlayerTable;
 import br.net.du.fscore.persist.TableColumnsUtils;
-import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
+import br.net.du.fscore.persist.table.PlayerRoundTable;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
 
 public class PlayerRoundDAO {
 	private static final String INSERT = "INSERT INTO "

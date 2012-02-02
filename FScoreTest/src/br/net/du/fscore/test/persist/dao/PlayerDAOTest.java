@@ -9,9 +9,9 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.PlayerTable;
-import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 import br.net.du.fscore.persist.dao.PlayerDAO;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
 
 public class PlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;

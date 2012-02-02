@@ -1,12 +1,12 @@
-package br.net.du.fscore.test.persist;
+package br.net.du.fscore.test.persist.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.MatchPlayerTable;
-import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
+import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.MatchPlayerTable.MatchPlayerColumns;
 
 public class MatchPlayerTableTest extends AndroidTestCase {
 

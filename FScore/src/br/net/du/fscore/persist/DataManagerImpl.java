@@ -16,6 +16,11 @@ import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
+import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.MatchTable;
+import br.net.du.fscore.persist.table.PlayerRoundTable;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.RoundTable;
 
 public class DataManagerImpl implements DataManager {
 

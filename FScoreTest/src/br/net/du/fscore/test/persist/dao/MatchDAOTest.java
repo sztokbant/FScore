@@ -10,9 +10,9 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.MatchTable;
-import br.net.du.fscore.persist.MatchTable.MatchColumns;
 import br.net.du.fscore.persist.dao.MatchDAO;
+import br.net.du.fscore.persist.table.MatchTable;
+import br.net.du.fscore.persist.table.MatchTable.MatchColumns;
 
 public class MatchDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;

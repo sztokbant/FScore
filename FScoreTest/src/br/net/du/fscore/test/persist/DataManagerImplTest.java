@@ -11,14 +11,14 @@ import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerKey;
-import br.net.du.fscore.persist.MatchPlayerTable;
-import br.net.du.fscore.persist.MatchTable;
-import br.net.du.fscore.persist.PlayerTable;
-import br.net.du.fscore.persist.RoundTable;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
+import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.MatchTable;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.RoundTable;
 
 public class DataManagerImplTest extends AndroidTestCase {
 	SQLiteDatabase db;

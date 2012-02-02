@@ -1,15 +1,14 @@
-package br.net.du.fscore.test.persist;
+package br.net.du.fscore.test.persist.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
-import br.net.du.fscore.persist.PlayerTable;
-import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
+import br.net.du.fscore.persist.table.PlayerRoundTable;
+import br.net.du.fscore.persist.table.PlayerRoundTable.PlayerRoundColumns;
 
-public class PlayerTableTest extends AndroidTestCase {
-
+public class PlayerRoundTableTest extends AndroidTestCase {
 	SQLiteDatabase db;
 	DataManager dataManager;
 
@@ -19,7 +18,7 @@ public class PlayerTableTest extends AndroidTestCase {
 		dataManager = new DataManagerImpl(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
-		PlayerTable.clear(db);
+		PlayerRoundTable.clear(db);
 	}
 
 	@Override
@@ -29,11 +28,11 @@ public class PlayerTableTest extends AndroidTestCase {
 	}
 
 	public void testOnCreate() {
-		Cursor cursor = db.query(PlayerTable.NAME, null, null, null, null,
+		Cursor cursor = db.query(PlayerRoundTable.NAME, null, null, null, null,
 				null, null);
 
 		// asserts table was created properly and is empty
-		assertEquals(PlayerColumns.get().length, cursor.getColumnCount());
+		assertEquals(PlayerRoundColumns.get().length, cursor.getColumnCount());
 		assertEquals(0, cursor.getCount());
 
 		cursor.close();

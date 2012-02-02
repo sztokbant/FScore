@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Player;
-import br.net.du.fscore.persist.PlayerTable;
 import br.net.du.fscore.persist.TableColumnsUtils;
-import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
+import br.net.du.fscore.persist.table.PlayerTable;
+import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
 
 public class PlayerDAO implements Dao<Player> {
 

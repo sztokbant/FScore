@@ -10,10 +10,10 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerKey;
-import br.net.du.fscore.persist.MatchPlayerTable;
-import br.net.du.fscore.persist.PlayerTable;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
+import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.PlayerTable;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;

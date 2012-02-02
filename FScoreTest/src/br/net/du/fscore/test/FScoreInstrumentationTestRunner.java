@@ -8,13 +8,13 @@ import br.net.du.fscore.test.model.PlayerRoundTest;
 import br.net.du.fscore.test.model.PlayerTest;
 import br.net.du.fscore.test.model.RoundTest;
 import br.net.du.fscore.test.persist.DataManagerImplTest;
-import br.net.du.fscore.test.persist.MatchPlayerTableTest;
-import br.net.du.fscore.test.persist.MatchTableTest;
-import br.net.du.fscore.test.persist.PlayerTableTest;
-import br.net.du.fscore.test.persist.RoundTableTest;
 import br.net.du.fscore.test.persist.dao.MatchDAOTest;
 import br.net.du.fscore.test.persist.dao.MatchPlayerDAOTest;
 import br.net.du.fscore.test.persist.dao.PlayerDAOTest;
+import br.net.du.fscore.test.persist.table.MatchPlayerTableTest;
+import br.net.du.fscore.test.persist.table.MatchTableTest;
+import br.net.du.fscore.test.persist.table.PlayerTableTest;
+import br.net.du.fscore.test.persist.table.RoundTableTest;
 
 public class FScoreInstrumentationTestRunner extends InstrumentationTestRunner {
 	@Override

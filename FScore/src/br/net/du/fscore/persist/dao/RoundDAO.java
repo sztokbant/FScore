@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Round;
-import br.net.du.fscore.persist.RoundTable;
 import br.net.du.fscore.persist.TableColumnsUtils;
-import br.net.du.fscore.persist.RoundTable.RoundColumns;
+import br.net.du.fscore.persist.table.RoundTable;
+import br.net.du.fscore.persist.table.RoundTable.RoundColumns;
 
 public class RoundDAO implements Dao<Round> {
 
