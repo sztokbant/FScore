@@ -13,9 +13,12 @@ import br.net.du.fscore.persist.RoundTable.RoundColumns;
 
 public class RoundDAO implements Dao<Round> {
 
-	private static final String INSERT = "INSERT INTO " + RoundTable.NAME + "("
-			+ RoundColumns.NUM_OF_CARDS + ", " + RoundColumns.MATCH_ID
-			+ ") VALUES (?, ?)";
+	private static final String INSERT = "INSERT INTO "
+			+ RoundTable.NAME
+			+ "("
+			+ new TableColumnsUtils()
+					.getAsCommaSeparatedStringWithoutFirstColumn(RoundColumns
+							.get()) + ") VALUES (?, ?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;

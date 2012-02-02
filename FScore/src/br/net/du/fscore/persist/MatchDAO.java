@@ -14,8 +14,12 @@ import br.net.du.fscore.persist.MatchTable.MatchColumns;
 
 public class MatchDAO implements Dao<Match> {
 
-	private static final String INSERT = "INSERT INTO " + MatchTable.NAME + "("
-			+ MatchColumns.NAME + ", " + MatchColumns.DATE + ") VALUES (?, ?)";
+	private static final String INSERT = "INSERT INTO "
+			+ MatchTable.NAME
+			+ "("
+			+ new TableColumnsUtils()
+					.getAsCommaSeparatedStringWithoutFirstColumn(MatchColumns
+							.get()) + ") VALUES (?, ?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;

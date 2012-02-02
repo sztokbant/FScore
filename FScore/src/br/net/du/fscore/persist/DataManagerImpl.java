@@ -15,7 +15,7 @@ import br.net.du.fscore.model.Round;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 5;
+	public static final int DATABASE_VERSION = 6;
 
 	private Context context;
 	private SQLiteDatabase db;

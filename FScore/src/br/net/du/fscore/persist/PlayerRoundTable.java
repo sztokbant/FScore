@@ -7,13 +7,15 @@ public class PlayerRoundTable {
 	public static final String NAME = "player_round";
 
 	public static class PlayerRoundColumns implements BaseColumns {
+		public static final String ROUND_ID = "round_id";
+		public static final String PLAYER_ID = "player_id";
 		public static final String BET = "bet";
 		public static final String WINS = "wins";
-		public static final String ROUND_ID = "round_id";
 
 		public static String[] get() {
-			return new String[] { BaseColumns._ID, PlayerRoundColumns.BET,
-					PlayerRoundColumns.WINS, PlayerRoundColumns.ROUND_ID };
+			return new String[] { BaseColumns._ID, PlayerRoundColumns.ROUND_ID,
+					PlayerRoundColumns.PLAYER_ID, PlayerRoundColumns.BET,
+					PlayerRoundColumns.WINS };
 		}
 	}
 
@@ -24,8 +26,12 @@ public class PlayerRoundTable {
 		sb.append(PlayerRoundColumns.BET + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.WINS + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.ROUND_ID + " INTEGER NOT NULL, ");
+		sb.append(PlayerRoundColumns.PLAYER_ID + " INTEGER NOT NULL, ");
 		sb.append("FOREIGN KEY(" + PlayerRoundColumns.ROUND_ID
 				+ ") REFERENCES " + RoundTable.NAME + "(" + BaseColumns._ID
+				+ "), ");
+		sb.append("FOREIGN KEY(" + PlayerRoundColumns.PLAYER_ID
+				+ ") REFERENCES " + PlayerTable.NAME + "(" + BaseColumns._ID
 				+ ")");
 		sb.append(");");
 

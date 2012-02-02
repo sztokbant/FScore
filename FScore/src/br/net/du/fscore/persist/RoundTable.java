@@ -12,7 +12,8 @@ public class RoundTable {
 		public static final String MATCH_ID = "match_id";
 
 		public static String[] get() {
-			return new String[] { BaseColumns._ID, NUM_OF_CARDS, MATCH_ID };
+			return new String[] { BaseColumns._ID, RoundColumns.NUM_OF_CARDS,
+					RoundColumns.MATCH_ID };
 		}
 	}
 
@@ -22,9 +23,8 @@ public class RoundTable {
 		sb.append(BaseColumns._ID + " INTEGER PRIMARY KEY, ");
 		sb.append(RoundColumns.NUM_OF_CARDS + " INTEGER NOT NULL, ");
 		sb.append(RoundColumns.MATCH_ID + " INTEGER NOT NULL, ");
-		sb.append("FOREIGN KEY(" + RoundColumns.MATCH_ID
-				+ ") REFERENCES " + MatchTable.NAME + "(" + BaseColumns._ID
-				+ ")");
+		sb.append("FOREIGN KEY(" + RoundColumns.MATCH_ID + ") REFERENCES "
+				+ MatchTable.NAME + "(" + BaseColumns._ID + ")");
 		sb.append(");");
 
 		db.execSQL(sb.toString());

@@ -10,9 +10,12 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerTable.MatchPlayerColumns;
 
 public class MatchPlayerDAO {
-	private static final String INSERT = "INSERT INTO " + MatchPlayerTable.NAME
-			+ "(" + MatchPlayerColumns.MATCH_ID + ", "
-			+ MatchPlayerColumns.PLAYER_ID + ") VALUES (?, ?)";
+	private static final String INSERT = "INSERT INTO "
+			+ MatchPlayerTable.NAME
+			+ "("
+			+ new TableColumnsUtils()
+					.getAsCommaSeparatedString(MatchPlayerColumns.get())
+			+ ") VALUES (?, ?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;

@@ -12,7 +12,8 @@ public final class MatchPlayerTable {
 		public static final String PLAYER_ID = "player_id";
 
 		public static String[] get() {
-			return new String[] { MATCH_ID, PLAYER_ID };
+			return new String[] { MatchPlayerColumns.MATCH_ID,
+					MatchPlayerColumns.PLAYER_ID };
 		}
 	}
 

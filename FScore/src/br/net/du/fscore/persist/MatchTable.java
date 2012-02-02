@@ -12,7 +12,8 @@ public final class MatchTable {
 		public static final String DATE = "date";
 
 		public static String[] get() {
-			return new String[] { BaseColumns._ID, MatchColumns.NAME, DATE };
+			return new String[] { BaseColumns._ID, MatchColumns.NAME,
+					MatchColumns.DATE };
 		}
 	}
 

@@ -13,8 +13,11 @@ import br.net.du.fscore.persist.PlayerTable.PlayerColumns;
 
 public class PlayerDAO implements Dao<Player> {
 
-	private static final String INSERT = "INSERT INTO " + PlayerTable.NAME
-			+ "(" + PlayerColumns.NAME + ") VALUES (?)";
+	private static final String INSERT = "INSERT INTO "
+			+ PlayerTable.NAME
+			+ "("
+			+ new TableColumnsUtils().getAsCommaSeparatedStringWithoutFirstColumn(PlayerColumns
+					.get()) + ") VALUES (?)";
 
 	private SQLiteDatabase db;
 	private SQLiteStatement insertStatement;
