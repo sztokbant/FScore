@@ -11,7 +11,7 @@ Interface:
 * Order of players right after adding a new player differs from right after loading a match
 
 TODO for 1st ALPHA
-- properly code persistence & tests for Round and PlayerRound
+- properly code persistence & tests for PlayerRound
 - activity to list/add/delete Round's PlayerRounds
 - activity to edit PlayerRound's details
 - methods to calculate each Player's points for Round and Match
