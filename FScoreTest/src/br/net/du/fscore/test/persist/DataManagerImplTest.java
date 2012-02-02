@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchDAO;
@@ -16,6 +17,8 @@ import br.net.du.fscore.persist.MatchPlayerTable;
 import br.net.du.fscore.persist.MatchTable;
 import br.net.du.fscore.persist.PlayerDAO;
 import br.net.du.fscore.persist.PlayerTable;
+import br.net.du.fscore.persist.RoundDAO;
+import br.net.du.fscore.persist.RoundTable;
 
 public class DataManagerImplTest extends AndroidTestCase {
 	SQLiteDatabase db;
@@ -24,6 +27,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 	MatchDAO matchDao;
 	PlayerDAO playerDao;
 	MatchPlayerDAO matchPlayerDao;
+	RoundDAO roundDao;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -34,6 +38,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 		matchDao = new MatchDAO(db);
 		playerDao = new PlayerDAO(db);
 		matchPlayerDao = new MatchPlayerDAO(db);
+		roundDao = new RoundDAO(db);
 	}
 
 	protected void tearDown() throws Exception {
@@ -45,6 +50,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 		MatchPlayerTable.clear(db);
 		MatchTable.clear(db);
 		PlayerTable.clear(db);
+		RoundTable.clear(db);
 	}
 
 	public void testCloseDb() {
@@ -63,14 +69,23 @@ public class DataManagerImplTest extends AndroidTestCase {
 		Player player = new Player("A Player");
 		match.withPlayer(player);
 
+		Round round1 = new Round(3);
+		Round round2 = new Round(7);
+		match.addRound(round1);
+		match.addRound(round2);
+
 		long matchId = dataManager.saveMatch(match);
 
 		assertTrue(matchId > 0);
 		assertEquals(matchId, match.getId());
 		assertTrue(player.getId() > 0);
+		assertEquals(matchId, round1.getMatchId());
+		assertEquals(matchId, round2.getMatchId());
 
 		Match match2 = matchDao.get(matchId);
 		match2.withPlayer(playerDao.get(player.getId()));
+		match2.addRound(roundDao.get(round1.getId()));
+		match2.addRound(roundDao.get(round2.getId()));
 		assertEquals(match, match2);
 
 		MatchPlayerKey key = new MatchPlayerKey(matchId, player.getId());
@@ -136,10 +151,61 @@ public class DataManagerImplTest extends AndroidTestCase {
 		assertEquals(match, dataManager.getMatch(matchId));
 	}
 
+	public void testSaveAnExistingMatchAfterAddingARound() {
+		Match match = new Match("Match Name");
+		Round round1 = new Round(7);
+		Round round2 = new Round(3);
+
+		match.addRound(round1);
+		long matchId = dataManager.saveMatch(match);
+		match.addRound(round2);
+		dataManager.saveMatch(match);
+
+		long round1Id = round1.getId();
+		long round2Id = round2.getId();
+
+		assertTrue(round1.getId() > 0);
+		assertTrue(round2.getId() > 0);
+		assertEquals(2, match.getRounds().size());
+		assertEquals(match.getRounds().get(0), roundDao.get(round1Id));
+		assertEquals(match.getRounds().get(1), roundDao.get(round2Id));
+
+		assertEquals(match, dataManager.getMatch(matchId));
+	}
+
+	public void testSaveAnExistingMatchAfterRemovingARound() {
+		Match match = new Match("Match Name");
+		Round round1 = new Round(3);
+		Round round2 = new Round(7);
+		match.addRound(round1);
+		match.addRound(round2);
+
+		long matchId = dataManager.saveMatch(match);
+		long round1Id = round1.getId();
+		long round2Id = round2.getId();
+
+		match.getRounds().remove(round1);
+
+		dataManager.saveMatch(match);
+
+		assertEquals(matchId, match.getId());
+
+		// this will fail for the Id is updated on a copy of the object which is
+		// not in the list anymore
+		// assertEquals(0, round1.getId());
+
+		assertEquals(round2Id, round2.getId());
+		assertNull(roundDao.get(round1Id));
+		assertEquals(match.getRounds().get(0), roundDao.get(round2Id));
+
+		assertEquals(match, dataManager.getMatch(matchId));
+	}
+
 	public void testGetMatch() {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
+		match.addRound(new Round(7));
 
 		dataManager.saveMatch(match);
 
@@ -150,6 +216,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
+		match.addRound(new Round(7));
 
 		List<Match> matches = new ArrayList<Match>();
 		matches.add(match);
@@ -163,17 +230,21 @@ public class DataManagerImplTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
+		Round round = new Round(7);
 
 		long matchId = dataManager.saveMatch(match);
 		long playerId = player.getId();
 		MatchPlayerKey key = new MatchPlayerKey(matchId, playerId);
+		long roundId = round.getId();
 
 		dataManager.deleteMatch(match);
 
 		assertEquals(0, match.getId());
 		assertEquals(0, player.getId());
+		assertEquals(0, round.getId());
 		assertNull(matchDao.get(matchId));
 		assertNull(playerDao.get(playerId));
+		assertNull(roundDao.get(roundId));
 		assertFalse(matchPlayerDao.exists(key));
 	}
 
