@@ -89,10 +89,12 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 
 		assertEquals(1, cursor.getCount());
 		assertTrue(cursor.moveToNext());
-		assertEquals(playerRound.getRoundId(), cursor.getLong(0));
-		assertEquals(playerRound.getPlayer().getId(), cursor.getLong(1));
-		assertEquals(playerRound.getBet(), cursor.getLong(2));
-		assertEquals(playerRound.getWins(), cursor.getLong(3));
+		assertTrue(playerRound.getId() > 0);
+		assertEquals(playerRound.getId(), cursor.getLong(0));
+		assertEquals(playerRound.getRoundId(), cursor.getLong(1));
+		assertEquals(playerRound.getPlayer().getId(), cursor.getLong(2));
+		assertEquals(playerRound.getBet(), cursor.getLong(3));
+		assertEquals(playerRound.getWins(), cursor.getLong(4));
 
 		cursor.close();
 	}
@@ -118,27 +120,31 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 		assertFalse(dao.exists(playerRound));
 	}
 
+	public void testGet() {
+		dao.save(playerRound);
+		PlayerRound playerRound2 = dao.get(playerRound.getId());
+		assertEquals(playerRound, playerRound2);
+	}
+
 	public void testGetPlayerRoundsForRound() {
-		PlayerTable.clear(db);
+		dao.save(playerRound);
 
 		List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
+		playerRounds.add(playerRound);
 
-		Player player1 = new Player("Dummy 1");
+		// create and add a second PlayerRound object
 		Player player2 = new Player("Dummy 2");
-		Player player3 = new Player("Dummy 3");
+		playerDao.save(player2);
 
-		playerRounds.add(new PlayerRound(player1));
-		playerRounds.add(new PlayerRound(player2));
-		playerRounds.add(new PlayerRound(player3));
-
-		for (PlayerRound pr : playerRounds) {
-			playerDao.save(pr.getPlayer());
-			pr.setRoundId(7);
-			dao.save(pr);
-		}
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		playerRound2.setRoundId(playerRound.getRoundId());
+		playerRound2.setBet(42);
+		playerRound2.setWins(21);
+		dao.save(playerRound2);
+		playerRounds.add(playerRound2);
 
 		assertEquals(playerRounds,
-				dao.getPlayerRoundsForMatch(playerRound.getRoundId()));
+				dao.getPlayerRoundsForRound(playerRound.getRoundId()));
 
 		PlayerTable.clear(db);
 	}

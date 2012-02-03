@@ -23,10 +23,10 @@ public class PlayerRoundTable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CREATE TABLE " + PlayerRoundTable.NAME + " (");
 		sb.append(BaseColumns._ID + " INTEGER PRIMARY KEY, ");
-		sb.append(PlayerRoundColumns.BET + " INTEGER NOT NULL, ");
-		sb.append(PlayerRoundColumns.WINS + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.ROUND_ID + " INTEGER NOT NULL, ");
 		sb.append(PlayerRoundColumns.PLAYER_ID + " INTEGER NOT NULL, ");
+		sb.append(PlayerRoundColumns.BET + " INTEGER NOT NULL, ");
+		sb.append(PlayerRoundColumns.WINS + " INTEGER NOT NULL, ");
 		sb.append("FOREIGN KEY(" + PlayerRoundColumns.ROUND_ID
 				+ ") REFERENCES " + RoundTable.NAME + "(" + BaseColumns._ID
 				+ "), ");
