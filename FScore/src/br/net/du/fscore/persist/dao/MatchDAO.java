@@ -63,7 +63,6 @@ public class MatchDAO implements Dao<Match> {
 		}
 	}
 
-	@Override
 	public Match get(long id) {
 		Match match = null;
 		Cursor cursor = db.query(MatchTable.NAME, MatchColumns.get(),
@@ -80,7 +79,6 @@ public class MatchDAO implements Dao<Match> {
 		return match;
 	}
 
-	@Override
 	public List<Match> getAll() {
 		List<Match> myList = new ArrayList<Match>();
 

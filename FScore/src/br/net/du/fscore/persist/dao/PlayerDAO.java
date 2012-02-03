@@ -59,7 +59,6 @@ public class PlayerDAO implements Dao<Player> {
 		}
 	}
 
-	@Override
 	public Player get(long id) {
 		Player player = null;
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
@@ -76,7 +75,6 @@ public class PlayerDAO implements Dao<Player> {
 		return player;
 	}
 
-	@Override
 	public List<Player> getAll() {
 		List<Player> myList = new ArrayList<Player>();
 

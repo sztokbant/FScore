@@ -114,10 +114,4 @@ public class RoundDAOTest extends AndroidTestCase {
 
 		assertEquals(rounds, dao.getRoundsForMatch(matchId));
 	}
-
-	public void testGetAll() {
-		List<Round> roundList = dao.getAll();
-		assertEquals(1, roundList.size());
-		assertEquals(round, roundList.get(0));
-	}
 }

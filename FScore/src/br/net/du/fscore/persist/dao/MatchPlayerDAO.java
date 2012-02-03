@@ -10,11 +10,10 @@ import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
-import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.MatchPlayerTable.MatchPlayerColumns;
 import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
 
-public class MatchPlayerDAO {
+public class MatchPlayerDAO implements Dao<MatchPlayerKey> {
 	private static final String INSERT = "INSERT INTO "
 			+ MatchPlayerTable.NAME
 			+ "("
@@ -31,13 +30,22 @@ public class MatchPlayerDAO {
 		insertStatement = db.compileStatement(INSERT);
 	}
 
-	public void save(MatchPlayerKey key) {
+	@Override
+	public long save(MatchPlayerKey key) {
 		if (!exists(key)) {
 			insertStatement.clearBindings();
 			insertStatement.bindLong(1, key.getMatchId());
 			insertStatement.bindLong(2, key.getPlayerId());
 			insertStatement.executeInsert();
 		}
+
+		// dummy
+		return 0;
+	}
+
+	@Override
+	public void update(MatchPlayerKey key) {
+		// dummy
 	}
 
 	public void delete(MatchPlayerKey key) {
