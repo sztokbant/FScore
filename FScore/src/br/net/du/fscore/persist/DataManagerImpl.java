@@ -25,7 +25,7 @@ import br.net.du.fscore.persist.table.RoundTable;
 
 public class DataManagerImpl implements DataManager {
 
-	public static final int DATABASE_VERSION = 8;
+	public static final int DATABASE_VERSION = 9;
 
 	private Context context;
 	private SQLiteDatabase db;

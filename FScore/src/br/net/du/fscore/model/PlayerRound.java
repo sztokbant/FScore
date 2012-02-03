@@ -2,6 +2,7 @@ package br.net.du.fscore.model;
 
 public class PlayerRound implements Comparable<PlayerRound> {
 
+	private long id = 0;
 	private int bet = 0;
 	private int wins = 0;
 	private Player player = null;
@@ -41,6 +42,18 @@ public class PlayerRound implements Comparable<PlayerRound> {
 
 	public void setRoundId(long roundId) {
 		this.roundId = roundId;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public boolean isPersistent() {
+		return this.getId() != 0;
 	}
 
 	@Override

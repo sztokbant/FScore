@@ -61,10 +61,12 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 
 		assertEquals(1, cursor.getCount());
 		assertTrue(cursor.moveToNext());
-		assertEquals(playerRound.getRoundId(), cursor.getLong(0));
-		assertEquals(playerRound.getPlayer().getId(), cursor.getLong(1));
-		assertEquals(playerRound.getBet(), cursor.getLong(2));
-		assertEquals(playerRound.getWins(), cursor.getLong(3));
+		assertTrue(playerRound.getId() > 0);
+		assertEquals(playerRound.getId(), cursor.getLong(0));
+		assertEquals(playerRound.getRoundId(), cursor.getLong(1));
+		assertEquals(playerRound.getPlayer().getId(), cursor.getLong(2));
+		assertEquals(playerRound.getBet(), cursor.getLong(3));
+		assertEquals(playerRound.getWins(), cursor.getLong(4));
 
 		cursor.close();
 	}

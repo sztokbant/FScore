@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.provider.BaseColumns;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.persist.TableColumnsUtils;
@@ -33,7 +34,10 @@ public class PlayerRoundDAO {
 	}
 
 	public void delete(PlayerRound playerRound) {
-		// TODO
+		if (playerRound != null) {
+			db.delete(PlayerRoundTable.NAME, BaseColumns._ID + " = ?",
+					new String[] { String.valueOf(playerRound.getId()) });
+		}
 	}
 
 	public boolean exists(PlayerRound playerRound) {
