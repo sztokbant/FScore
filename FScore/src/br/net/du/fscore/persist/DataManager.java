@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.database.sqlite.SQLiteDatabase;
 import br.net.du.fscore.model.Match;
-import br.net.du.fscore.model.Player;
 
 public interface DataManager {
 
@@ -25,12 +24,4 @@ public interface DataManager {
 	public List<Match> getAllMatches();
 
 	public boolean deleteMatch(Match match);
-
-	// Player operations
-
-	public long savePlayer(Player player);
-
-	public Player getPlayer(long playerId);
-
-	public List<Player> getAllPlayers();
 }

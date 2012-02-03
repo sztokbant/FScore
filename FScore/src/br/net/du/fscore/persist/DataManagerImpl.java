@@ -223,21 +223,6 @@ public class DataManagerImpl implements DataManager {
 		return result;
 	}
 
-	@Override
-	public long savePlayer(Player player) {
-		return playerDao.save(player);
-	}
-
-	@Override
-	public Player getPlayer(long playerId) {
-		return playerDao.get(playerId);
-	}
-
-	@Override
-	public List<Player> getAllPlayers() {
-		return playerDao.getAll();
-	}
-
 	private class OpenHelper extends SQLiteOpenHelper {
 		private Context context;
 
