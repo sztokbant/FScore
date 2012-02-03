@@ -3,8 +3,8 @@ package br.net.du.fscore.model;
 public class PlayerRound implements Comparable<PlayerRound> {
 
 	private long id = 0;
-	private int bet = 0;
-	private int wins = 0;
+	private long bet = 0;
+	private long wins = 0;
 	private Player player = null;
 	private long roundId = 0;
 
@@ -12,19 +12,19 @@ public class PlayerRound implements Comparable<PlayerRound> {
 		this.player = player;
 	}
 
-	public int getBet() {
+	public long getBet() {
 		return bet;
 	}
 
-	public void setBet(int bet) {
+	public void setBet(long bet) {
 		this.bet = bet;
 	}
 
-	public int getWins() {
+	public long getWins() {
 		return wins;
 	}
 
-	public void setWins(int wins) {
+	public void setWins(long wins) {
 		this.wins = wins;
 	}
 
@@ -80,8 +80,8 @@ public class PlayerRound implements Comparable<PlayerRound> {
 	@Override
 	public int hashCode() {
 		int hash = 1;
-		hash = hash * 31 + bet;
-		hash = hash * 31 + wins;
+		hash = hash * 31 + (int) bet;
+		hash = hash * 31 + (int) wins;
 		hash = hash * 31 + (player == null ? 0 : player.hashCode());
 		return hash;
 	}
