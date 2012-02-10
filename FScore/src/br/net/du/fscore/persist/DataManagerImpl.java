@@ -153,10 +153,17 @@ public class DataManagerImpl implements DataManager {
 			for (Round round : match.getRounds()) {
 				if (!round.isPersistent()) {
 					round.setMatchId(match.getId());
-					roundDao.save(round);
+					saveRound(round);
+					Log.i(context.getResources().getString(R.string.app_name),
+							"saved round [" + round.getId() + "]");
 				}
 			}
 		}
+	}
+
+	private void saveRound(Round round) {
+		roundDao.save(round);
+		// TODO: store related PlayerRounds
 	}
 
 	private void eraseRemovedRoundsFromMatch(Match match) {
@@ -165,9 +172,16 @@ public class DataManagerImpl implements DataManager {
 		dbRemainingRounds.removeAll(match.getRounds());
 		if (dbRemainingRounds.size() > 0) {
 			for (Round round : dbRemainingRounds) {
-				roundDao.delete(round);
+				Log.i(context.getResources().getString(R.string.app_name),
+						"deleting round [" + round.getId() + "]");
+				eraseRound(round);
 			}
 		}
+	}
+
+	private void eraseRound(Round round) {
+		roundDao.delete(round);
+		// TODO: delete related PlayerRounds
 	}
 
 	@Override

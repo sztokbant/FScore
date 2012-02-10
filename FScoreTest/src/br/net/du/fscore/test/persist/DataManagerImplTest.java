@@ -5,8 +5,11 @@ import java.util.List;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import android.util.Log;
+import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
@@ -67,23 +70,43 @@ public class DataManagerImplTest extends AndroidTestCase {
 	public void testSaveNewMatch() {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
+		Player player2 = new Player("Player 2");
 		match.withPlayer(player);
+		match.withPlayer(player2);
 
+		// TODO: testing with Rounds+PlayerRounds won't work while DataManager
+		// doesn't implement saving/deleting them
 		Round round1 = new Round(3);
+		// round1.addPlayerRound(new PlayerRound(player));
+		// round1.addPlayerRound(new PlayerRound(player2));
+
 		Round round2 = new Round(7);
+		// round2.addPlayerRound(new PlayerRound(player));
+		// round2.addPlayerRound(new PlayerRound(player2));
+
 		match.addRound(round1);
 		match.addRound(round2);
 
+		Log.i(getContext().getResources().getString(R.string.test_app_name),
+				"beginning DataManager.saveMatch()");
 		long matchId = dataManager.saveMatch(match);
+		Log.i(getContext().getResources().getString(R.string.test_app_name),
+				"finishing DataManager.saveMatch()");
 
 		assertTrue(matchId > 0);
 		assertEquals(matchId, match.getId());
 		assertTrue(player.getId() > 0);
+		assertTrue(round1.getId() > 0);
+		assertTrue(round2.getId() > 0);
+		assertTrue(round1.getId() != round2.getId());
 		assertEquals(matchId, round1.getMatchId());
 		assertEquals(matchId, round2.getMatchId());
 
 		Match match2 = matchDao.get(matchId);
+
+		// build Match from scratch using DAOs to verify equivalence
 		match2.withPlayer(playerDao.get(player.getId()));
+		match2.withPlayer(playerDao.get(player2.getId()));
 		match2.addRound(roundDao.get(round1.getId()));
 		match2.addRound(roundDao.get(round2.getId()));
 		assertEquals(match, match2);
