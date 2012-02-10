@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, FScore!</string>
     <string name="app_name">FScore</string>
+    <string name="test_app_name">FScoreTest</string>
 
 </resources>
