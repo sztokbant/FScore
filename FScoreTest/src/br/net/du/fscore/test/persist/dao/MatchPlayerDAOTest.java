@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
@@ -20,7 +19,7 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
 

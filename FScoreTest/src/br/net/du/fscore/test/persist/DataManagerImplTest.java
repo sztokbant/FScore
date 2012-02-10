@@ -11,7 +11,6 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
@@ -33,7 +32,7 @@ public class DataManagerImplTest extends AndroidTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		clearAllTables();
 

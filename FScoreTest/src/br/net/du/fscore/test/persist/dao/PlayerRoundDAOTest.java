@@ -9,7 +9,6 @@ import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerRoundDAO;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
@@ -28,7 +27,7 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
 

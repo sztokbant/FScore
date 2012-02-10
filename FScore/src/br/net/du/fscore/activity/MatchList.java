@@ -25,7 +25,7 @@ import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
+import br.net.du.fscore.persist.DataManager;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
@@ -39,7 +39,7 @@ public class MatchList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
 
-		dataManager = new DataManagerImpl(this);
+		dataManager = new DataManager(this);
 
 		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,

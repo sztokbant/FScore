@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerRoundTable.PlayerRoundColumns;
 
@@ -15,7 +14,7 @@ public class PlayerRoundTableTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
 		PlayerRoundTable.clear(db);

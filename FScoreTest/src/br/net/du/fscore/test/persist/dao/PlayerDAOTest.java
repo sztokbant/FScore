@@ -8,7 +8,6 @@ import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
@@ -23,7 +22,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
 

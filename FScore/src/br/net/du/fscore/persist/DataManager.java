@@ -25,7 +25,7 @@ import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.RoundTable;
 
-public class DataManagerImpl implements DataManager {
+public class DataManager {
 
 	public static final int DATABASE_VERSION = 10;
 
@@ -39,12 +39,12 @@ public class DataManagerImpl implements DataManager {
 	private RoundDAO roundDao;
 	private PlayerRoundDAO playerRoundDao;
 
-	public DataManagerImpl(Context context) {
+	public DataManager(Context context) {
 		this.context = context;
 		openDb();
 	}
 
-	public DataManagerImpl(Context context, boolean useDebugDb) {
+	public DataManager(Context context, boolean useDebugDb) {
 		this.context = context;
 		this.useDebugDb = useDebugDb;
 		openDb();
@@ -54,7 +54,6 @@ public class DataManagerImpl implements DataManager {
 		return db;
 	}
 
-	@Override
 	public boolean closeDb() {
 		if (db != null && db.isOpen()) {
 			db.close();
@@ -64,7 +63,6 @@ public class DataManagerImpl implements DataManager {
 		return false;
 	}
 
-	@Override
 	public boolean openDb() {
 		if (db == null || !db.isOpen()) {
 			db = new OpenHelper(this.context, useDebugDb).getWritableDatabase();
@@ -83,7 +81,6 @@ public class DataManagerImpl implements DataManager {
 		return false;
 	}
 
-	@Override
 	public long saveMatch(Match match) {
 		long matchId = 0L;
 		try {
@@ -200,7 +197,6 @@ public class DataManagerImpl implements DataManager {
 		roundDao.delete(roundDao.get(roundId));
 	}
 
-	@Override
 	public Match getMatch(long matchId) {
 		Match match = matchDao.get(matchId);
 		if (match != null) {
@@ -210,7 +206,6 @@ public class DataManagerImpl implements DataManager {
 		return match;
 	}
 
-	@Override
 	public List<Match> getAllMatches() {
 		List<Match> matches = new ArrayList<Match>();
 
@@ -221,7 +216,6 @@ public class DataManagerImpl implements DataManager {
 		return matches;
 	}
 
-	@Override
 	public boolean deleteMatch(Match match) {
 		boolean result = false;
 		try {
@@ -254,7 +248,6 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	// TODO: this method shouldn't know any db cursors...
-	@Override
 	public List<Player> getPlayers(long matchId) {
 		List<Player> myList = new ArrayList<Player>();
 
@@ -287,7 +280,7 @@ public class DataManagerImpl implements DataManager {
 		OpenHelper(final Context context, boolean useDebugDatabase) {
 			super(context, useDebugDatabase ? DataConstants.DEBUG_DATABASE_NAME
 					: DataConstants.DATABASE_NAME, null,
-					DataManagerImpl.DATABASE_VERSION);
+					DataManager.DATABASE_VERSION);
 			this.context = context;
 		}
 

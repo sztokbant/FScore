@@ -31,7 +31,7 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
+import br.net.du.fscore.persist.DataManager;
 
 // Tabs based on tutorial on http://joshclemm.com/blog/?p=59
 public class SingleMatch extends TabActivity implements OnTabChangeListener {
@@ -62,7 +62,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 		match = (Match) getIntent().getSerializableExtra("selectedMatch");
 
-		dataManager = new DataManagerImpl(this);
+		dataManager = new DataManager(this);
 
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);

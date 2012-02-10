@@ -9,7 +9,6 @@ import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.table.MatchTable;
 import br.net.du.fscore.persist.table.MatchTable.MatchColumns;
@@ -24,7 +23,7 @@ public class MatchDAOTest extends AndroidTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dataManager = new DataManagerImpl(getContext(), true);
+		dataManager = new DataManager(getContext(), true);
 		db = dataManager.getDb();
 		dataManager.openDb();
 
