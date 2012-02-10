@@ -9,7 +9,6 @@ import android.util.Log;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
-import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
@@ -85,10 +84,10 @@ public class DataManagerImplTest extends AndroidTestCase {
 		match.addRound(round1);
 		match.addRound(round2);
 
-		Log.i(getContext().getResources().getString(R.string.test_app_name),
+		Log.i(getContext().getResources().getString(R.string.app_name),
 				"beginning DataManager.saveMatch()");
 		long matchId = dataManager.saveMatch(match);
-		Log.i(getContext().getResources().getString(R.string.test_app_name),
+		Log.i(getContext().getResources().getString(R.string.app_name),
 				"finishing DataManager.saveMatch()");
 
 		assertTrue(matchId > 0);
