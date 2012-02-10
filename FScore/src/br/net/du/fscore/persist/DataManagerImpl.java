@@ -167,11 +167,25 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	private void eraseRemovedRoundsFromMatch(Match match) {
-		List<Round> dbRemainingRounds = roundDao.getRoundsForMatch(match
-				.getId());
-		dbRemainingRounds.removeAll(match.getRounds());
-		if (dbRemainingRounds.size() > 0) {
-			for (Round round : dbRemainingRounds) {
+		List<Round> dbRounds = roundDao.getRoundsForMatch(match.getId());
+		List<Round> toDeleteRounds = new ArrayList<Round>();
+
+		for (Round dbRound : dbRounds) {
+			boolean deleteIt = true;
+			for (Round objRound : match.getRounds()) {
+				if (dbRound.getId() == objRound.getId()) {
+					deleteIt = false;
+					break;
+				}
+			}
+
+			if (deleteIt) {
+				toDeleteRounds.add(dbRound);
+			}
+		}
+
+		if (toDeleteRounds.size() > 0) {
+			for (Round round : toDeleteRounds) {
 				Log.i(context.getResources().getString(R.string.app_name),
 						"deleting round [" + round.getId() + "]");
 				eraseRound(round);

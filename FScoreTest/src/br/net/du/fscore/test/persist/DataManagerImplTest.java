@@ -74,8 +74,6 @@ public class DataManagerImplTest extends AndroidTestCase {
 		match.withPlayer(player);
 		match.withPlayer(player2);
 
-		// TODO: testing with Rounds+PlayerRounds won't work while DataManager
-		// doesn't implement saving/deleting them
 		Round round1 = new Round(3);
 		// round1.addPlayerRound(new PlayerRound(player));
 		// round1.addPlayerRound(new PlayerRound(player2));
@@ -109,6 +107,8 @@ public class DataManagerImplTest extends AndroidTestCase {
 		match2.withPlayer(playerDao.get(player2.getId()));
 		match2.addRound(roundDao.get(round1.getId()));
 		match2.addRound(roundDao.get(round2.getId()));
+
+		// TODO: add PlayerRounds otherwise the next test will fail
 		assertEquals(match, match2);
 
 		MatchPlayerKey key = new MatchPlayerKey(matchId, player.getId());
