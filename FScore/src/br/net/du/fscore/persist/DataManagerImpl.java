@@ -88,6 +88,7 @@ public class DataManagerImpl implements DataManager {
 			db.beginTransaction();
 			matchId = matchDao.save(match);
 
+			// TODO: check if EXISTING objects are being properly updated
 			storeNewPlayersForMatch(match);
 			eraseRemovedPlayersFromMatch(match);
 			storeNewRoundsForMatch(match);
@@ -167,35 +168,35 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	private void eraseRemovedRoundsFromMatch(Match match) {
-		List<Round> dbRounds = roundDao.getRoundsForMatch(match.getId());
-		List<Round> toDeleteRounds = new ArrayList<Round>();
+		List<Long> dbRoundIds = roundDao.getRoundIdsForMatch(match.getId());
+		List<Long> toDeleteRoundIds = new ArrayList<Long>();
 
-		for (Round dbRound : dbRounds) {
+		for (Long dbRoundId : dbRoundIds) {
 			boolean deleteIt = true;
 			for (Round objRound : match.getRounds()) {
-				if (dbRound.getId() == objRound.getId()) {
+				if (dbRoundId == objRound.getId()) {
 					deleteIt = false;
 					break;
 				}
 			}
 
 			if (deleteIt) {
-				toDeleteRounds.add(dbRound);
+				toDeleteRoundIds.add(dbRoundId);
 			}
 		}
 
-		if (toDeleteRounds.size() > 0) {
-			for (Round round : toDeleteRounds) {
+		if (toDeleteRoundIds.size() > 0) {
+			for (Long roundId : toDeleteRoundIds) {
 				Log.i(context.getResources().getString(R.string.app_name),
-						"deleting round [" + round.getId() + "]");
-				eraseRound(round);
+						"deleting round [" + roundId + "]");
+				eraseRound(roundId);
 			}
 		}
 	}
 
-	private void eraseRound(Round round) {
-		roundDao.delete(round);
-		// TODO: delete related PlayerRounds
+	private void eraseRound(Long roundId) {
+		// TODO: properly delete Round and related PlayerRounds
+		roundDao.delete(roundDao.get(roundId));
 	}
 
 	@Override
