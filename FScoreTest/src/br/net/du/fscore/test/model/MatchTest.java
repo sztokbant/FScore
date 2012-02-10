@@ -103,4 +103,23 @@ public class MatchTest extends AndroidTestCase {
 		match2.addRound(round1);
 		assertFalse(match1.equals(match2));
 	}
+
+	public void testPlayerCannotBeNull() {
+		try {
+			match1.withPlayer(null);
+			fail("Player should not be null");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	public void testRoundCannotBeNull() {
+		try {
+			match1.addRound(null);
+			fail("Round should not be null");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
 }

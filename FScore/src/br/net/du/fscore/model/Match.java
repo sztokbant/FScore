@@ -43,12 +43,17 @@ public class Match implements Serializable, Comparable<Match> {
 		this.date = date;
 	}
 
-	public Match withPlayer(Player player) {
+	public Match withPlayer(Player player) throws IllegalArgumentException {
+		if (player == null) {
+			throw new IllegalArgumentException("Player cannot be null");
+		}
+
 		for (Player p : players) {
 			if (p.equals(player)) {
 				return this;
 			}
 		}
+
 		players.add(player);
 		return this;
 	}
@@ -57,7 +62,11 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
-	public void addRound(Round round) {
+	public void addRound(Round round) throws IllegalArgumentException {
+		if (round == null) {
+			throw new IllegalArgumentException("Round cannot be null");
+		}
+
 		round.setMatchId(this.getId());
 		rounds.add(round);
 	}
