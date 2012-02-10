@@ -21,7 +21,7 @@ import br.net.du.fscore.persist.table.MatchTable;
 import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.RoundTable;
 
-public class DataManagerImplTest extends AndroidTestCase {
+public class DataManagerTest extends AndroidTestCase {
 	SQLiteDatabase db;
 	DataManager dataManager;
 
