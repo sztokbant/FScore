@@ -1,8 +1,5 @@
 package br.net.du.fscore.persist.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -94,31 +91,5 @@ public class MatchPlayerDAO implements Dao<MatchPlayerKey> {
 		}
 
 		return isOrphan;
-	}
-
-	public List<Player> getPlayers(long matchId) {
-		List<Player> myList = new ArrayList<Player>();
-
-		Cursor cursor = db.query(MatchPlayerTable.NAME,
-				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
-				new String[] { String.valueOf(matchId) }, // values
-				null, // group by
-				null, // having
-				MatchPlayerColumns.PLAYER_ID, // order by
-				null);
-
-		if (cursor.moveToFirst()) {
-			PlayerDAO playerDAO = new PlayerDAO(db);
-			do {
-				Player player = playerDAO.get(cursor.getLong(1));
-				myList.add(player);
-			} while (cursor.moveToNext());
-		}
-
-		if (!cursor.isClosed()) {
-			cursor.close();
-		}
-
-		return myList;
 	}
 }

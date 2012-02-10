@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,6 +19,7 @@ import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerRoundDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
+import br.net.du.fscore.persist.table.MatchPlayerTable.MatchPlayerColumns;
 import br.net.du.fscore.persist.table.MatchTable;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerTable;
@@ -133,8 +135,7 @@ public class DataManagerImpl implements DataManager {
 	}
 
 	private void eraseRemovedPlayersFromMatch(Match match) {
-		List<Player> dbRemainingPlayers = matchPlayerDao.getPlayers(match
-				.getId());
+		List<Player> dbRemainingPlayers = this.getPlayers(match.getId());
 		dbRemainingPlayers.removeAll(match.getPlayers());
 		if (dbRemainingPlayers.size() > 0) {
 			for (Player player : dbRemainingPlayers) {
@@ -203,7 +204,7 @@ public class DataManagerImpl implements DataManager {
 	public Match getMatch(long matchId) {
 		Match match = matchDao.get(matchId);
 		if (match != null) {
-			match.getPlayers().addAll(matchPlayerDao.getPlayers(match.getId()));
+			match.getPlayers().addAll(this.getPlayers(match.getId()));
 			match.getRounds().addAll(roundDao.getRoundsForMatch(match.getId()));
 		}
 		return match;
@@ -250,6 +251,34 @@ public class DataManagerImpl implements DataManager {
 		}
 
 		return result;
+	}
+
+	// TODO: this method shouldn't know any db cursors...
+	@Override
+	public List<Player> getPlayers(long matchId) {
+		List<Player> myList = new ArrayList<Player>();
+
+		Cursor cursor = db.query(MatchPlayerTable.NAME,
+				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
+				new String[] { String.valueOf(matchId) }, // values
+				null, // group by
+				null, // having
+				MatchPlayerColumns.PLAYER_ID, // order by
+				null);
+
+		if (cursor.moveToFirst()) {
+			PlayerDAO playerDAO = new PlayerDAO(db);
+			do {
+				Player player = playerDAO.get(cursor.getLong(1));
+				myList.add(player);
+			} while (cursor.moveToNext());
+		}
+
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+
+		return myList;
 	}
 
 	private class OpenHelper extends SQLiteOpenHelper {

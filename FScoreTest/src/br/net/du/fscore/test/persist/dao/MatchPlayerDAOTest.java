@@ -1,8 +1,5 @@
 package br.net.du.fscore.test.persist.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -11,9 +8,7 @@ import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.DataManagerImpl;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
-import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
-import br.net.du.fscore.persist.table.PlayerTable;
 
 public class MatchPlayerDAOTest extends AndroidTestCase {
 	SQLiteDatabase db;
@@ -81,25 +76,5 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 		assertTrue(dao.isOrphan(player));
 		dao.save(key);
 		assertFalse(dao.isOrphan(player));
-	}
-
-	public void testGetPlayers() {
-		PlayerTable.clear(db);
-
-		List<Player> players = new ArrayList<Player>();
-		players.add(new Player("Dummy 1"));
-		players.add(new Player("Dummy 2"));
-		players.add(new Player("Dummy 3"));
-
-		PlayerDAO playerDao = new PlayerDAO(db);
-		for (Player p : players) {
-			playerDao.save(p);
-			key.setPlayerId(p.getId());
-			dao.save(key);
-		}
-
-		assertEquals(players, dao.getPlayers(key.getMatchId()));
-
-		PlayerTable.clear(db);
 	}
 }
