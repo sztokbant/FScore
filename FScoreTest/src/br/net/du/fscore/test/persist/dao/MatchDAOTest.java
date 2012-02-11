@@ -101,12 +101,12 @@ public class MatchDAOTest extends AndroidTestCase {
 	}
 
 	public void testGet() {
-		Match match2 = dao.get(match.getId());
+		Match match2 = dao.retrieve(match.getId());
 		assertEquals(match, match2);
 	}
 
 	public void testGetAll() {
-		List<Match> matchList = dao.getAll();
+		List<Match> matchList = dao.retrieveAll();
 		assertEquals(1, matchList.size());
 		assertEquals(match, matchList.get(0));
 	}

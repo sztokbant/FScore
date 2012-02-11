@@ -96,7 +96,7 @@ public class MatchPlayerDAO implements Dao<MatchPlayerKey> {
 		return isOrphan;
 	}
 
-	public List<Long> getPlayerIds(long matchId) {
+	public List<Long> retrievePlayerIds(long matchId) {
 		List<Long> playerIds = new ArrayList<Long>();
 
 		Cursor cursor = db.query(MatchPlayerTable.NAME,

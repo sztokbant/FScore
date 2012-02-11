@@ -98,13 +98,13 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(matchId, round1.getMatchId());
 		assertEquals(matchId, round2.getMatchId());
 
-		Match match2 = matchDao.get(matchId);
+		Match match2 = matchDao.retrieve(matchId);
 
 		// build Match from scratch using DAOs to verify equivalence
-		match2.withPlayer(playerDao.get(player.getId()));
-		match2.withPlayer(playerDao.get(player2.getId()));
-		match2.addRound(roundDao.get(round1.getId()));
-		match2.addRound(roundDao.get(round2.getId()));
+		match2.withPlayer(playerDao.retrieve(player.getId()));
+		match2.withPlayer(playerDao.retrieve(player2.getId()));
+		match2.addRound(roundDao.retrieve(round1.getId()));
+		match2.addRound(roundDao.retrieve(round2.getId()));
 
 		// TODO: add PlayerRounds otherwise the next test will fail
 		assertEquals(match, match2);
@@ -133,8 +133,8 @@ public class DataManagerTest extends AndroidTestCase {
 		assertTrue(player2.getId() > 0);
 		assertTrue(player2.getId() > player1.getId());
 		assertEquals(2, match.getPlayers().size());
-		assertEquals(match.getPlayers().get(0), playerDao.get(player1Id));
-		assertEquals(match.getPlayers().get(1), playerDao.get(player2Id));
+		assertEquals(match.getPlayers().get(0), playerDao.retrieve(player1Id));
+		assertEquals(match.getPlayers().get(1), playerDao.retrieve(player2Id));
 		assertTrue(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 		assertEquals(match, dataManager.getMatch(matchId));
@@ -165,8 +165,8 @@ public class DataManagerTest extends AndroidTestCase {
 		// assertEquals(0, player1.getId());
 
 		assertEquals(player2Id, player2.getId());
-		assertNull(playerDao.get(player1Id));
-		assertEquals(match.getPlayers().get(0), playerDao.get(player2Id));
+		assertNull(playerDao.retrieve(player1Id));
+		assertEquals(match.getPlayers().get(0), playerDao.retrieve(player2Id));
 		assertFalse(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 
@@ -190,8 +190,8 @@ public class DataManagerTest extends AndroidTestCase {
 		assertTrue(round2.getId() > 0);
 		assertTrue(round2.getId() > round1.getId());
 		assertEquals(2, match.getRounds().size());
-		assertEquals(match.getRounds().get(0), roundDao.get(round1Id));
-		assertEquals(match.getRounds().get(1), roundDao.get(round2Id));
+		assertEquals(match.getRounds().get(0), roundDao.retrieve(round1Id));
+		assertEquals(match.getRounds().get(1), roundDao.retrieve(round2Id));
 
 		assertEquals(match, dataManager.getMatch(matchId));
 	}
@@ -218,8 +218,8 @@ public class DataManagerTest extends AndroidTestCase {
 		// assertEquals(0, round1.getId());
 
 		assertEquals(round2Id, round2.getId());
-		assertNull(roundDao.get(round1Id));
-		assertEquals(match.getRounds().get(0), roundDao.get(round2Id));
+		assertNull(roundDao.retrieve(round1Id));
+		assertEquals(match.getRounds().get(0), roundDao.retrieve(round2Id));
 
 		assertEquals(match, dataManager.getMatch(matchId));
 	}
@@ -265,9 +265,9 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(0, match.getId());
 		assertEquals(0, player.getId());
 		assertEquals(0, round.getId());
-		assertNull(matchDao.get(matchId));
-		assertNull(playerDao.get(playerId));
-		assertNull(roundDao.get(roundId));
+		assertNull(matchDao.retrieve(matchId));
+		assertNull(playerDao.retrieve(playerId));
+		assertNull(roundDao.retrieve(roundId));
 		assertFalse(matchPlayerDao.exists(key));
 	}
 
@@ -289,9 +289,9 @@ public class DataManagerTest extends AndroidTestCase {
 
 		assertEquals(0, match1.getId());
 		assertEquals(playerId, player.getId());
-		assertNull(matchDao.get(matchId1));
+		assertNull(matchDao.retrieve(matchId1));
 		assertEquals(match2, dataManager.getMatch(matchId2));
-		assertEquals(player, playerDao.get(playerId));
+		assertEquals(player, playerDao.retrieve(playerId));
 		assertFalse(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 	}

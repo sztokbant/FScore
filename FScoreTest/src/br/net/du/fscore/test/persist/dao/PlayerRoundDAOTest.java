@@ -121,7 +121,7 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 
 	public void testGet() {
 		dao.save(playerRound);
-		PlayerRound playerRound2 = dao.get(playerRound.getId());
+		PlayerRound playerRound2 = dao.retrieve(playerRound.getId());
 		assertEquals(playerRound, playerRound2);
 	}
 
@@ -143,7 +143,7 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 		playerRounds.add(playerRound2);
 
 		assertEquals(playerRounds,
-				dao.getPlayerRoundsForRound(playerRound.getRoundId()));
+				dao.retrievePlayerRoundsForRound(playerRound.getRoundId()));
 
 		PlayerTable.clear(db);
 	}

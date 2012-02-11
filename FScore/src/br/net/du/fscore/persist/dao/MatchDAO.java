@@ -63,7 +63,7 @@ public class MatchDAO implements Dao<Match> {
 		}
 	}
 
-	public Match get(long id) {
+	public Match retrieve(long id) {
 		Match match = null;
 		Cursor cursor = db.query(MatchTable.NAME, MatchColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
@@ -79,7 +79,7 @@ public class MatchDAO implements Dao<Match> {
 		return match;
 	}
 
-	public List<Match> getAll() {
+	public List<Match> retrieveAll() {
 		List<Match> myList = new ArrayList<Match>();
 
 		Cursor cursor = db.query(MatchTable.NAME, MatchColumns.get(), null, // where

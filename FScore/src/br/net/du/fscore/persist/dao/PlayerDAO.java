@@ -59,7 +59,7 @@ public class PlayerDAO implements Dao<Player> {
 		}
 	}
 
-	public Player get(long id) {
+	public Player retrieve(long id) {
 		Player player = null;
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
@@ -75,7 +75,7 @@ public class PlayerDAO implements Dao<Player> {
 		return player;
 	}
 
-	public List<Player> getAll() {
+	public List<Player> retrieveAll() {
 		List<Player> myList = new ArrayList<Player>();
 
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(), null, // where
@@ -118,7 +118,7 @@ public class PlayerDAO implements Dao<Player> {
 			cursor.close();
 		}
 
-		return this.get(playerId);
+		return this.retrieve(playerId);
 	}
 
 	private Player buildPlayerFromCursor(Cursor cursor) {

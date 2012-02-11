@@ -94,7 +94,7 @@ public class RoundDAOTest extends AndroidTestCase {
 	}
 
 	public void testGet() {
-		Round round2 = dao.get(round.getId());
+		Round round2 = dao.retrieve(round.getId());
 		assertEquals(round, round2);
 	}
 
@@ -111,6 +111,6 @@ public class RoundDAOTest extends AndroidTestCase {
 			dao.save(r);
 		}
 
-		assertEquals(rounds, dao.getRoundsForMatch(matchId));
+		assertEquals(rounds, dao.retrieveRoundsForMatch(matchId));
 	}
 }

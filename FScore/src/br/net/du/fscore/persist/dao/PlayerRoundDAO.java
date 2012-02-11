@@ -81,7 +81,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		return exists;
 	}
 
-	public PlayerRound get(long id) {
+	public PlayerRound retrieve(long id) {
 		PlayerRound playerRound = null;
 
 		Cursor cursor = db.query(PlayerRoundTable.NAME,
@@ -103,7 +103,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		return playerRound;
 	}
 
-	public List<PlayerRound> getPlayerRoundsForRound(long roundId) {
+	public List<PlayerRound> retrievePlayerRoundsForRound(long roundId) {
 		List<PlayerRound> myList = new ArrayList<PlayerRound>();
 
 		Cursor cursor = db.query(PlayerRoundTable.NAME,
@@ -134,7 +134,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 
 		if (cursor != null) {
 			PlayerDAO playerDao = new PlayerDAO(db);
-			playerRound = new PlayerRound(playerDao.get(cursor.getLong(2)));
+			playerRound = new PlayerRound(playerDao.retrieve(cursor.getLong(2)));
 
 			playerRound.setId(cursor.getLong(0));
 			playerRound.setRoundId(cursor.getLong(1));

@@ -62,7 +62,7 @@ public class RoundDAO implements Dao<Round> {
 		}
 	}
 
-	public Round get(long id) {
+	public Round retrieve(long id) {
 		Round round = null;
 		Cursor cursor = db.query(RoundTable.NAME, RoundColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
@@ -78,7 +78,7 @@ public class RoundDAO implements Dao<Round> {
 		return round;
 	}
 
-	public List<Round> getRoundsForMatch(long matchId) {
+	public List<Round> retrieveRoundsForMatch(long matchId) {
 		List<Round> myList = new ArrayList<Round>();
 
 		Cursor cursor = db.query(RoundTable.NAME, RoundColumns.get(),
@@ -103,7 +103,7 @@ public class RoundDAO implements Dao<Round> {
 		return myList;
 	}
 
-	public List<Long> getRoundIdsForMatch(long matchId) {
+	public List<Long> retrieveRoundIdsForMatch(long matchId) {
 		List<Long> myList = new ArrayList<Long>();
 
 		Cursor cursor = db.query(RoundTable.NAME,

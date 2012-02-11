@@ -90,12 +90,12 @@ public class PlayerDAOTest extends AndroidTestCase {
 	}
 
 	public void testGet() {
-		Player player2 = dao.get(player.getId());
+		Player player2 = dao.retrieve(player.getId());
 		assertEquals(player, player2);
 	}
 
 	public void testGetAll() {
-		List<Player> playerList = dao.getAll();
+		List<Player> playerList = dao.retrieveAll();
 		assertEquals(1, playerList.size());
 		assertEquals(player, playerList.get(0));
 	}
