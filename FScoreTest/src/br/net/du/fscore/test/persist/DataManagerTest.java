@@ -5,8 +5,6 @@ import java.util.List;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import android.util.Log;
-import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
@@ -124,8 +122,10 @@ public class DataManagerTest extends AndroidTestCase {
 
 		assertEquals(match, match2);
 
-		MatchPlayerKey key = new MatchPlayerKey(matchId, player1.getId());
-		assertTrue(matchPlayerDao.exists(key));
+		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1.getId());
+		assertTrue(matchPlayerDao.exists(key1));
+		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2.getId());
+		assertTrue(matchPlayerDao.exists(key2));
 	}
 
 	public void testSaveAnExistingMatchAfterAddingAPlayer() {
