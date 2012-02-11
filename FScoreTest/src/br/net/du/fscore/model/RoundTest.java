@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.model;
+package br.net.du.fscore.model;
 
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;

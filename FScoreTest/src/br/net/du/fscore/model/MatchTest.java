@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.model;
+package br.net.du.fscore.model;
 
 import java.util.Calendar;
 
