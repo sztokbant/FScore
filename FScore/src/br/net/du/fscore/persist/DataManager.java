@@ -120,7 +120,7 @@ public class DataManager {
 	}
 
 	private void eraseRemovedPlayersFromMatch(Match match) {
-		List<Player> dbRemainingPlayers = this.getPlayers(match.getId());
+		List<Player> dbRemainingPlayers = this.retrievePlayers(match.getId());
 		dbRemainingPlayers.removeAll(match.getPlayers());
 		for (Player player : dbRemainingPlayers) {
 			matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
@@ -180,21 +180,21 @@ public class DataManager {
 		roundDao.delete(roundDao.retrieve(roundId));
 	}
 
-	public Match getMatch(long matchId) {
+	public Match retrieveMatch(long matchId) {
 		Match match = matchDao.retrieve(matchId);
 		if (match != null) {
-			match.getPlayers().addAll(this.getPlayers(match.getId()));
+			match.getPlayers().addAll(this.retrievePlayers(match.getId()));
 			match.getRounds().addAll(
 					roundDao.retrieveRoundsForMatch(match.getId()));
 		}
 		return match;
 	}
 
-	public List<Match> getAllMatches() {
+	public List<Match> retrieveAllMatches() {
 		List<Match> matches = new ArrayList<Match>();
 
 		for (Match match : matchDao.retrieveAll()) {
-			matches.add(this.getMatch(match.getId()));
+			matches.add(retrieveMatch(match.getId()));
 		}
 
 		return matches;
@@ -231,7 +231,7 @@ public class DataManager {
 		return result;
 	}
 
-	public List<Player> getPlayers(long matchId) {
+	public List<Player> retrievePlayers(long matchId) {
 		List<Long> playerIds = matchPlayerDao.retrievePlayerIds(matchId);
 
 		List<Player> players = new ArrayList<Player>();

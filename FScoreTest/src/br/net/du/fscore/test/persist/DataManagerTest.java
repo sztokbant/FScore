@@ -137,7 +137,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match.getPlayers().get(1), playerDao.retrieve(player2Id));
 		assertTrue(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
-		assertEquals(match, dataManager.getMatch(matchId));
+		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
 	public void testSaveAnExistingMatchAfterRemovingAPlayer() {
@@ -170,7 +170,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertFalse(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 
-		assertEquals(match, dataManager.getMatch(matchId));
+		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
 	public void testSaveAnExistingMatchAfterAddingARound() {
@@ -193,7 +193,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match.getRounds().get(0), roundDao.retrieve(round1Id));
 		assertEquals(match.getRounds().get(1), roundDao.retrieve(round2Id));
 
-		assertEquals(match, dataManager.getMatch(matchId));
+		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
 	public void testSaveAnExistingMatchAfterRemovingARound() {
@@ -221,10 +221,10 @@ public class DataManagerTest extends AndroidTestCase {
 		assertNull(roundDao.retrieve(round1Id));
 		assertEquals(match.getRounds().get(0), roundDao.retrieve(round2Id));
 
-		assertEquals(match, dataManager.getMatch(matchId));
+		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
-	public void testGetMatch() {
+	public void testRetrieveMatch() {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
@@ -232,10 +232,10 @@ public class DataManagerTest extends AndroidTestCase {
 
 		dataManager.saveMatch(match);
 
-		assertEquals(match, dataManager.getMatch(match.getId()));
+		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 	}
 
-	public void testGetAllMatches() {
+	public void testRetrieveAllMatches() {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
@@ -246,7 +246,7 @@ public class DataManagerTest extends AndroidTestCase {
 
 		dataManager.saveMatch(match);
 
-		assertEquals(matches, dataManager.getAllMatches());
+		assertEquals(matches, dataManager.retrieveAllMatches());
 	}
 
 	public void testDeleteMatch() {
@@ -290,13 +290,13 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(0, match1.getId());
 		assertEquals(playerId, player.getId());
 		assertNull(matchDao.retrieve(matchId1));
-		assertEquals(match2, dataManager.getMatch(matchId2));
+		assertEquals(match2, dataManager.retrieveMatch(matchId2));
 		assertEquals(player, playerDao.retrieve(playerId));
 		assertFalse(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 	}
 
-	public void testGetPlayers() {
+	public void testRetrievePlayers() {
 		PlayerTable.clear(db);
 
 		MatchPlayerDAO matchPlayerDao = new MatchPlayerDAO(db);
@@ -314,7 +314,7 @@ public class DataManagerTest extends AndroidTestCase {
 			matchPlayerDao.save(key);
 		}
 
-		assertEquals(players, dataManager.getPlayers(key.getMatchId()));
+		assertEquals(players, dataManager.retrievePlayers(key.getMatchId()));
 
 		PlayerTable.clear(db);
 	}

@@ -99,7 +99,7 @@ public class MatchList extends Activity {
 
 	private void refreshMatchList() {
 		matches.clear();
-		matches.addAll(dataManager.getAllMatches());
+		matches.addAll(dataManager.retrieveAllMatches());
 		adapter.notifyDataSetChanged();
 	}
 

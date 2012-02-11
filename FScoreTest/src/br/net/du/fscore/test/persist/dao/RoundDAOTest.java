@@ -93,12 +93,12 @@ public class RoundDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testGet() {
+	public void testRetrieve() {
 		Round round2 = dao.retrieve(round.getId());
 		assertEquals(round, round2);
 	}
 
-	public void testGetRoundsForMatch() {
+	public void testRetrieveRoundsForMatch() {
 		long matchId = 19;
 
 		List<Round> rounds = new ArrayList<Round>();

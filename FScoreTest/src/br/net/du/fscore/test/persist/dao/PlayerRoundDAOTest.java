@@ -119,13 +119,13 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 		assertFalse(dao.exists(playerRound));
 	}
 
-	public void testGet() {
+	public void testRetrieve() {
 		dao.save(playerRound);
 		PlayerRound playerRound2 = dao.retrieve(playerRound.getId());
 		assertEquals(playerRound, playerRound2);
 	}
 
-	public void testGetPlayerRoundsForRound() {
+	public void testRetrievePlayerRoundsForRound() {
 		dao.save(playerRound);
 
 		List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
