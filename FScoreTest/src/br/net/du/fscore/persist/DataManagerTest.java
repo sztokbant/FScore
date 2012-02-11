@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.persist;
+package br.net.du.fscore.persist;
 
 import java.util.ArrayList;
 import java.util.List;

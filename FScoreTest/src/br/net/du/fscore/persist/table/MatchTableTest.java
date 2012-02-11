@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.persist.table;
+package br.net.du.fscore.persist.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

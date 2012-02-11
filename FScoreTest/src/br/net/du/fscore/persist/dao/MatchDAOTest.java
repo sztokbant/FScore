@@ -1,4 +1,4 @@
-package br.net.du.fscore.test.persist.dao;
+package br.net.du.fscore.persist.dao;
 
 import java.util.Calendar;
 import java.util.List;
