@@ -296,7 +296,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
-	public void testAnExistingMatchAfterUpdatingARound() {
+	public void testSaveAnExistingMatchAfterUpdatingARound() {
 		// TODO
 	}
 
