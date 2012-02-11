@@ -320,7 +320,10 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		match.withPlayer(player);
-		match.addRound(new Round(7));
+
+		Round round = new Round(7);
+		round.addPlayerRound(new PlayerRound(player));
+		match.addRound(round);
 
 		List<Match> matches = new ArrayList<Match>();
 		matches.add(match);
