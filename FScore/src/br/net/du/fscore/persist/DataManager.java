@@ -144,7 +144,9 @@ public class DataManager {
 
 	private void saveRound(Round round) {
 		roundDao.save(round);
-		// TODO: store related PlayerRounds
+		for (PlayerRound playerRound : round.getPlayerRounds()) {
+			playerRoundDao.save(playerRound);
+		}
 	}
 
 	private void eraseRemovedRoundsFromMatch(Match match) {

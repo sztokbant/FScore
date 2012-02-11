@@ -9,15 +9,18 @@ import android.util.Log;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
+import br.net.du.fscore.persist.dao.PlayerRoundDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
 import br.net.du.fscore.persist.table.MatchTable;
+import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.RoundTable;
 
@@ -29,6 +32,7 @@ public class DataManagerTest extends AndroidTestCase {
 	PlayerDAO playerDao;
 	MatchPlayerDAO matchPlayerDao;
 	RoundDAO roundDao;
+	PlayerRoundDAO playerRoundDao;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -40,6 +44,7 @@ public class DataManagerTest extends AndroidTestCase {
 		playerDao = new PlayerDAO(db);
 		matchPlayerDao = new MatchPlayerDAO(db);
 		roundDao = new RoundDAO(db);
+		playerRoundDao = new PlayerRoundDAO(db);
 	}
 
 	protected void tearDown() throws Exception {
@@ -52,6 +57,7 @@ public class DataManagerTest extends AndroidTestCase {
 		MatchTable.clear(db);
 		PlayerTable.clear(db);
 		RoundTable.clear(db);
+		PlayerRoundTable.clear(db);
 	}
 
 	public void testCloseDb() {
@@ -67,49 +73,58 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testSaveNewMatch() {
 		Match match = new Match("Match Name");
-		Player player = new Player("A Player");
+
+		Player player1 = new Player("A Player");
 		Player player2 = new Player("Player 2");
-		match.withPlayer(player);
+
+		match.withPlayer(player1);
 		match.withPlayer(player2);
 
 		Round round1 = new Round(3);
-		// round1.addPlayerRound(new PlayerRound(player));
-		// round1.addPlayerRound(new PlayerRound(player2));
+		round1.addPlayerRound(new PlayerRound(player1));
+		round1.addPlayerRound(new PlayerRound(player2));
 
 		Round round2 = new Round(7);
-		// round2.addPlayerRound(new PlayerRound(player));
-		// round2.addPlayerRound(new PlayerRound(player2));
+		round2.addPlayerRound(new PlayerRound(player1));
+		round2.addPlayerRound(new PlayerRound(player2));
 
 		match.addRound(round1);
 		match.addRound(round2);
 
-		Log.i(getContext().getResources().getString(R.string.app_name),
-				"beginning DataManager.saveMatch()");
 		long matchId = dataManager.saveMatch(match);
-		Log.i(getContext().getResources().getString(R.string.app_name),
-				"finishing DataManager.saveMatch()");
 
+		// match
 		assertTrue(matchId > 0);
 		assertEquals(matchId, match.getId());
-		assertTrue(player.getId() > 0);
+
+		Match match2 = matchDao.retrieve(matchId);
+
+		// players
+		assertTrue(player1.getId() > 0);
+		assertTrue(player2.getId() > 0);
+		match2.withPlayer(playerDao.retrieve(player1.getId()));
+		match2.withPlayer(playerDao.retrieve(player2.getId()));
+
+		// rounds
 		assertTrue(round1.getId() > 0);
 		assertTrue(round2.getId() > 0);
 		assertTrue(round1.getId() != round2.getId());
 		assertEquals(matchId, round1.getMatchId());
 		assertEquals(matchId, round2.getMatchId());
 
-		Match match2 = matchDao.retrieve(matchId);
+		// player rounds
+		Round round3 = roundDao.retrieve(round1.getId());
+		Round round4 = roundDao.retrieve(round2.getId());
+		round3.addPlayerRound(playerRoundDao.retrieve(1));
+		round3.addPlayerRound(playerRoundDao.retrieve(2));
+		round4.addPlayerRound(playerRoundDao.retrieve(3));
+		round4.addPlayerRound(playerRoundDao.retrieve(4));
+		match2.addRound(round3);
+		match2.addRound(round4);
 
-		// build Match from scratch using DAOs to verify equivalence
-		match2.withPlayer(playerDao.retrieve(player.getId()));
-		match2.withPlayer(playerDao.retrieve(player2.getId()));
-		match2.addRound(roundDao.retrieve(round1.getId()));
-		match2.addRound(roundDao.retrieve(round2.getId()));
-
-		// TODO: add PlayerRounds otherwise the next test will fail
 		assertEquals(match, match2);
 
-		MatchPlayerKey key = new MatchPlayerKey(matchId, player.getId());
+		MatchPlayerKey key = new MatchPlayerKey(matchId, player1.getId());
 		assertTrue(matchPlayerDao.exists(key));
 	}
 
