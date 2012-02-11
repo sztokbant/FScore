@@ -74,17 +74,18 @@ public class DataManager {
 		return false;
 	}
 
+	// Match operations
+
 	public long saveMatch(Match match) {
 		long matchId = 0L;
 		try {
 			db.beginTransaction();
 			matchId = matchDao.save(match);
 
-			// TODO: check if EXISTING objects are being properly updated
-			storeNewPlayersForMatch(match);
-			eraseRemovedPlayersFromMatch(match);
-			storeNewRoundsForMatch(match);
-			eraseRemovedRoundsFromMatch(match);
+			saveMatchPlayers(match);
+			erasePlayersNotInMatchAnymore(match);
+			saveMatchRounds(match);
+			eraseRoundsNotInMatchAnymore(match);
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
@@ -98,88 +99,6 @@ public class DataManager {
 		return matchId;
 	}
 
-	private void storeNewPlayersForMatch(Match match) {
-		for (Player player : match.getPlayers()) {
-			Player dbPlayer = playerDao.find(player.getName());
-
-			if (dbPlayer == null) {
-				playerDao.save(player);
-			} else {
-				player = dbPlayer;
-			}
-
-			matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
-					.getId()));
-		}
-	}
-
-	private void eraseRemovedPlayersFromMatch(Match match) {
-		List<Player> dbRemainingPlayers = retrievePlayers(match.getId());
-		dbRemainingPlayers.removeAll(match.getPlayers());
-		for (Player player : dbRemainingPlayers) {
-			matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
-					.getId()));
-			if (matchPlayerDao.isOrphan(player)) {
-				playerDao.delete(player);
-			}
-			Log.i(context.getResources().getString(R.string.app_name),
-					"deleted player [" + player + "]");
-		}
-	}
-
-	private void storeNewRoundsForMatch(Match match) {
-		for (Round round : match.getRounds()) {
-			if (!round.isPersistent()) {
-				round.setMatchId(match.getId());
-			}
-			saveRound(round);
-		}
-	}
-
-	private void saveRound(Round round) {
-		roundDao.save(round);
-		for (PlayerRound playerRound : round.getPlayerRounds()) {
-			playerRound.setRoundId(round.getId());
-			playerRoundDao.save(playerRound);
-		}
-	}
-
-	private void eraseRemovedRoundsFromMatch(Match match) {
-		List<Long> dbRoundIds = roundDao
-				.retrieveRoundIdsForMatch(match.getId());
-		List<Long> toDeleteRoundIds = new ArrayList<Long>();
-
-		for (Long dbRoundId : dbRoundIds) {
-			boolean deleteIt = true;
-			for (Round objRound : match.getRounds()) {
-				if (dbRoundId == objRound.getId()) {
-					deleteIt = false;
-					break;
-				}
-			}
-
-			if (deleteIt) {
-				toDeleteRoundIds.add(dbRoundId);
-			}
-		}
-
-		if (toDeleteRoundIds.size() > 0) {
-			for (Long roundId : toDeleteRoundIds) {
-				deleteRound(roundId);
-			}
-		}
-	}
-
-	private void deleteRound(Long roundId) {
-		List<PlayerRound> playerRounds = playerRoundDao
-				.retrievePlayerRoundsForRound(roundId);
-		for (PlayerRound playerRound : playerRounds) {
-			playerRoundDao.delete(playerRound);
-		}
-
-		roundDao.delete(roundDao.retrieve(roundId));
-	}
-
 	public Match retrieveMatch(long matchId) {
 		Match match = matchDao.retrieve(matchId);
 		if (match != null) {
@@ -190,17 +109,6 @@ public class DataManager {
 			}
 		}
 		return match;
-	}
-
-	public Round retrieveRoundById(long id) {
-		Round round = roundDao.retrieve(id);
-
-		if (round != null) {
-			round.getPlayerRounds().addAll(
-					playerRoundDao.retrievePlayerRoundsForRound(round.getId()));
-		}
-
-		return round;
 	}
 
 	public List<Match> retrieveAllMatches() {
@@ -228,9 +136,6 @@ public class DataManager {
 						playerDao.delete(p);
 					}
 				}
-
-				Log.i(context.getResources().getString(R.string.app_name),
-						"deleted match [" + match + "]");
 			}
 			db.setTransactionSuccessful();
 			result = true;
@@ -244,6 +149,72 @@ public class DataManager {
 		return result;
 	}
 
+	// Private Match operations
+
+	private void saveMatchPlayers(Match match) {
+		for (Player player : match.getPlayers()) {
+			Player dbPlayer = playerDao.find(player.getName());
+
+			if (dbPlayer == null) {
+				playerDao.save(player);
+			} else {
+				player = dbPlayer;
+			}
+
+			matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
+					.getId()));
+		}
+	}
+
+	private void erasePlayersNotInMatchAnymore(Match match) {
+		List<Player> dbRemainingPlayers = retrievePlayers(match.getId());
+		dbRemainingPlayers.removeAll(match.getPlayers());
+		for (Player player : dbRemainingPlayers) {
+			matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
+					.getId()));
+			if (matchPlayerDao.isOrphan(player)) {
+				playerDao.delete(player);
+			}
+		}
+	}
+
+	private void saveMatchRounds(Match match) {
+		for (Round round : match.getRounds()) {
+			if (!round.isPersistent()) {
+				round.setMatchId(match.getId());
+			}
+			saveRound(round);
+		}
+	}
+
+	private void eraseRoundsNotInMatchAnymore(Match match) {
+		List<Long> dbRoundIds = roundDao
+				.retrieveRoundIdsForMatch(match.getId());
+		List<Long> toDeleteRoundIds = new ArrayList<Long>();
+
+		for (Long dbRoundId : dbRoundIds) {
+			boolean deleteIt = true;
+			for (Round objRound : match.getRounds()) {
+				if (dbRoundId == objRound.getId()) {
+					deleteIt = false;
+					break;
+				}
+			}
+
+			if (deleteIt) {
+				toDeleteRoundIds.add(dbRoundId);
+			}
+		}
+
+		if (toDeleteRoundIds.size() > 0) {
+			for (Long roundId : toDeleteRoundIds) {
+				deleteRound(roundId);
+			}
+		}
+	}
+
+	// Player operations
+
 	public List<Player> retrievePlayers(long matchId) {
 		List<Long> playerIds = matchPlayerDao.retrievePlayerIds(matchId);
 
@@ -256,5 +227,37 @@ public class DataManager {
 		}
 
 		return players;
+	}
+
+	// Round operations
+
+	private void saveRound(Round round) {
+		roundDao.save(round);
+		// TODO: remove erased PlayerRounds from Round
+		for (PlayerRound playerRound : round.getPlayerRounds()) {
+			playerRound.setRoundId(round.getId());
+			playerRoundDao.save(playerRound);
+		}
+	}
+
+	public Round retrieveRoundById(long id) {
+		Round round = roundDao.retrieve(id);
+
+		if (round != null) {
+			round.getPlayerRounds().addAll(
+					playerRoundDao.retrievePlayerRoundsForRound(round.getId()));
+		}
+
+		return round;
+	}
+
+	private void deleteRound(Long roundId) {
+		List<PlayerRound> playerRounds = playerRoundDao
+				.retrievePlayerRoundsForRound(roundId);
+		for (PlayerRound playerRound : playerRounds) {
+			playerRoundDao.delete(playerRound);
+		}
+
+		roundDao.delete(roundDao.retrieve(roundId));
 	}
 }
