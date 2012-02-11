@@ -64,7 +64,7 @@ public class DataManager {
 
 	public boolean openDb() {
 		if (db == null || !db.isOpen()) {
-			db = new OpenHelper(this.context, useDebugDb).getWritableDatabase();
+			db = new OpenHelper(context, useDebugDb).getWritableDatabase();
 
 			// since we pass db into DAO, have to recreate DAO if db is
 			// re-opened
@@ -120,7 +120,7 @@ public class DataManager {
 	}
 
 	private void eraseRemovedPlayersFromMatch(Match match) {
-		List<Player> dbRemainingPlayers = this.retrievePlayers(match.getId());
+		List<Player> dbRemainingPlayers = retrievePlayers(match.getId());
 		dbRemainingPlayers.removeAll(match.getPlayers());
 		for (Player player : dbRemainingPlayers) {
 			matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
@@ -145,6 +145,7 @@ public class DataManager {
 	private void saveRound(Round round) {
 		roundDao.save(round);
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
+			playerRound.setRoundId(round.getId());
 			playerRoundDao.save(playerRound);
 		}
 	}
@@ -185,11 +186,24 @@ public class DataManager {
 	public Match retrieveMatch(long matchId) {
 		Match match = matchDao.retrieve(matchId);
 		if (match != null) {
-			match.getPlayers().addAll(this.retrievePlayers(match.getId()));
-			match.getRounds().addAll(
-					roundDao.retrieveRoundsForMatch(match.getId()));
+			match.getPlayers().addAll(retrievePlayers(match.getId()));
+			List<Long> roundIds = roundDao.retrieveRoundIdsForMatch(matchId);
+			for (Long roundId : roundIds) {
+				match.addRound(loadRoundById(roundId));
+			}
 		}
 		return match;
+	}
+
+	public Round loadRoundById(long id) {
+		Round round = roundDao.retrieve(id);
+
+		if (round != null) {
+			round.getPlayerRounds().addAll(
+					playerRoundDao.retrievePlayerRoundsForRound(round.getId()));
+		}
+
+		return round;
 	}
 
 	public List<Match> retrieveAllMatches() {
