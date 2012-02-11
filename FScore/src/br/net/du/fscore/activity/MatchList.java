@@ -78,7 +78,8 @@ public class MatchList extends Activity {
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem newMatch = menu.add(0, 0, 0, "New Match");
+		// MenuItem newMatch =
+		menu.add(0, 0, 0, "New Match");
 
 		return super.onCreateOptionsMenu(menu);
 	}
