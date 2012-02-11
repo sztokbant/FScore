@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 
@@ -172,6 +174,21 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				android.R.layout.simple_list_item_1, rounds);
 		roundList.setAdapter(roundAdapter);
 
+		roundList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int position, long id) {
+				selectedRound = (Round) roundAdapter.getItem(position);
+				Toast.makeText(SingleMatch.this,
+						"Opening Round " + selectedRound, Toast.LENGTH_SHORT)
+						.show();
+				Intent singleRound = new Intent(SingleMatch.this,
+						SingleRound.class);
+				singleRound.putExtra("selectedRound", selectedRound);
+				startActivity(singleRound);
+			}
+		});
+
 		roundList.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
@@ -225,7 +242,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO this Round is dummy
-				match.addRound(new Round(7));
+				Round round = new Round(7);
+				match.addRound(round);
+
 				dataManager.saveMatch(match);
 				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
 					roundAdapter.notifyDataSetChanged();

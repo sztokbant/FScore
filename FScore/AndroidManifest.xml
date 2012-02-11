@@ -20,6 +20,9 @@
         <activity
             android:label="Match"
             android:name=".activity.SingleMatch" />
-    </application>
+        <activity
+            android:label="Round"
+            android:name=".activity.SingleRound" />
+        </application>
 
 </manifest>
