@@ -249,8 +249,14 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testSaveAnExistingMatchAfterRemovingARound() {
 		Match match = new Match("Match Name");
+		Player player = new Player("A Player");
+		match.withPlayer(player);
+
 		Round round1 = new Round(3);
+		round1.addPlayerRound(new PlayerRound(player));
 		Round round2 = new Round(7);
+		round2.addPlayerRound(new PlayerRound(player));
+
 		match.addRound(round1);
 		match.addRound(round2);
 
@@ -270,7 +276,11 @@ public class DataManagerTest extends AndroidTestCase {
 
 		assertEquals(round2Id, round2.getId());
 		assertNull(roundDao.retrieve(round1Id));
-		assertEquals(match.getRounds().get(0), roundDao.retrieve(round2Id));
+		assertEquals(match, dataManager.retrieveMatch(matchId));
+
+		match.getRounds().remove(round2);
+		dataManager.saveMatch(match);
+		assertNull(roundDao.retrieve(round1Id));
 
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
@@ -378,7 +388,7 @@ public class DataManagerTest extends AndroidTestCase {
 		PlayerTable.clear(db);
 	}
 
-	public void testLoadRoundById() {
+	public void testRetrieveRoundById() {
 		Player player = new Player("My Player");
 		playerDao.save(player);
 
@@ -391,7 +401,7 @@ public class DataManagerTest extends AndroidTestCase {
 			playerRoundDao.save(playerRound);
 		}
 
-		Round round2 = dataManager.loadRoundById(round1.getId());
+		Round round2 = dataManager.retrieveRoundById(round1.getId());
 
 		assertEquals(round1.getPlayerRounds().size(), round2.getPlayerRounds()
 				.size());

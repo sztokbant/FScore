@@ -165,15 +165,18 @@ public class DataManager {
 
 		if (toDeleteRoundIds.size() > 0) {
 			for (Long roundId : toDeleteRoundIds) {
-				Log.i(context.getResources().getString(R.string.app_name),
-						"deleting round [" + roundId + "]");
-				eraseRound(roundId);
+				deleteRound(roundId);
 			}
 		}
 	}
 
-	private void eraseRound(Long roundId) {
-		// TODO: properly delete Round and related PlayerRounds
+	private void deleteRound(Long roundId) {
+		List<PlayerRound> playerRounds = playerRoundDao
+				.retrievePlayerRoundsForRound(roundId);
+		for (PlayerRound playerRound : playerRounds) {
+			playerRoundDao.delete(playerRound);
+		}
+
 		roundDao.delete(roundDao.retrieve(roundId));
 	}
 
@@ -183,13 +186,13 @@ public class DataManager {
 			match.getPlayers().addAll(retrievePlayers(match.getId()));
 			List<Long> roundIds = roundDao.retrieveRoundIdsForMatch(matchId);
 			for (Long roundId : roundIds) {
-				match.addRound(loadRoundById(roundId));
+				match.addRound(retrieveRoundById(roundId));
 			}
 		}
 		return match;
 	}
 
-	public Round loadRoundById(long id) {
+	public Round retrieveRoundById(long id) {
 		Round round = roundDao.retrieve(id);
 
 		if (round != null) {
