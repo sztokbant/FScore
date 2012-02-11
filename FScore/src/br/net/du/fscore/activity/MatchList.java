@@ -46,8 +46,6 @@ public class MatchList extends Activity {
 		matchesList.setAdapter(adapter);
 
 		matchesList.setOnItemClickListener(new OnItemClickListener() {
-			private Match selectedMatch;
-
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
