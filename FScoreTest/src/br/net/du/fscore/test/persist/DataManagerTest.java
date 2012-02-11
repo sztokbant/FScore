@@ -371,14 +371,17 @@ public class DataManagerTest extends AndroidTestCase {
 	}
 
 	public void testDeletingAMatchWontDeleteNonOrphanPlayers() {
+		// initial state
 		Match match1 = new Match("Match One");
 		Match match2 = new Match("Match Two");
 		Player player = new Player("A Player");
 		match1.withPlayer(player);
 		match2.withPlayer(player);
 
+		// save both
 		long matchId1 = dataManager.saveMatch(match1);
 		long matchId2 = dataManager.saveMatch(match2);
+
 		long playerId = player.getId();
 
 		MatchPlayerKey key1 = new MatchPlayerKey(matchId1, playerId);
@@ -387,6 +390,7 @@ public class DataManagerTest extends AndroidTestCase {
 		dataManager.deleteMatch(match1);
 
 		assertFalse(match1.isPersistent());
+		assertTrue(match2.isPersistent());
 		assertEquals(playerId, player.getId());
 		assertNull(matchDao.retrieve(matchId1));
 		assertEquals(match2, dataManager.retrieveMatch(matchId2));
