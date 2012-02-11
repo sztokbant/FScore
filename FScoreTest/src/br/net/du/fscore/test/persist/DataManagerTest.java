@@ -198,31 +198,39 @@ public class DataManagerTest extends AndroidTestCase {
 	}
 
 	public void testSaveAnExistingMatchAfterAddingARound() {
-		Match match = new Match("Match Name");
+		Match match1 = new Match("Match Name");
+		Player player = new Player("A Player");
+		match1.withPlayer(player);
+
+		// first save
+		dataManager.saveMatch(match1);
 
 		Round round1 = new Round(7);
-		match.addRound(round1);
-		long matchId = dataManager.saveMatch(match);
+		match1.addRound(round1);
+
+		// save after adding an empty round
+		dataManager.saveMatch(match1);
 
 		Round round2 = new Round(3);
+		round2.addPlayerRound(new PlayerRound(player));
+		match1.addRound(round2);
 
-		// TODO code breaking after this line
-		// round2.addPlayerRound(new PlayerRound(new Player("A Player")));
+		// save after adding a round with a playerround
+		dataManager.saveMatch(match1);
 
-		match.addRound(round2);
-		dataManager.saveMatch(match);
-
-		long round1Id = round1.getId();
-		long round2Id = round2.getId();
+		Match match2 = dataManager.retrieveMatch(match1.getId());
 
 		assertTrue(round1.getId() > 0);
 		assertTrue(round2.getId() > 0);
 		assertTrue(round2.getId() > round1.getId());
-		assertEquals(2, match.getRounds().size());
-		assertEquals(match.getRounds().get(0), roundDao.retrieve(round1Id));
-		assertEquals(match.getRounds().get(1), roundDao.retrieve(round2Id));
+		assertEquals(2, match1.getRounds().size());
+		assertEquals(2, match2.getRounds().size());
+		assertEquals(match1.getRounds().get(1).getPlayerRounds().size(), match2
+				.getRounds().get(1).getPlayerRounds().size());
+		assertEquals(match1.getRounds().get(1).getPlayerRounds(), match2
+				.getRounds().get(1).getPlayerRounds());
 
-		assertEquals(match, dataManager.retrieveMatch(matchId));
+		assertEquals(match1, match2);
 	}
 
 	public void testSaveAnExistingMatchAfterRemovingARound() {
