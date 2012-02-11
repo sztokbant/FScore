@@ -25,7 +25,6 @@ import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.DataManager;
 
 public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
