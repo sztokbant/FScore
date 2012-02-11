@@ -60,6 +60,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		if (playerRound != null) {
 			db.delete(PlayerRoundTable.NAME, BaseColumns._ID + " = ?",
 					new String[] { String.valueOf(playerRound.getId()) });
+			playerRound.setId(0);
 		}
 	}
 
