@@ -220,7 +220,7 @@ public class DataManager {
 
 	// Player operations
 
-	public List<Player> retrievePlayers(long matchId) {
+	List<Player> retrievePlayers(long matchId) {
 		List<Long> playerIds = matchPlayerDao.retrievePlayerIds(matchId);
 
 		List<Player> players = new ArrayList<Player>();
@@ -252,7 +252,7 @@ public class DataManager {
 		}
 	}
 
-	public Round retrieveRoundById(long id) {
+	Round retrieveRoundById(long id) {
 		Round round = roundDao.retrieve(id);
 
 		if (round != null) {
