@@ -188,7 +188,7 @@ public class DataManager {
 			if (!round.isPersistent()) {
 				round.setMatchId(match.getId());
 			}
-			saveRound(round);
+			saveRoundNoTransaction(round);
 		}
 	}
 
@@ -236,7 +236,25 @@ public class DataManager {
 
 	// Round operations
 
-	private void saveRound(Round round) {
+	public void saveRound(Round round) {
+		if (round.getMatchId() == 0) {
+			Log.e(context.getResources().getString(R.string.app_name),
+					"Cannot save a round that has never been saved by a match");
+			return;
+		}
+
+		try {
+			db.beginTransaction();
+			saveRoundNoTransaction(round);
+		} catch (SQLException e) {
+			Log.e(context.getResources().getString(R.string.app_name),
+					"Error saving round (transaction rolled back)", e);
+		} finally {
+			db.endTransaction();
+		}
+	}
+
+	private void saveRoundNoTransaction(Round round) {
 		roundDao.save(round);
 
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
