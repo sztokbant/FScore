@@ -128,14 +128,19 @@ public class DataManager {
 			if (match != null) {
 				long matchId = match.getId();
 
-				matchDao.delete(match);
-				for (Player p : match.getPlayers()) {
-					matchPlayerDao
-							.delete(new MatchPlayerKey(matchId, p.getId()));
-					if (matchPlayerDao.isOrphan(p)) {
-						playerDao.delete(p);
+				for (Player player : match.getPlayers()) {
+					matchPlayerDao.delete(new MatchPlayerKey(matchId, player
+							.getId()));
+					if (matchPlayerDao.isOrphan(player)) {
+						playerDao.delete(player);
 					}
 				}
+
+				for (Round round : match.getRounds()) {
+					deleteRound(round);
+				}
+
+				matchDao.delete(match);
 			}
 			db.setTransactionSuccessful();
 			result = true;
@@ -208,7 +213,7 @@ public class DataManager {
 
 		if (toDeleteRoundIds.size() > 0) {
 			for (Long roundId : toDeleteRoundIds) {
-				deleteRound(roundId);
+				deleteRoundById(roundId);
 			}
 		}
 	}
@@ -251,13 +256,16 @@ public class DataManager {
 		return round;
 	}
 
-	private void deleteRound(Long roundId) {
-		List<PlayerRound> playerRounds = playerRoundDao
-				.retrievePlayerRoundsForRound(roundId);
-		for (PlayerRound playerRound : playerRounds) {
+	private void deleteRoundById(Long roundId) {
+		Round round = retrieveRoundById(roundId);
+		deleteRound(round);
+	}
+
+	private void deleteRound(Round round) {
+		for (PlayerRound playerRound : round.getPlayerRounds()) {
 			playerRoundDao.delete(playerRound);
 		}
 
-		roundDao.delete(roundDao.retrieve(roundId));
+		roundDao.delete(round);
 	}
 }

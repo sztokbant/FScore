@@ -102,14 +102,14 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match2 = matchDao.retrieve(matchId);
 
 		// players
-		assertTrue(player1.getId() > 0);
-		assertTrue(player2.getId() > 0);
+		assertTrue(player1.isPersistent());
+		assertTrue(player2.isPersistent());
 		match2.withPlayer(playerDao.retrieve(player1.getId()));
 		match2.withPlayer(playerDao.retrieve(player2.getId()));
 
 		// rounds
-		assertTrue(round1.getId() > 0);
-		assertTrue(round2.getId() > 0);
+		assertTrue(round1.isPersistent());
+		assertTrue(round2.isPersistent());
 		assertTrue(round1.getId() != round2.getId());
 		assertEquals(matchId, round1.getMatchId());
 		assertEquals(matchId, round2.getMatchId());
@@ -144,8 +144,14 @@ public class DataManagerTest extends AndroidTestCase {
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
 
-		match.withPlayer(player1);
+		// first save
 		long matchId = dataManager.saveMatch(match);
+
+		// add a Player and save
+		match.withPlayer(player1);
+		dataManager.saveMatch(match);
+
+		// add another Player and save
 		match.withPlayer(player2);
 		dataManager.saveMatch(match);
 
@@ -155,12 +161,15 @@ public class DataManagerTest extends AndroidTestCase {
 		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1Id);
 		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2Id);
 
-		assertTrue(player1.getId() > 0);
-		assertTrue(player2.getId() > 0);
+		assertTrue(player1.isPersistent());
+		assertTrue(player2.isPersistent());
 		assertTrue(player2.getId() > player1.getId());
 		assertEquals(2, match.getPlayers().size());
 		assertEquals(match.getPlayers().get(0), playerDao.retrieve(player1Id));
 		assertEquals(match.getPlayers().get(1), playerDao.retrieve(player2Id));
+
+		// these are the tests that really matter, all the others are
+		// emphasizing them
 		assertTrue(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
 		assertEquals(match, dataManager.retrieveMatch(matchId));
@@ -173,15 +182,17 @@ public class DataManagerTest extends AndroidTestCase {
 		match.withPlayer(player1);
 		match.withPlayer(player2);
 
+		// first save
 		long matchId = dataManager.saveMatch(match);
+
 		long player1Id = player1.getId();
 		long player2Id = player2.getId();
 
 		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1Id);
 		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2Id);
 
+		// delete a Player and save
 		match.getPlayers().remove(player1);
-
 		dataManager.saveMatch(match);
 
 		assertEquals(matchId, match.getId());
@@ -193,9 +204,11 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(player2Id, player2.getId());
 		assertNull(playerDao.retrieve(player1Id));
 		assertEquals(match.getPlayers().get(0), playerDao.retrieve(player2Id));
+
+		// these are the tests that really matter, all the others are
+		// emphasizing them
 		assertFalse(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
-
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
@@ -226,8 +239,8 @@ public class DataManagerTest extends AndroidTestCase {
 
 		Match match2 = dataManager.retrieveMatch(match1.getId());
 
-		assertTrue(round1.getId() > 0);
-		assertTrue(round2.getId() > 0);
+		assertTrue(round1.isPersistent());
+		assertTrue(round2.isPersistent());
 		assertTrue(round2.getId() > round1.getId());
 		assertEquals(2, match1.getRounds().size());
 		assertEquals(2, match2.getRounds().size());
@@ -260,29 +273,31 @@ public class DataManagerTest extends AndroidTestCase {
 		match.addRound(round1);
 		match.addRound(round2);
 
+		// first save
 		long matchId = dataManager.saveMatch(match);
+
 		long round1Id = round1.getId();
 		long round2Id = round2.getId();
 
+		// remove a Round and save
 		match.getRounds().remove(round1);
-
 		dataManager.saveMatch(match);
 
 		assertEquals(matchId, match.getId());
-
-		// this will fail for the Id is updated on a copy of the object which is
-		// not in the list anymore
-		// assertEquals(0, round1.getId());
-
-		assertEquals(round2Id, round2.getId());
 		assertNull(roundDao.retrieve(round1Id));
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 
+		// remove another Round and save
 		match.getRounds().remove(round2);
 		dataManager.saveMatch(match);
-		assertNull(roundDao.retrieve(round1Id));
 
+		assertEquals(matchId, match.getId());
+		assertNull(roundDao.retrieve(round2Id));
 		assertEquals(match, dataManager.retrieveMatch(matchId));
+	}
+
+	public void testAnExistingMatchAfterUpdatingARound() {
+		// TODO
 	}
 
 	public void testRetrieveMatch() {
@@ -298,9 +313,6 @@ public class DataManagerTest extends AndroidTestCase {
 
 		Match match2 = dataManager.retrieveMatch(match.getId());
 
-		assertEquals(match.getRounds().size(), match2.getRounds().size());
-		assertEquals(match.getRounds().get(0).getPlayerRounds().size(), match2
-				.getRounds().get(0).getPlayerRounds().size());
 		assertEquals(match, match2);
 	}
 
@@ -320,24 +332,39 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testDeleteMatch() {
 		Match match = new Match("Match Name");
+
 		Player player = new Player("A Player");
 		match.withPlayer(player);
+
+		PlayerRound playerRound = new PlayerRound(player);
 		Round round = new Round(7);
+		round.addPlayerRound(playerRound);
+		match.addRound(round);
 
 		long matchId = dataManager.saveMatch(match);
+
 		long playerId = player.getId();
 		MatchPlayerKey key = new MatchPlayerKey(matchId, playerId);
 		long roundId = round.getId();
+		long playerRoundId = playerRound.getId();
+
+		assertTrue(match.isPersistent());
+		assertTrue(player.isPersistent());
+		assertTrue(round.isPersistent());
+		assertTrue(playerRound.isPersistent());
 
 		dataManager.deleteMatch(match);
 
-		assertEquals(0, match.getId());
-		assertEquals(0, player.getId());
-		assertEquals(0, round.getId());
+		assertFalse(match.isPersistent());
+		assertFalse(player.isPersistent());
+		assertFalse(round.isPersistent());
+		assertFalse(playerRound.isPersistent());
+
 		assertNull(matchDao.retrieve(matchId));
 		assertNull(playerDao.retrieve(playerId));
 		assertNull(roundDao.retrieve(roundId));
 		assertFalse(matchPlayerDao.exists(key));
+		assertNull(playerRoundDao.retrieve(playerRoundId));
 	}
 
 	public void testDeletingAMatchWontDeleteNonOrphanPlayers() {
@@ -356,7 +383,7 @@ public class DataManagerTest extends AndroidTestCase {
 
 		dataManager.deleteMatch(match1);
 
-		assertEquals(0, match1.getId());
+		assertFalse(match1.isPersistent());
 		assertEquals(playerId, player.getId());
 		assertNull(matchDao.retrieve(matchId1));
 		assertEquals(match2, dataManager.retrieveMatch(matchId2));
