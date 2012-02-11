@@ -129,12 +129,14 @@ public class DataManagerTest extends AndroidTestCase {
 		match2.addRound(round3);
 		match2.addRound(round4);
 
-		assertEquals(match, match2);
-
 		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1.getId());
-		assertTrue(matchPlayerDao.exists(key1));
 		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2.getId());
+
+		// these are the tests that really matter, all the others are
+		// emphasizing them
+		assertTrue(matchPlayerDao.exists(key1));
 		assertTrue(matchPlayerDao.exists(key2));
+		assertEquals(match, match2);
 	}
 
 	public void testSaveAnExistingMatchAfterAddingAPlayer() {
@@ -205,17 +207,21 @@ public class DataManagerTest extends AndroidTestCase {
 		// first save
 		dataManager.saveMatch(match1);
 
+		// add an empty round and save
 		Round round1 = new Round(7);
 		match1.addRound(round1);
-
-		// save after adding an empty round
 		dataManager.saveMatch(match1);
 
+		// add a round with a playerround and save
 		Round round2 = new Round(3);
-		round2.addPlayerRound(new PlayerRound(player));
+		PlayerRound playerRound = new PlayerRound(player);
+		playerRound.setBet(3);
+		round2.addPlayerRound(playerRound);
 		match1.addRound(round2);
+		dataManager.saveMatch(match1);
 
-		// save after adding a round with a playerround
+		// update a playerround and save
+		playerRound.setWins(2);
 		dataManager.saveMatch(match1);
 
 		Match match2 = dataManager.retrieveMatch(match1.getId());
@@ -227,9 +233,17 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(2, match2.getRounds().size());
 		assertEquals(match1.getRounds().get(1).getPlayerRounds().size(), match2
 				.getRounds().get(1).getPlayerRounds().size());
+		assertEquals(match1.getRounds().get(1).getPlayerRounds().get(0)
+				.getBet(), match2.getRounds().get(1).getPlayerRounds().get(0)
+				.getBet());
+		assertEquals(match1.getRounds().get(1).getPlayerRounds().get(0)
+				.getWins(), match2.getRounds().get(1).getPlayerRounds().get(0)
+				.getWins());
 		assertEquals(match1.getRounds().get(1).getPlayerRounds(), match2
 				.getRounds().get(1).getPlayerRounds());
 
+		// these is the test that really matters, all the others are
+		// emphasizing them
 		assertEquals(match1, match2);
 	}
 
