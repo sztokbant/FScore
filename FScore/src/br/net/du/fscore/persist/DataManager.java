@@ -238,10 +238,17 @@ public class DataManager {
 
 	private void saveRound(Round round) {
 		roundDao.save(round);
-		// TODO: remove erased PlayerRounds from Round
+
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
 			playerRound.setRoundId(round.getId());
 			playerRoundDao.save(playerRound);
+		}
+
+		List<PlayerRound> toDeleteRounds = playerRoundDao
+				.retrievePlayerRoundsForRound(round.getId());
+		toDeleteRounds.removeAll(round.getPlayerRounds());
+		for (PlayerRound playerRound : toDeleteRounds) {
+			playerRoundDao.delete(playerRound);
 		}
 	}
 

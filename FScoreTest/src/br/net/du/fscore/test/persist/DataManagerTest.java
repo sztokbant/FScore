@@ -297,7 +297,39 @@ public class DataManagerTest extends AndroidTestCase {
 	}
 
 	public void testSaveAnExistingMatchAfterUpdatingARound() {
-		// TODO
+		Match match = new Match("Match Name");
+		Player player = new Player("A Player");
+		Player player2 = new Player("Another Player");
+		match.withPlayer(player).withPlayer(player2);
+
+		Round round1 = new Round(7);
+		PlayerRound playerRound1 = new PlayerRound(player);
+		playerRound1.setBet(5);
+		round1.addPlayerRound(playerRound1);
+
+		match.addRound(round1);
+
+		// first save
+		dataManager.saveMatch(match);
+		assertEquals(match, dataManager.retrieveMatch(match.getId()));
+
+		// add a new PlayerRound and save
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		playerRound2.setBet(3);
+		round1.addPlayerRound(playerRound2);
+		dataManager.saveMatch(match);
+		assertEquals(match, dataManager.retrieveMatch(match.getId()));
+
+		// update a PlayerRound and save
+		playerRound1.setWins(6);
+		playerRound2.setWins(1);
+		dataManager.saveMatch(match);
+		assertEquals(match, dataManager.retrieveMatch(match.getId()));
+
+		// delete a PlayerRound and save
+		round1.getPlayerRounds().remove(0);
+		dataManager.saveMatch(match);
+		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 	}
 
 	public void testRetrieveMatch() {
