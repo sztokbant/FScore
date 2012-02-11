@@ -226,6 +226,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// TODO this Round is dummy
 				match.addRound(new Round(7));
+				dataManager.saveMatch(match);
 				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
 					roundAdapter.notifyDataSetChanged();
 				}
