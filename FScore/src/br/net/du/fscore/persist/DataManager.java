@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,7 +18,6 @@ import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerRoundDAO;
 import br.net.du.fscore.persist.dao.RoundDAO;
 import br.net.du.fscore.persist.table.MatchPlayerTable;
-import br.net.du.fscore.persist.table.MatchPlayerTable.MatchPlayerColumns;
 import br.net.du.fscore.persist.table.MatchTable;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerTable;
@@ -247,31 +245,18 @@ public class DataManager {
 		return result;
 	}
 
-	// TODO: this method shouldn't know any db cursors...
 	public List<Player> getPlayers(long matchId) {
-		List<Player> myList = new ArrayList<Player>();
+		List<Long> playerIds = matchPlayerDao.getPlayerIds(matchId);
 
-		Cursor cursor = db.query(MatchPlayerTable.NAME,
-				MatchPlayerColumns.get(), MatchPlayerColumns.MATCH_ID + " = ?", // where
-				new String[] { String.valueOf(matchId) }, // values
-				null, // group by
-				null, // having
-				MatchPlayerColumns.PLAYER_ID, // order by
-				null);
+		List<Player> players = new ArrayList<Player>();
+		PlayerDAO playerDAO = new PlayerDAO(db);
 
-		if (cursor.moveToFirst()) {
-			PlayerDAO playerDAO = new PlayerDAO(db);
-			do {
-				Player player = playerDAO.get(cursor.getLong(1));
-				myList.add(player);
-			} while (cursor.moveToNext());
+		for (Long playerId : playerIds) {
+			Player player = playerDAO.get(playerId);
+			players.add(player);
 		}
 
-		if (!cursor.isClosed()) {
-			cursor.close();
-		}
-
-		return myList;
+		return players;
 	}
 
 	private class OpenHelper extends SQLiteOpenHelper {
