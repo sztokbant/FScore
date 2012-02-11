@@ -199,11 +199,16 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testSaveAnExistingMatchAfterAddingARound() {
 		Match match = new Match("Match Name");
-		Round round1 = new Round(7);
-		Round round2 = new Round(3);
 
+		Round round1 = new Round(7);
 		match.addRound(round1);
 		long matchId = dataManager.saveMatch(match);
+
+		Round round2 = new Round(3);
+
+		// TODO code breaking after this line
+		// round2.addPlayerRound(new PlayerRound(new Player("A Player")));
+
 		match.addRound(round2);
 		dataManager.saveMatch(match);
 
