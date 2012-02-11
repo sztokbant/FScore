@@ -10,16 +10,13 @@ import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.RoundTable;
 
 class OpenHelper extends SQLiteOpenHelper {
-	private Context context;
 
 	OpenHelper(final Context context, boolean useDebugDatabase) {
 		super(context, useDebugDatabase ? DataConstants.DEBUG_DATABASE_NAME
 				: DataConstants.DATABASE_NAME, null,
 				DataManager.DATABASE_VERSION);
-		this.context = context;
 	}
 
-	// onOpen available if needed
 	@Override
 	public void onOpen(final SQLiteDatabase db) {
 		super.onOpen(db);
