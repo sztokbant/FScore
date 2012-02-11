@@ -11,6 +11,7 @@ import android.util.Log;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
@@ -104,57 +105,40 @@ public class DataManager {
 	}
 
 	private void storeNewPlayersForMatch(Match match) {
-		if (match.getPlayers().size() > 0) {
-			for (Player player : match.getPlayers()) {
-				if (!player.isPersistent()) {
-					Log.i(context.getResources().getString(R.string.app_name),
-							"storing player [" + player.getName() + "]");
-					Player dbPlayer = playerDao.find(player.getName());
-					if (dbPlayer == null) {
-						Log.i(context.getResources().getString(
-								R.string.app_name), "added new player ["
-								+ player.getName() + "]");
-						playerDao.save(player);
-					} else {
-						Log.i(context.getResources().getString(
-								R.string.app_name), "player already exists ["
-								+ player.getName() + "]");
-						player = dbPlayer;
-					}
-				}
+		for (Player player : match.getPlayers()) {
+			Player dbPlayer = playerDao.find(player.getName());
 
-				matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
-						.getId()));
+			if (dbPlayer == null) {
+				playerDao.save(player);
+			} else {
+				player = dbPlayer;
 			}
+
+			matchPlayerDao.save(new MatchPlayerKey(match.getId(), player
+					.getId()));
 		}
 	}
 
 	private void eraseRemovedPlayersFromMatch(Match match) {
 		List<Player> dbRemainingPlayers = this.getPlayers(match.getId());
 		dbRemainingPlayers.removeAll(match.getPlayers());
-		if (dbRemainingPlayers.size() > 0) {
-			for (Player player : dbRemainingPlayers) {
-				matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
-						.getId()));
-				if (matchPlayerDao.isOrphan(player)) {
-					playerDao.delete(player);
-				}
-				Log.i(context.getResources().getString(R.string.app_name),
-						"deleted player [" + player + "]");
+		for (Player player : dbRemainingPlayers) {
+			matchPlayerDao.delete(new MatchPlayerKey(match.getId(), player
+					.getId()));
+			if (matchPlayerDao.isOrphan(player)) {
+				playerDao.delete(player);
 			}
+			Log.i(context.getResources().getString(R.string.app_name),
+					"deleted player [" + player + "]");
 		}
 	}
 
 	private void storeNewRoundsForMatch(Match match) {
-		if (match.getRounds().size() > 0) {
-			for (Round round : match.getRounds()) {
-				if (!round.isPersistent()) {
-					round.setMatchId(match.getId());
-					saveRound(round);
-					Log.i(context.getResources().getString(R.string.app_name),
-							"saved round [" + round.getId() + "]");
-				}
+		for (Round round : match.getRounds()) {
+			if (!round.isPersistent()) {
+				round.setMatchId(match.getId());
 			}
+			saveRound(round);
 		}
 	}
 
@@ -164,7 +148,8 @@ public class DataManager {
 	}
 
 	private void eraseRemovedRoundsFromMatch(Match match) {
-		List<Long> dbRoundIds = roundDao.retrieveRoundIdsForMatch(match.getId());
+		List<Long> dbRoundIds = roundDao
+				.retrieveRoundIdsForMatch(match.getId());
 		List<Long> toDeleteRoundIds = new ArrayList<Long>();
 
 		for (Long dbRoundId : dbRoundIds) {
@@ -199,7 +184,8 @@ public class DataManager {
 		Match match = matchDao.retrieve(matchId);
 		if (match != null) {
 			match.getPlayers().addAll(this.getPlayers(match.getId()));
-			match.getRounds().addAll(roundDao.retrieveRoundsForMatch(match.getId()));
+			match.getRounds().addAll(
+					roundDao.retrieveRoundsForMatch(match.getId()));
 		}
 		return match;
 	}
