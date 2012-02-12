@@ -1,6 +1,9 @@
 package br.net.du.fscore.model;
 
-public class PlayerRound implements Comparable<PlayerRound> {
+import java.io.Serializable;
+
+public class PlayerRound implements Serializable, Comparable<PlayerRound> {
+	private static final long serialVersionUID = 1L;
 
 	private long id = 0;
 	private long bet = 0;
