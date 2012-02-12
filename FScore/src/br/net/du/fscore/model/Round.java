@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Round implements Serializable, Comparable<Round> {
-
 	private static final long serialVersionUID = 1L;
 
 	private long id = 0;

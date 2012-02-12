@@ -8,7 +8,6 @@ import java.util.List;
 import android.text.format.DateFormat;
 
 public class Match implements Serializable, Comparable<Match> {
-
 	private static final long serialVersionUID = 1L;
 
 	private long id = 0;
