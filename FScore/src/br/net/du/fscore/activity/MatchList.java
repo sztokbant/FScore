@@ -42,18 +42,18 @@ public class MatchList extends Activity {
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-		dataManager.closeDb();
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
 
 		createMatchListAdapter();
 		refreshMatchList();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		dataManager.closeDb();
 	}
 
 	@Override
