@@ -1,8 +1,6 @@
 package br.net.du.fscore.model;
 
 import junit.framework.TestCase;
-import br.net.du.fscore.model.Player;
-import br.net.du.fscore.model.PlayerRound;
 
 public class PlayerRoundTest extends TestCase {
 	private PlayerRound playerRound1;
@@ -37,17 +35,32 @@ public class PlayerRoundTest extends TestCase {
 		assertEquals(playerRound1.hashCode(), playerRound1.hashCode());
 	}
 
-	public void testDifferentPlayersImpliesDifferentRound() {
+	public void testDifferentIdsImpliesDifference() {
+		assertEquals(playerRound1, playerRound2);
+		playerRound1.setId(playerRound2.getId() + 31);
+		assertFalse(playerRound1.equals(playerRound2));
+	}
+
+	public void testDifferentRoundIdsImpliesDifference() {
+		assertEquals(playerRound1, playerRound2);
+		playerRound1.setRoundId(playerRound2.getRoundId() + 31);
+		assertFalse(playerRound1.equals(playerRound2));
+	}
+
+	public void testDifferentPlayersImpliesDifference() {
+		assertEquals(playerRound1, playerRound2);
 		playerRound2.setPlayer(new Player("Player Two"));
 		assertFalse(playerRound1.equals(playerRound2));
 	}
 
-	public void testDifferentBetsImpliesDifferentRound() {
+	public void testDifferentBetsImpliesDifference() {
+		assertEquals(playerRound1, playerRound2);
 		playerRound2.setBet(9);
 		assertFalse(playerRound1.equals(playerRound2));
 	}
 
-	public void testDifferentWinsImpliesDifferentRound() {
+	public void testDifferentWinsImpliesDifference() {
+		assertEquals(playerRound1, playerRound2);
 		playerRound2.setWins(5);
 		assertFalse(playerRound1.equals(playerRound2));
 	}
