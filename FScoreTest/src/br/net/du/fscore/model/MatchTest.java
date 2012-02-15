@@ -75,31 +75,41 @@ public class MatchTest extends AndroidTestCase {
 		assertEquals(match1.hashCode(), match1.hashCode());
 	}
 
-	public void testDifferentNamesImplyDifference() {
+	public void testDifferentNamesImpliesDifference() {
+		assertEquals(match1, match2);
 		match2.setName("Another Name");
 		assertFalse(match1.equals(match2));
 	}
 
-	public void testDifferentDatesImplyDifference() {
+	public void testDifferentIdsImpliesDifference() {
+		assertEquals(match1, match2);
+		match2.setId(match1.getId() + 31);
+		assertFalse(match1.equals(match2));
+	}
+
+	public void testDifferentDatesImpliesDifference() {
+		assertEquals(match1, match2);
 		Calendar nextYear = Calendar.getInstance();
 		nextYear.roll(Calendar.YEAR, 1);
 		match2.setDate(nextYear);
 		assertFalse(match1.equals(match2));
 	}
 
-	public void testSameDatesDifferentObjectsImplyEquivalence() {
+	public void testSameDatesDifferentObjectsImpliesEquivalence() {
 		Calendar otherCalendar = Calendar.getInstance();
 		otherCalendar.setTimeInMillis(match1.getDate().getTimeInMillis());
 		match2.setDate(otherCalendar);
 		assertEquals(match1, match2);
 	}
 
-	public void testDifferentPlayersImplyDifference() {
+	public void testDifferentPlayersImpliesDifference() {
+		assertEquals(match1, match2);
 		match2.withPlayer(new Player("Yet Another Player"));
 		assertFalse(match1.equals(match2));
 	}
 
-	public void testDifferentRoundsImplyDifference() {
+	public void testDifferentRoundsImpliesDifference() {
+		assertEquals(match1, match2);
 		match2.addRound(round1);
 		assertFalse(match1.equals(match2));
 	}
