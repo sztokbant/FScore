@@ -99,7 +99,8 @@ public class Match implements Serializable, Comparable<Match> {
 
 		Match otherMatch = (Match) other;
 
-		if (!this.name.equals(otherMatch.getName())
+		if (this.getId() != otherMatch.getId()
+				|| !this.name.equals(otherMatch.getName())
 				|| !this.date.equals(otherMatch.getDate())
 				|| !this.players.equals(otherMatch.getPlayers())
 				|| !this.rounds.equals(otherMatch.getRounds())) {
@@ -112,8 +113,9 @@ public class Match implements Serializable, Comparable<Match> {
 	@Override
 	public int hashCode() {
 		int hash = 1;
+		hash = hash * 31 + (int) id;
 		hash = hash * 31 + (name == null ? 0 : name.hashCode());
-		hash = hash * 31 + (date == null ? 0 : date.hashCode());
+		hash = hash * 31 + (date == null ? 0 : (int) date.getTimeInMillis());
 		return hash;
 	}
 
