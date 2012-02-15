@@ -72,6 +72,25 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		makeTabs();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		dataManager.openDb();
+
+		long matchId = (Long) getIntent().getSerializableExtra(
+				"selectedMatchId");
+		match = dataManager.retrieveMatch(matchId);
+
+		loadRoundsList();
+		loadPlayersList();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		dataManager.closeDb();
+	}
+
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
 		if (view == playerList) {
@@ -137,25 +156,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				return true;
 			}
 		};
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		dataManager.closeDb();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		dataManager.openDb();
-
-		long matchId = (Long) getIntent().getSerializableExtra(
-				"selectedMatchId");
-		match = dataManager.retrieveMatch(matchId);
-
-		loadRoundsList();
-		loadPlayersList();
 	}
 
 	private void makeTabs() {
