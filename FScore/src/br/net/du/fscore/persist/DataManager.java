@@ -105,7 +105,7 @@ public class DataManager {
 			match.getPlayers().addAll(retrievePlayers(match.getId()));
 			List<Long> roundIds = roundDao.retrieveRoundIdsForMatch(matchId);
 			for (Long roundId : roundIds) {
-				match.addRound(retrieveRoundById(roundId));
+				match.addRound(retrieveRound(roundId));
 			}
 		}
 		return match;
@@ -213,6 +213,8 @@ public class DataManager {
 
 		if (toDeleteRoundIds.size() > 0) {
 			for (Long roundId : toDeleteRoundIds) {
+				// DEBUG
+				Log.i("FScore", "deleting round " + roundId);
 				deleteRoundById(roundId);
 			}
 		}
@@ -257,21 +259,29 @@ public class DataManager {
 	private void saveRoundNoTransaction(Round round) {
 		roundDao.save(round);
 
+		// DEBUG
+		Log.i("FScore", "saving round " + round.getId());
+
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
 			playerRound.setRoundId(round.getId());
 			playerRoundDao.save(playerRound);
+
+			// DEBUG
+			Log.i("FScore", "saved playerround " + playerRound.getId());
 		}
 
 		List<PlayerRound> toDeleteRounds = playerRoundDao
 				.retrievePlayerRoundsForRound(round.getId());
 		toDeleteRounds.removeAll(round.getPlayerRounds());
 		for (PlayerRound playerRound : toDeleteRounds) {
+			// DEBUG
+			Log.i("FScore", "deleting playerround " + playerRound.getId());
 			playerRoundDao.delete(playerRound);
 		}
 	}
 
-	Round retrieveRoundById(long id) {
-		Round round = roundDao.retrieve(id);
+	public Round retrieveRound(long roundId) {
+		Round round = roundDao.retrieve(roundId);
 
 		if (round != null) {
 			round.getPlayerRounds().addAll(
@@ -282,7 +292,7 @@ public class DataManager {
 	}
 
 	private void deleteRoundById(Long roundId) {
-		Round round = retrieveRoundById(roundId);
+		Round round = retrieveRound(roundId);
 		deleteRound(round);
 	}
 
