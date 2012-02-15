@@ -71,7 +71,9 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 		}
 
 		PlayerRound otherPlayerRound = (PlayerRound) other;
-		if (this.getBet() != otherPlayerRound.getBet()
+		if (this.getId() != otherPlayerRound.getId()
+				|| this.getRoundId() != otherPlayerRound.getRoundId()
+				|| this.getBet() != otherPlayerRound.getBet()
 				|| this.getWins() != otherPlayerRound.getWins()
 				|| !this.player.equals(otherPlayerRound.getPlayer())) {
 			return false;
@@ -83,6 +85,8 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 	@Override
 	public int hashCode() {
 		int hash = 1;
+		hash = hash * 31 + (int) id;
+		hash = hash * 31 + (int) roundId;
 		hash = hash * 31 + (int) bet;
 		hash = hash * 31 + (int) wins;
 		hash = hash * 31 + (player == null ? 0 : player.hashCode());
