@@ -30,7 +30,6 @@ import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
-import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 
@@ -61,31 +60,16 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlematch);
 
-		match = (Match) getIntent().getSerializableExtra("selectedMatch");
-
 		dataManager = new DataManager(this);
 
-		tabHost = getTabHost();
-		tabHost.setOnTabChangedListener(this);
+		long matchId = (Long) getIntent().getSerializableExtra(
+				"selectedMatchId");
+		match = dataManager.retrieveMatch(matchId);
 
 		loadRoundsList();
 		loadPlayersList();
 
-		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
-				.setIndicator(ROUNDS_TAB_TAG)
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return roundList;
-					}
-				}));
-
-		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
-				.setIndicator(PLAYERS_TAB_TAG)
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return playerList;
-					}
-				}));
+		makeTabs();
 	}
 
 	public void onCreateContextMenu(ContextMenu menu, View view,
@@ -165,6 +149,34 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
+
+		long matchId = (Long) getIntent().getSerializableExtra(
+				"selectedMatchId");
+		match = dataManager.retrieveMatch(matchId);
+
+		loadRoundsList();
+		loadPlayersList();
+	}
+
+	private void makeTabs() {
+		tabHost = getTabHost();
+		tabHost.setOnTabChangedListener(this);
+
+		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
+				.setIndicator(ROUNDS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return roundList;
+					}
+				}));
+
+		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
+				.setIndicator(PLAYERS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return playerList;
+					}
+				}));
 	}
 
 	private void loadRoundsList() {
@@ -184,7 +196,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						.show();
 				Intent singleRound = new Intent(SingleMatch.this,
 						SingleRound.class);
-				singleRound.putExtra("selectedRound", selectedRound);
+				singleRound.putExtra("selectedRoundId", selectedRound.getId());
+				singleRound.putExtra("matchId", match.getId());
 				startActivity(singleRound);
 			}
 		});
@@ -269,7 +282,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
 		dataManager.openDb();
 
 		switch (requestCode) {
