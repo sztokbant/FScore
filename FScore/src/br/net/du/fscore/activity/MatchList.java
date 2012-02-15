@@ -41,13 +41,6 @@ public class MatchList extends Activity {
 		dataManager = new DataManager(this);
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newMatch =
-		menu.add(0, 0, 0, "New Match");
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -59,47 +52,17 @@ public class MatchList extends Activity {
 		super.onResume();
 		dataManager.openDb();
 
-		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
-		adapter = new ArrayAdapter<Match>(this,
-				android.R.layout.simple_list_item_1, matches);
-		matchesList.setAdapter(adapter);
-
-		matchesList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-				selectedMatch = (Match) adapter.getItem(position);
-				Toast.makeText(MatchList.this,
-						"Opening Match " + selectedMatch, Toast.LENGTH_SHORT)
-						.show();
-
-				Intent match = new Intent(MatchList.this, SingleMatch.class);
-				match.putExtra("selectedMatchId", selectedMatch.getId());
-				startActivity(match);
-			}
-		});
-
-		matchesList.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, int position, long id) {
-				// for context menu title and deleting
-				selectedMatch = matches.get(position);
-
-				// won't consume the action
-				return false;
-			}
-		});
-
-		registerForContextMenu(matchesList);
-
+		createMatchListAdapter();
 		refreshMatchList();
 	}
 
-	private void refreshMatchList() {
-		matches.clear();
-		matches.addAll(dataManager.retrieveAllMatches());
-		adapter.notifyDataSetChanged();
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// MenuItem newMatch =
+		menu.add(0, 0, 0, "New Match");
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -115,6 +78,7 @@ public class MatchList extends Activity {
 		return false;
 	}
 
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(selectedMatch.getName());
@@ -148,5 +112,47 @@ public class MatchList extends Activity {
 				return true;
 			}
 		});
+	}
+
+	private void createMatchListAdapter() {
+		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
+		adapter = new ArrayAdapter<Match>(this,
+				android.R.layout.simple_list_item_1, matches);
+		matchesList.setAdapter(adapter);
+
+		matchesList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int position, long id) {
+				selectedMatch = (Match) adapter.getItem(position);
+				Toast.makeText(MatchList.this,
+						"Opening Match " + selectedMatch, Toast.LENGTH_SHORT)
+						.show();
+
+				Intent match = new Intent(MatchList.this, SingleMatch.class);
+				match.putExtra("selectedMatchId", selectedMatch.getId());
+				startActivity(match);
+			}
+		});
+
+		matchesList.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for context menu title and deleting
+				selectedMatch = matches.get(position);
+
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(matchesList);
+	}
+
+	private void refreshMatchList() {
+		matches.clear();
+		matches.addAll(dataManager.retrieveAllMatches());
+		adapter.notifyDataSetChanged();
 	}
 }
