@@ -9,8 +9,6 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
-import br.net.du.fscore.persist.DataManager;
-import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
@@ -273,11 +271,25 @@ public class DataManagerTest extends AndroidTestCase {
 		match.addRound(round1);
 		match.addRound(round2);
 
+		PlayerRound playerRound1 = round1.getPlayerRounds().get(0);
+		PlayerRound playerRound2 = round2.getPlayerRounds().get(0);
+
+		assertEquals(0, playerRound1.getId());
+		assertEquals(0, playerRound2.getId());
+
 		// first save
 		long matchId = dataManager.saveMatch(match);
 
 		long round1Id = round1.getId();
 		long round2Id = round2.getId();
+
+		assertTrue(playerRound1.getId() > 0);
+		assertEquals(playerRound1,
+				playerRoundDao.retrieve(playerRound1.getId()));
+		assertTrue(playerRound2.getId() > 0);
+		assertEquals(playerRound2,
+				playerRoundDao.retrieve(playerRound2.getId()));
+		assertTrue(playerRound2.getId() > playerRound1.getId());
 
 		// remove a Round and save
 		match.getRounds().remove(round1);
@@ -302,12 +314,12 @@ public class DataManagerTest extends AndroidTestCase {
 		Player player2 = new Player("Another Player");
 		match.withPlayer(player).withPlayer(player2);
 
-		Round round1 = new Round(7);
+		Round round = new Round(7);
 		PlayerRound playerRound1 = new PlayerRound(player);
 		playerRound1.setBet(5);
-		round1.addPlayerRound(playerRound1);
+		round.addPlayerRound(playerRound1);
 
-		match.addRound(round1);
+		match.addRound(round);
 
 		// first save
 		dataManager.saveMatch(match);
@@ -316,7 +328,7 @@ public class DataManagerTest extends AndroidTestCase {
 		// add a new PlayerRound and save
 		PlayerRound playerRound2 = new PlayerRound(player2);
 		playerRound2.setBet(3);
-		round1.addPlayerRound(playerRound2);
+		round.addPlayerRound(playerRound2);
 		dataManager.saveMatch(match);
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 
@@ -327,7 +339,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 
 		// delete a PlayerRound and save
-		round1.getPlayerRounds().remove(0);
+		round.getPlayerRounds().remove(0);
 		dataManager.saveMatch(match);
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 	}
@@ -467,10 +479,15 @@ public class DataManagerTest extends AndroidTestCase {
 			playerRoundDao.save(playerRound);
 		}
 
-		Round round2 = dataManager.retrieveRoundById(round1.getId());
+		Round round2 = dataManager.retrieveRound(round1.getId());
 
 		assertEquals(round1.getPlayerRounds().size(), round2.getPlayerRounds()
 				.size());
 		assertEquals(round1, round2);
+	}
+
+	public void testSaveRound() {
+		// TODO! this method has something wrong...
+		// dataManager.saveRound(round);
 	}
 }
