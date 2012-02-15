@@ -1,7 +1,6 @@
 package br.net.du.fscore.model;
 
 import android.test.AndroidTestCase;
-import br.net.du.fscore.model.Player;
 
 public class PlayerTest extends AndroidTestCase {
 
@@ -33,7 +32,14 @@ public class PlayerTest extends AndroidTestCase {
 		assertEquals(player1.hashCode(), player1.hashCode());
 	}
 
-	public void testDifferentNamesImplyDifference() {
+	public void testDifferentIdsDoesntImplyDifference() {
+		assertEquals(player1, player2);
+		player2.setId(player1.getId() + 31);
+		assertTrue(player1.equals(player2));
+	}
+
+	public void testDifferentNamesImpliesDifference() {
+		assertEquals(player1, player2);
 		player2.setName("Other Player");
 		assertFalse(player1.equals(player2));
 	}
