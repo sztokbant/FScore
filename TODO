@@ -11,7 +11,7 @@ Interface:
 * Order of players right after adding a new player differs from right after loading a match
 
 KNOWN ISSUES
-- intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite
+- intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 - DataManager.saveRound() doesn't seem to be working properly when called from outside
 
 TODO for 1st ALPHA
