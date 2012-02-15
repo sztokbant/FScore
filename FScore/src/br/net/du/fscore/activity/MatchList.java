@@ -56,7 +56,6 @@ public class MatchList extends Activity {
 		refreshMatchList();
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuItem newMatch =
