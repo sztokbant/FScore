@@ -1,9 +1,6 @@
 package br.net.du.fscore.model;
 
 import android.test.AndroidTestCase;
-import br.net.du.fscore.model.Player;
-import br.net.du.fscore.model.PlayerRound;
-import br.net.du.fscore.model.Round;
 
 public class RoundTest extends AndroidTestCase {
 
@@ -48,12 +45,26 @@ public class RoundTest extends AndroidTestCase {
 		assertEquals(round1.hashCode(), round1.hashCode());
 	}
 
-	public void testDifferentNumberOfCardsImplyDifference() {
+	public void testDifferentIdsImpliesDifference() {
+		assertEquals(round1, round2);
+		round1.setId(round2.getId() + 31);
+		assertFalse(round1.equals(round2));
+	}
+
+	public void testDifferentMatchIdsImpliesDifference() {
+		assertEquals(round1, round2);
+		round1.setMatchId(round2.getMatchId() + 31);
+		assertFalse(round1.equals(round2));
+	}
+
+	public void testDifferentNumberOfCardsImpliesDifference() {
+		assertEquals(round1, round2);
 		round1.setNumberOfCards(3);
 		assertFalse(round1.equals(round2));
 	}
 
-	public void testDifferentSetOfPlayerRoundsImplyDifference() {
+	public void testDifferentSetOfPlayerRoundsImpliesDifference() {
+		assertEquals(round1, round2);
 		round2.addPlayerRound(playerRound1);
 		assertFalse(round1.equals(round2));
 	}
