@@ -30,6 +30,7 @@ public class MatchList extends Activity {
 	private List<Match> matches = new ArrayList<Match>();
 	private ArrayAdapter<Match> adapter;
 	private Match selectedMatch;
+
 	private DataManager dataManager;
 
 	/** Called when the activity is first created. */
