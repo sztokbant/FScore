@@ -39,14 +39,13 @@ public class MatchList extends Activity {
 		setContentView(R.layout.matchlist);
 
 		dataManager = new DataManager(this);
+		createMatchListAdapter();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
-
-		createMatchListAdapter();
 		refreshMatchList();
 	}
 
@@ -114,12 +113,12 @@ public class MatchList extends Activity {
 	}
 
 	private void createMatchListAdapter() {
-		final ListView matchesList = (ListView) findViewById(R.id_matchlist.matchlist);
+		final ListView matchesView = (ListView) findViewById(R.id_matchlist.matchlist);
 		adapter = new ArrayAdapter<Match>(this,
 				android.R.layout.simple_list_item_1, matches);
-		matchesList.setAdapter(adapter);
+		matchesView.setAdapter(adapter);
 
-		matchesList.setOnItemClickListener(new OnItemClickListener() {
+		matchesView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
@@ -134,7 +133,7 @@ public class MatchList extends Activity {
 			}
 		});
 
-		matchesList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		matchesView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
@@ -146,7 +145,7 @@ public class MatchList extends Activity {
 			}
 		});
 
-		registerForContextMenu(matchesList);
+		registerForContextMenu(matchesView);
 	}
 
 	private void refreshMatchList() {
