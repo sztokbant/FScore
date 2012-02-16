@@ -36,63 +36,12 @@ public class SingleRound extends Activity {
 	private DataManager dataManager;
 	private PlayerRound selectedPlayerRound;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singleround);
 
 		dataManager = new DataManager(this);
-	}
-
-	public void onCreateContextMenu(ContextMenu menu, View view,
-			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle(selectedPlayerRound.toString());
-		MenuItem delete = menu.add(0, 0, 0, "Delete");
-		delete.setOnMenuItemClickListener(playerRoundDeleteClickListener());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newPlayerRound =
-		menu.add(0, 0, 0, "New Player Entry");
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			List<Player> players = match.getPlayers();
-
-			if (players.size() == 0) {
-				Toast.makeText(SingleRound.this, "No players in this match",
-						Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			// TODO this PlayerRound is dummy
-			Player rndPlayer = players
-					.get(new Random().nextInt(players.size()));
-			PlayerRound playerRound = new PlayerRound(rndPlayer);
-			playerRound.setBet(new Random().nextInt(7) + 1);
-			playerRound
-					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
-			if (rndPlayer.isPersistent()) {
-				Log.i("FScore", "player IS persistent");
-			} else {
-				Log.i("FScore", "player IS NOT persistent");
-			}
-
-			playerRounds.add(playerRound);
-			dataManager.saveMatch(match);
-			playerRoundAdapter.notifyDataSetChanged();
-		}
-
-		return false;
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		dataManager.closeDb();
 	}
 
 	@Override
@@ -151,6 +100,59 @@ public class SingleRound extends Activity {
 				});
 
 		registerForContextMenu(playerRoundsList);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		dataManager.closeDb();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
+		menu.setHeaderTitle(selectedPlayerRound.toString());
+		MenuItem delete = menu.add(0, 0, 0, "Delete");
+		delete.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// MenuItem newPlayerRound =
+		menu.add(0, 0, 0, "New Player Entry");
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			List<Player> players = match.getPlayers();
+
+			if (players.size() == 0) {
+				Toast.makeText(SingleRound.this, "No players in this match",
+						Toast.LENGTH_SHORT).show();
+				return false;
+			}
+
+			// TODO this PlayerRound is dummy
+			Player rndPlayer = players
+					.get(new Random().nextInt(players.size()));
+			PlayerRound playerRound = new PlayerRound(rndPlayer);
+			playerRound.setBet(new Random().nextInt(7) + 1);
+			playerRound
+					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
+			if (rndPlayer.isPersistent()) {
+				Log.i("FScore", "player IS persistent");
+			} else {
+				Log.i("FScore", "player IS NOT persistent");
+			}
+
+			playerRounds.add(playerRound);
+			dataManager.saveMatch(match);
+			playerRoundAdapter.notifyDataSetChanged();
+		}
+
+		return false;
 	}
 
 	private OnMenuItemClickListener playerRoundDeleteClickListener() {
