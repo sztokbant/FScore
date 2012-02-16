@@ -62,12 +62,12 @@ public class SingleRound extends Activity {
 
 		playerRounds = round.getPlayerRounds();
 
-		final ListView playerRoundsList = (ListView) findViewById(R.id_singleround.playerroundlist);
+		final ListView playerRoundsView = (ListView) findViewById(R.id_singleround.playerroundlist);
 		playerRoundAdapter = new ArrayAdapter<PlayerRound>(this,
 				android.R.layout.simple_list_item_1, playerRounds);
-		playerRoundsList.setAdapter(playerRoundAdapter);
+		playerRoundsView.setAdapter(playerRoundAdapter);
 
-		playerRoundsList.setOnItemClickListener(new OnItemClickListener() {
+		playerRoundsView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
@@ -85,7 +85,7 @@ public class SingleRound extends Activity {
 			}
 		});
 
-		playerRoundsList
+		playerRoundsView
 				.setOnItemLongClickListener(new OnItemLongClickListener() {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> adapterView,
@@ -99,7 +99,7 @@ public class SingleRound extends Activity {
 					}
 				});
 
-		registerForContextMenu(playerRoundsList);
+		registerForContextMenu(playerRoundsView);
 	}
 
 	@Override
