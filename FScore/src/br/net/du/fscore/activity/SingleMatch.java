@@ -1,5 +1,6 @@
 package br.net.du.fscore.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -42,17 +43,19 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public static final String ROUNDS_TAB_TAG = "Rounds";
 	public static final String PLAYERS_TAB_TAG = "Players";
 
+	private Match match;
+
 	private ListView roundView;
 	private ArrayAdapter<Round> roundAdapter;
-	private ListView playerView;
-	private ArrayAdapter<Player> playerAdapter;
-
-	private Player selectedPlayer;
+	private List<Round> rounds = new ArrayList<Round>();
 	private Round selectedRound;
 
-	private TabHost tabHost;
+	private ListView playerView;
+	private ArrayAdapter<Player> playerAdapter;
+	private List<Player> players = new ArrayList<Player>();
+	private Player selectedPlayer;
 
-	private Match match;
+	private TabHost tabHost;
 
 	private DataManager dataManager;
 
@@ -181,7 +184,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void loadRoundsList() {
 		roundView = new ListView(this);
-		List<Round> rounds = match.getRounds();
+		rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
 		roundView.setAdapter(roundAdapter);
@@ -218,7 +221,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void loadPlayersList() {
 		playerView = new ListView(this);
-		List<Player> players = match.getPlayers();
+		players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerView.setAdapter(playerAdapter);
