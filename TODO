@@ -15,6 +15,5 @@ KNOWN ISSUES
 - DataManager.saveRound() doesn't seem to be working properly when called from outside
 
 TODO for 1st ALPHA
-- activity to list/add/delete Round's PlayerRounds
 - activity to edit PlayerRound's details
 - methods to calculate each Player's points for Round and Match
