@@ -1,5 +1,6 @@
 package br.net.du.fscore.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,11 +31,16 @@ import br.net.du.fscore.persist.DataManager;
 
 public class SingleRound extends Activity {
 	private ArrayAdapter<PlayerRound> playerRoundAdapter;
-	private Round round;
-	private List<PlayerRound> playerRounds;
-	private Match match;
-	private DataManager dataManager;
+	private List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
 	private PlayerRound selectedPlayerRound;
+
+	private Match match;
+	private long matchId;
+
+	private Round round;
+	private long roundId;
+
+	private DataManager dataManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,26 +48,108 @@ public class SingleRound extends Activity {
 		setContentView(R.layout.singleround);
 
 		dataManager = new DataManager(this);
+
+		matchId = (Long) getIntent().getSerializableExtra("matchId");
+		roundId = (Long) getIntent().getSerializableExtra("selectedRoundId");
+
+		createPlayerRoundsListAdapter();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
+		refreshPlayerRoundsList();
+	}
 
-		long matchId = (Long) getIntent().getSerializableExtra("matchId");
-		long selectedRoundId = (Long) getIntent().getSerializableExtra(
-				"selectedRoundId");
-		match = dataManager.retrieveMatch(matchId);
-		for (Round r : match.getRounds()) {
-			if (r.getId() == selectedRoundId) {
-				round = r;
-				break;
+	@Override
+	protected void onPause() {
+		super.onPause();
+		dataManager.closeDb();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// MenuItem newPlayerRound =
+		menu.add(0, 0, 0, "New Player Entry");
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			List<Player> players = match.getPlayers();
+
+			if (players.size() == 0) {
+				Toast.makeText(SingleRound.this, "No players in this match",
+						Toast.LENGTH_SHORT).show();
+				return false;
 			}
+
+			// TODO this PlayerRound is dummy
+			Player rndPlayer = players
+					.get(new Random().nextInt(players.size()));
+			PlayerRound playerRound = new PlayerRound(rndPlayer);
+			playerRound.setBet(new Random().nextInt(7) + 1);
+			playerRound
+					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
+			if (rndPlayer.isPersistent()) {
+				Log.i("FScore", "player IS persistent");
+			} else {
+				Log.i("FScore", "player IS NOT persistent");
+			}
+
+			int idx = match.getRounds().indexOf(round);
+			match.getRounds().get(idx).getPlayerRounds().add(playerRound);
+
+			dataManager.saveMatch(match);
+			refreshPlayerRoundsList();
 		}
 
-		playerRounds = round.getPlayerRounds();
+		return false;
+	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
+		menu.setHeaderTitle(selectedPlayerRound.toString());
+		MenuItem delete = menu.add(0, 0, 0, "Delete");
+		delete.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+	}
+
+	private OnMenuItemClickListener playerRoundDeleteClickListener() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(SingleRound.this)
+						.setTitle("Delete" + selectedPlayerRound)
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(
+										SingleRound.this,
+										"Deleting " + selectedPlayerRound
+												+ "...", Toast.LENGTH_SHORT)
+										.show();
+
+								int idx = match.getRounds().indexOf(round);
+								match.getRounds().get(idx).getPlayerRounds()
+										.remove(selectedPlayerRound);
+
+								dataManager.saveMatch(match);
+								refreshPlayerRoundsList();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		};
+	}
+
+	private void createPlayerRoundsListAdapter() {
 		final ListView playerRoundsView = (ListView) findViewById(R.id_singleround.playerroundlist);
 		playerRoundAdapter = new ArrayAdapter<PlayerRound>(this,
 				android.R.layout.simple_list_item_1, playerRounds);
@@ -102,85 +190,18 @@ public class SingleRound extends Activity {
 		registerForContextMenu(playerRoundsView);
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		dataManager.closeDb();
-	}
+	private void refreshPlayerRoundsList() {
+		playerRounds.clear();
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view,
-			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle(selectedPlayerRound.toString());
-		MenuItem delete = menu.add(0, 0, 0, "Delete");
-		delete.setOnMenuItemClickListener(playerRoundDeleteClickListener());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newPlayerRound =
-		menu.add(0, 0, 0, "New Player Entry");
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			List<Player> players = match.getPlayers();
-
-			if (players.size() == 0) {
-				Toast.makeText(SingleRound.this, "No players in this match",
-						Toast.LENGTH_SHORT).show();
-				return false;
+		match = dataManager.retrieveMatch(matchId);
+		for (Round r : match.getRounds()) {
+			if (r.getId() == roundId) {
+				round = r;
+				break;
 			}
-
-			// TODO this PlayerRound is dummy
-			Player rndPlayer = players
-					.get(new Random().nextInt(players.size()));
-			PlayerRound playerRound = new PlayerRound(rndPlayer);
-			playerRound.setBet(new Random().nextInt(7) + 1);
-			playerRound
-					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
-			if (rndPlayer.isPersistent()) {
-				Log.i("FScore", "player IS persistent");
-			} else {
-				Log.i("FScore", "player IS NOT persistent");
-			}
-
-			playerRounds.add(playerRound);
-			dataManager.saveMatch(match);
-			playerRoundAdapter.notifyDataSetChanged();
 		}
 
-		return false;
-	}
-
-	private OnMenuItemClickListener playerRoundDeleteClickListener() {
-		return new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(SingleRound.this)
-						.setTitle("Delete" + selectedPlayerRound)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(
-										SingleRound.this,
-										"Deleting " + selectedPlayerRound
-												+ "...", Toast.LENGTH_SHORT)
-										.show();
-
-								playerRounds.remove(selectedPlayerRound);
-								dataManager.saveRound(round);
-								playerRoundAdapter.notifyDataSetChanged();
-							}
-						}).setNegativeButton("No", null).show();
-
-				return true;
-			}
-		};
+		playerRounds.addAll(round.getPlayerRounds());
+		playerRoundAdapter.notifyDataSetChanged();
 	}
 }
