@@ -135,135 +135,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		}
 	}
 
-	private OnMenuItemClickListener roundDeleteClickListener() {
-		return new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("Delete " + selectedRound)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(SingleMatch.this,
-										"Deleting " + selectedRound + "...",
-										Toast.LENGTH_SHORT).show();
-
-								match.getRounds().remove(selectedRound);
-								dataManager.saveMatch(match);
-								refreshRoundsList();
-							}
-						}).setNegativeButton("No", null).show();
-
-				return true;
-			}
-		};
-	}
-
-	private OnMenuItemClickListener playerDeleteClickListener() {
-		return new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("Delete" + selectedPlayer)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(SingleMatch.this,
-										"Deleting " + selectedPlayer + "...",
-										Toast.LENGTH_SHORT).show();
-
-								match.getPlayers().remove(selectedPlayer);
-								dataManager.saveMatch(match);
-								refreshPlayersList();
-							}
-						}).setNegativeButton("No", null).show();
-
-				return true;
-			}
-		};
-	}
-
-	private void makeTabs() {
-		tabHost = getTabHost();
-		tabHost.setOnTabChangedListener(this);
-
-		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
-				.setIndicator(ROUNDS_TAB_TAG)
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return roundView;
-					}
-				}));
-
-		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
-				.setIndicator(PLAYERS_TAB_TAG)
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return playerView;
-					}
-				}));
-	}
-
-	private void createRoundsListAdapter() {
-		roundView = new ListView(this);
-		roundAdapter = new ArrayAdapter<Round>(this,
-				android.R.layout.simple_list_item_1, rounds);
-		roundView.setAdapter(roundAdapter);
-
-		roundView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-				selectedRound = (Round) roundAdapter.getItem(position);
-				Toast.makeText(SingleMatch.this,
-						"Opening Round " + selectedRound, Toast.LENGTH_SHORT)
-						.show();
-				Intent singleRound = new Intent(SingleMatch.this,
-						SingleRound.class);
-				singleRound.putExtra("selectedRoundId", selectedRound.getId());
-				singleRound.putExtra("matchId", match.getId());
-				startActivity(singleRound);
-			}
-		});
-
-		roundView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, int position, long id) {
-				// for editing/deleting
-				selectedRound = (Round) roundAdapter.getItem(position);
-				// won't consume the action
-				return false;
-			}
-		});
-
-		registerForContextMenu(roundView);
-	}
-
-	private void createPlayersListAdapter() {
-		playerView = new ListView(this);
-		playerAdapter = new ArrayAdapter<Player>(this,
-				android.R.layout.simple_list_item_1, players);
-		playerView.setAdapter(playerAdapter);
-
-		playerView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, int position, long id) {
-				// for editing/deleting
-				selectedPlayer = (Player) playerAdapter.getItem(position);
-				// won't consume the action
-				return false;
-			}
-		});
-
-		registerForContextMenu(playerView);
+	@Override
+	public void onTabChanged(String tabName) {
+		if (tabName.equals(PLAYERS_TAB_TAG)) {
+			refreshPlayersList();
+		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
+			refreshRoundsList();
+		}
 	}
 
 	@Override
@@ -304,13 +182,135 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		}
 	}
 
-	@Override
-	public void onTabChanged(String tabName) {
-		if (tabName.equals(PLAYERS_TAB_TAG)) {
-			refreshPlayersList();
-		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
-			refreshRoundsList();
-		}
+	private OnMenuItemClickListener playerDeleteClickListener() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(SingleMatch.this)
+						.setTitle("Delete" + selectedPlayer)
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(SingleMatch.this,
+										"Deleting " + selectedPlayer + "...",
+										Toast.LENGTH_SHORT).show();
+
+								match.getPlayers().remove(selectedPlayer);
+								dataManager.saveMatch(match);
+								refreshPlayersList();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		};
+	}
+
+	private OnMenuItemClickListener roundDeleteClickListener() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				// delete
+				new AlertDialog.Builder(SingleMatch.this)
+						.setTitle("Delete " + selectedRound)
+						.setMessage("Are you sure?")
+						.setPositiveButton("Yes", new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Toast.makeText(SingleMatch.this,
+										"Deleting " + selectedRound + "...",
+										Toast.LENGTH_SHORT).show();
+
+								match.getRounds().remove(selectedRound);
+								dataManager.saveMatch(match);
+								refreshRoundsList();
+							}
+						}).setNegativeButton("No", null).show();
+
+				return true;
+			}
+		};
+	}
+
+	private void makeTabs() {
+		tabHost = getTabHost();
+		tabHost.setOnTabChangedListener(this);
+
+		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
+				.setIndicator(ROUNDS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return roundView;
+					}
+				}));
+
+		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
+				.setIndicator(PLAYERS_TAB_TAG)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String arg0) {
+						return playerView;
+					}
+				}));
+	}
+
+	private void createPlayersListAdapter() {
+		playerView = new ListView(this);
+		playerAdapter = new ArrayAdapter<Player>(this,
+				android.R.layout.simple_list_item_1, players);
+		playerView.setAdapter(playerAdapter);
+
+		playerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for editing/deleting
+				selectedPlayer = (Player) playerAdapter.getItem(position);
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(playerView);
+	}
+
+	private void createRoundsListAdapter() {
+		roundView = new ListView(this);
+		roundAdapter = new ArrayAdapter<Round>(this,
+				android.R.layout.simple_list_item_1, rounds);
+		roundView.setAdapter(roundAdapter);
+
+		roundView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int position, long id) {
+				selectedRound = (Round) roundAdapter.getItem(position);
+				Toast.makeText(SingleMatch.this,
+						"Opening Round " + selectedRound, Toast.LENGTH_SHORT)
+						.show();
+				Intent singleRound = new Intent(SingleMatch.this,
+						SingleRound.class);
+				singleRound.putExtra("selectedRoundId", selectedRound.getId());
+				singleRound.putExtra("matchId", match.getId());
+				startActivity(singleRound);
+			}
+		});
+
+		roundView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, int position, long id) {
+				// for editing/deleting
+				selectedRound = (Round) roundAdapter.getItem(position);
+				// won't consume the action
+				return false;
+			}
+		});
+
+		registerForContextMenu(roundView);
 	}
 
 	private void refreshPlayersList() {
