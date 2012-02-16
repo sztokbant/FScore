@@ -60,6 +60,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private DataManager dataManager;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlematch);
@@ -88,6 +89,36 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	protected void onPause() {
 		super.onPause();
 		dataManager.closeDb();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// MenuItem addPlayer =
+		menu.add(0, 0, 0, "Add Player");
+		// MenuItem addRound =
+		menu.add(0, 1, 0, "Add Round");
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			// Add Player
+			Intent chooser = new Intent(Intent.ACTION_PICK,
+					ContactsContract.Contacts.CONTENT_URI);
+			startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
+		} else if (item.getItemId() == 1) {
+			// Add Round
+			// TODO this Round is dummy
+			Round round = new Round(7);
+			match.addRound(round);
+
+			dataManager.saveMatch(match);
+			if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+				refreshRoundsList();
+			}
+		}
+		return false;
 	}
 
 	public void onCreateContextMenu(ContextMenu menu, View view,
@@ -232,48 +263,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		});
 
 		registerForContextMenu(playerView);
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem addPlayer = menu.add(0, 0, 0, "Add Player");
-		MenuItem addRound = menu.add(0, 1, 0, "Add Round");
-
-		addPlayer.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				Intent chooser = new Intent(Intent.ACTION_PICK,
-						ContactsContract.Contacts.CONTENT_URI);
-				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
-				return false;
-			}
-		});
-
-		addRound.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// TODO this Round is dummy
-				Round round = new Round(7);
-				match.addRound(round);
-
-				dataManager.saveMatch(match);
-				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-					refreshRoundsList();
-				}
-				return false;
-			}
-		});
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			// Add Player
-		} else if (item.getItemId() == 1) {
-			// Add Round
-		}
-		return false;
 	}
 
 	@Override
