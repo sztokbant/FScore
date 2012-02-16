@@ -42,9 +42,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public static final String ROUNDS_TAB_TAG = "Rounds";
 	public static final String PLAYERS_TAB_TAG = "Players";
 
-	private ListView roundList;
+	private ListView roundView;
 	private ArrayAdapter<Round> roundAdapter;
-	private ListView playerList;
+	private ListView playerView;
 	private ArrayAdapter<Player> playerAdapter;
 
 	private Player selectedPlayer;
@@ -93,11 +93,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
-		if (view == playerList) {
+		if (view == playerView) {
 			menu.setHeaderTitle(selectedPlayer.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
 			delete.setOnMenuItemClickListener(playerDeleteClickListener());
-		} else if (view == roundList) {
+		} else if (view == roundView) {
 			menu.setHeaderTitle(selectedRound.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
 			delete.setOnMenuItemClickListener(roundDeleteClickListener());
@@ -166,7 +166,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				.setIndicator(ROUNDS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
-						return roundList;
+						return roundView;
 					}
 				}));
 
@@ -174,19 +174,19 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				.setIndicator(PLAYERS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
-						return playerList;
+						return playerView;
 					}
 				}));
 	}
 
 	private void loadRoundsList() {
-		roundList = new ListView(this);
+		roundView = new ListView(this);
 		List<Round> rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
-		roundList.setAdapter(roundAdapter);
+		roundView.setAdapter(roundAdapter);
 
-		roundList.setOnItemClickListener(new OnItemClickListener() {
+		roundView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
@@ -202,7 +202,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			}
 		});
 
-		roundList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		roundView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
@@ -213,17 +213,17 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			}
 		});
 
-		registerForContextMenu(roundList);
+		registerForContextMenu(roundView);
 	}
 
 	private void loadPlayersList() {
-		playerList = new ListView(this);
+		playerView = new ListView(this);
 		List<Player> players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
-		playerList.setAdapter(playerAdapter);
+		playerView.setAdapter(playerAdapter);
 
-		playerList.setOnItemLongClickListener(new OnItemLongClickListener() {
+		playerView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
@@ -234,7 +234,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			}
 		});
 
-		registerForContextMenu(playerList);
+		registerForContextMenu(playerView);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
