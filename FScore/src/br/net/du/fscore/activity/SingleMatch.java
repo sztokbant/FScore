@@ -44,6 +44,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public static final String PLAYERS_TAB_TAG = "Players";
 
 	private Match match;
+	private long matchId;
 
 	private ListView roundView;
 	private ArrayAdapter<Round> roundAdapter;
@@ -65,13 +66,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 		dataManager = new DataManager(this);
 
-		long matchId = (Long) getIntent().getSerializableExtra(
-				"selectedMatchId");
+		matchId = (Long) getIntent().getSerializableExtra("selectedMatchId");
 		match = dataManager.retrieveMatch(matchId);
 
-		loadRoundsList();
-		loadPlayersList();
-
+		createRoundsListAdapter();
+		createPlayersListAdapter();
 		makeTabs();
 	}
 
@@ -80,12 +79,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		super.onResume();
 		dataManager.openDb();
 
-		long matchId = (Long) getIntent().getSerializableExtra(
-				"selectedMatchId");
 		match = dataManager.retrieveMatch(matchId);
-
-		loadRoundsList();
-		loadPlayersList();
+		refreshPlayersList();
+		refreshRoundsList();
 	}
 
 	@Override
@@ -125,7 +121,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 								match.getRounds().remove(selectedRound);
 								dataManager.saveMatch(match);
-								roundAdapter.notifyDataSetChanged();
+								refreshRoundsList();
 							}
 						}).setNegativeButton("No", null).show();
 
@@ -152,7 +148,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 								match.getPlayers().remove(selectedPlayer);
 								dataManager.saveMatch(match);
-								playerAdapter.notifyDataSetChanged();
+								refreshPlayersList();
 							}
 						}).setNegativeButton("No", null).show();
 
@@ -182,9 +178,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				}));
 	}
 
-	private void loadRoundsList() {
+	private void createRoundsListAdapter() {
 		roundView = new ListView(this);
-		rounds = match.getRounds();
 		roundAdapter = new ArrayAdapter<Round>(this,
 				android.R.layout.simple_list_item_1, rounds);
 		roundView.setAdapter(roundAdapter);
@@ -219,9 +214,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		registerForContextMenu(roundView);
 	}
 
-	private void loadPlayersList() {
+	private void createPlayersListAdapter() {
 		playerView = new ListView(this);
-		players = match.getPlayers();
 		playerAdapter = new ArrayAdapter<Player>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerView.setAdapter(playerAdapter);
@@ -263,7 +257,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 				dataManager.saveMatch(match);
 				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-					roundAdapter.notifyDataSetChanged();
+					refreshRoundsList();
 				}
 				return false;
 			}
@@ -309,7 +303,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					match.withPlayer(player);
 					dataManager.saveMatch(match);
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-						playerAdapter.notifyDataSetChanged();
+						refreshPlayersList();
 					}
 				}
 
@@ -323,9 +317,21 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	public void onTabChanged(String tabName) {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
-			playerAdapter.notifyDataSetChanged();
+			refreshPlayersList();
 		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
-			roundAdapter.notifyDataSetChanged();
+			refreshRoundsList();
 		}
+	}
+
+	private void refreshPlayersList() {
+		players.clear();
+		players.addAll(match.getPlayers());
+		playerAdapter.notifyDataSetChanged();
+	}
+
+	private void refreshRoundsList() {
+		rounds.clear();
+		rounds.addAll(match.getRounds());
+		roundAdapter.notifyDataSetChanged();
 	}
 }
