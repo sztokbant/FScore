@@ -94,7 +94,6 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 	}
 
 	public String toString() {
-		return "PlayerRound: " + player.toString() + " [" + bet + ", " + wins
-				+ "]";
+		return player.toString() + " [" + bet + ", " + wins + "]";
 	}
 }
