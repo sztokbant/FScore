@@ -174,6 +174,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
 						refreshPlayersList();
 					}
+				} else {
+					Toast.makeText(SingleMatch.this,
+							"Contact not supported =(",
+							Toast.LENGTH_SHORT).show();
 				}
 
 				if (!cursor.isClosed()) {
