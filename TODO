@@ -13,7 +13,6 @@ Code smells:
 * SingleMatch.onActivityResult()
 
 KNOWN ISSUES
-* Order of players right after adding a new player differs from right after loading a match
 * Facebook-only contacts don't get added to Match
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 

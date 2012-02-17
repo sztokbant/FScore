@@ -1,6 +1,7 @@
 package br.net.du.fscore.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -328,6 +329,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	private void refreshPlayersList() {
 		players.clear();
 		players.addAll(match.getPlayers());
+		Collections.sort(players);
 		playerAdapter.notifyDataSetChanged();
 	}
 
