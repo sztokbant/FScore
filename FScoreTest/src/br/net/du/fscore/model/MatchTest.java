@@ -3,10 +3,6 @@ package br.net.du.fscore.model;
 import java.util.Calendar;
 
 import android.test.AndroidTestCase;
-import br.net.du.fscore.model.Match;
-import br.net.du.fscore.model.Player;
-import br.net.du.fscore.model.PlayerRound;
-import br.net.du.fscore.model.Round;
 
 public class MatchTest extends AndroidTestCase {
 
@@ -132,4 +128,10 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testDeletePlayer() {
+		assertEquals(false, match1.deletePlayer(player1));
+		match1.getRounds().remove(round1);
+		assertEquals(true, match1.deletePlayer(player1));
+		assertEquals(0, match1.getPlayers().size());
+	}
 }

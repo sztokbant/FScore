@@ -57,6 +57,24 @@ public class Match implements Serializable, Comparable<Match> {
 		return this;
 	}
 
+	public boolean deletePlayer(Player player) {
+		if (!players.contains(player)) {
+			return false;
+		}
+
+		for (Round round : rounds) {
+			for (PlayerRound playerRound : round.getPlayerRounds()) {
+				if (playerRound.getPlayer().equals(player)) {
+					return false;
+				}
+			}
+		}
+
+		players.remove(player);
+
+		return true;
+	}
+
 	public List<Player> getPlayers() {
 		return players;
 	}
