@@ -57,7 +57,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return this;
 	}
 
-	public boolean deletePlayer(Player player) {
+	public boolean deletePlayer(Player player) throws IllegalStateException {
 		if (!players.contains(player)) {
 			return false;
 		}
@@ -65,7 +65,8 @@ public class Match implements Serializable, Comparable<Match> {
 		for (Round round : rounds) {
 			for (PlayerRound playerRound : round.getPlayerRounds()) {
 				if (playerRound.getPlayer().equals(player)) {
-					return false;
+					throw new IllegalStateException("Player '" + player
+							+ "' is participating in at least one Round.");
 				}
 			}
 		}

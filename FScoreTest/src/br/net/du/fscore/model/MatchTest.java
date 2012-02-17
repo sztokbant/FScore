@@ -129,9 +129,24 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testDeletePlayer() {
-		assertEquals(false, match1.deletePlayer(player1));
+		try {
+			match1.deletePlayer(player1);
+			fail("cannot delete a Player that participates in a Round");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+
 		match1.getRounds().remove(round1);
-		assertEquals(true, match1.deletePlayer(player1));
+
+		try {
+			// delete successful
+			assertEquals(true, match1.deletePlayer(player1));
+			// delete failed, object not in list anymore
+			assertEquals(false, match1.deletePlayer(player1));
+		} catch (IllegalStateException e) {
+			fail("deleting should be allowed at this point");
+		}
+
 		assertEquals(0, match1.getPlayers().size());
 	}
 }
