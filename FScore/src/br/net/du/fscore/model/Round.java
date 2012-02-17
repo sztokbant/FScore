@@ -86,6 +86,6 @@ public class Round implements Serializable, Comparable<Round> {
 	}
 
 	public String toString() {
-		return "Round " + String.valueOf(id);
+		return "Round - " + numberOfCards + " cards";
 	}
 }
