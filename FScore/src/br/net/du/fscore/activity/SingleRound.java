@@ -1,6 +1,7 @@
 package br.net.du.fscore.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -215,6 +216,7 @@ public class SingleRound extends Activity {
 		}
 
 		playerRounds.addAll(round.getPlayerRounds());
+		Collections.sort(playerRounds);
 		playerRoundAdapter.notifyDataSetChanged();
 	}
 }
