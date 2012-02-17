@@ -188,19 +188,27 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// delete
 				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("Delete" + selectedPlayer)
+						.setTitle("Delete " + selectedPlayer)
 						.setMessage("Are you sure?")
 						.setPositiveButton("Yes", new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								Toast.makeText(SingleMatch.this,
-										"Deleting " + selectedPlayer + "...",
-										Toast.LENGTH_SHORT).show();
+								if (match.deletePlayer(selectedPlayer) == false) {
+									Toast.makeText(
+											SingleMatch.this,
+											"Couldn't delete " + selectedPlayer,
+											Toast.LENGTH_SHORT).show();
+								} else {
+									Toast.makeText(
+											SingleMatch.this,
+											"Deleting " + selectedPlayer
+													+ "...", Toast.LENGTH_SHORT)
+											.show();
 
-								match.getPlayers().remove(selectedPlayer);
-								dataManager.saveMatch(match);
-								refreshPlayersList();
+									dataManager.saveMatch(match);
+									refreshPlayersList();
+								}
 							}
 						}).setNegativeButton("No", null).show();
 
