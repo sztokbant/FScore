@@ -123,7 +123,7 @@ public class SingleRound extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// delete
 				new AlertDialog.Builder(SingleRound.this)
-						.setTitle("Delete" + selectedPlayerRound)
+						.setTitle("Delete " + selectedPlayerRound)
 						.setMessage("Are you sure?")
 						.setPositiveButton("Yes", new OnClickListener() {
 							@Override
