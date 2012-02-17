@@ -1,19 +1,25 @@
 TECHNICAL DEBTS
 
+Refactor it!
+* Convert MenuItem's "Magic Numbers" into enums for:
+  MatchList
+  SingleMatch
+  SingleRound
+
 Code smells:
 * MatchList.onCreateContextMenu()
-* MatchList: Convert MenuItem's "Magic Numbers" into enums
 * SingleMatch.onCreateContextMenu()
 * SingleMatch.onActivityResult()
-* SingleMatch: Convert MenuItem's "Magic Numbers" into enums
-
-Interface:
-* Order of players right after adding a new player differs from right after loading a match
 
 KNOWN ISSUES
-- intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
-- DataManager.saveRound() doesn't seem to be working properly when called from outside
+* deleting a Player that belongs to a PlayerRound crashed the app
+* Order of players right after adding a new player differs from right after loading a match
+* DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
+
+"GHOST" ISSUES
+* intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
 TODO for 1st ALPHA
 - activity to edit PlayerRound's details
 - methods to calculate each Player's points for Round and Match
+- fix known issues above
