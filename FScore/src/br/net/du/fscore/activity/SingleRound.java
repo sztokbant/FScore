@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -87,23 +86,37 @@ public class SingleRound extends Activity {
 			}
 
 			// TODO this PlayerRound is dummy
+			int idx = match.getRounds().indexOf(round);
+			List<PlayerRound> playerRounds = match.getRounds().get(idx)
+					.getPlayerRounds();
+
 			Player rndPlayer = players
 					.get(new Random().nextInt(players.size()));
-			PlayerRound playerRound = new PlayerRound(rndPlayer);
-			playerRound.setBet(new Random().nextInt(7) + 1);
-			playerRound
-					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
-			if (rndPlayer.isPersistent()) {
-				Log.i("FScore", "player IS persistent");
-			} else {
-				Log.i("FScore", "player IS NOT persistent");
+			boolean playerAlreadyInRound = false;
+			for (PlayerRound pr : playerRounds) {
+				if (pr.getPlayer().equals(rndPlayer)) {
+					playerAlreadyInRound = true;
+					break;
+				}
 			}
 
-			int idx = match.getRounds().indexOf(round);
-			match.getRounds().get(idx).getPlayerRounds().add(playerRound);
+			if (playerAlreadyInRound) {
+				Toast.makeText(
+						SingleRound.this,
+						"Player " + rndPlayer.getName()
+								+ " already in this round", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				PlayerRound playerRound = new PlayerRound(rndPlayer);
+				playerRound.setBet(new Random().nextInt(7) + 1);
+				playerRound.setBet(new Random().nextInt((int) playerRound
+						.getBet()) + 1);
 
-			dataManager.saveMatch(match);
-			refreshPlayerRoundsList();
+				playerRounds.add(playerRound);
+
+				dataManager.saveMatch(match);
+				refreshPlayerRoundsList();
+			}
 		}
 
 		return false;
