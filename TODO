@@ -5,6 +5,7 @@ Refactor it!
   MatchList
   SingleMatch
   SingleRound
+* I18n for hard-coded strings
 
 Code smells:
 * MatchList.onCreateContextMenu()
