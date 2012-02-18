@@ -41,13 +41,13 @@ public class MatchTest extends AndroidTestCase {
 		match1 = new Match();
 		match1.setName("Super Match");
 		match1.setDate(date);
-		match1.withPlayer(player1).withPlayer(player2);
+		match1.with(player1).with(player2);
 		match1.addRound(round1);
 
 		match2 = new Match();
 		match2.setName("Super Match");
 		match2.setDate(date);
-		match2.withPlayer(player1).withPlayer(player2);
+		match2.with(player1).with(player2);
 		match2.addRound(round2);
 	}
 
@@ -98,11 +98,11 @@ public class MatchTest extends AndroidTestCase {
 		String name = "Same Name";
 		Match aMatch = new Match(name);
 		Match anotherMatch = new Match(name);
-		aMatch.withPlayer(new Player(name));
-		anotherMatch.withPlayer(new Player(name));
+		aMatch.with(new Player(name));
+		anotherMatch.with(new Player(name));
 
 		assertEquals(aMatch, anotherMatch);
-		aMatch.withPlayer(new Player("Another Player"));
+		aMatch.with(new Player("Another Player"));
 		assertFalse(aMatch.equals(anotherMatch));
 	}
 
@@ -114,7 +114,7 @@ public class MatchTest extends AndroidTestCase {
 
 	public void testPlayerCannotBeNull() {
 		try {
-			match1.withPlayer(null);
+			match1.with(null);
 			fail("Player should not be null");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
@@ -123,13 +123,13 @@ public class MatchTest extends AndroidTestCase {
 
 	public void testCannotAddPlayersAfterMatchHasStarted() {
 		Match match = new Match("Match");
-		match.withPlayer(new Player("Player 1")).withPlayer(
+		match.with(new Player("Player 1")).with(
 				new Player("Player 2"));
 
 		match.addRound(new Round(3));
 
 		try {
-			match.withPlayer(new Player("Player 3"));
+			match.with(new Player("Player 3"));
 			fail("Should have thrown an Exception");
 		} catch (IllegalStateException e) {
 			assertTrue(true);
@@ -186,7 +186,7 @@ public class MatchTest extends AndroidTestCase {
 		Player player1 = new Player("1");
 		Player player2 = new Player("2");
 		Player player3 = new Player("3");
-		match.withPlayer(player1).withPlayer(player2).withPlayer(player3);
+		match.with(player1).with(player2).with(player3);
 
 		Round round1 = new Round(7);
 		PlayerRound pr1_1 = new PlayerRound(player1);

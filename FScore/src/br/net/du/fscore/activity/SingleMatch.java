@@ -183,7 +183,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					}
 
 					Player player = new Player(name);
-					match.withPlayer(player);
+					match.with(player);
 					dataManager.saveMatch(match);
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
 						refreshPlayersList();

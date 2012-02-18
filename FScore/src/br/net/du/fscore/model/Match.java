@@ -44,7 +44,7 @@ public class Match implements Serializable, Comparable<Match> {
 		this.date = date;
 	}
 
-	public Match withPlayer(Player player) throws IllegalArgumentException,
+	public Match with(Player player) throws IllegalArgumentException,
 			IllegalStateException {
 		if (player == null) {
 			throw new IllegalArgumentException("Player cannot be null");

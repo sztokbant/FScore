@@ -73,8 +73,8 @@ public class DataManagerTest extends AndroidTestCase {
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Player 2");
 
-		match.withPlayer(player1);
-		match.withPlayer(player2);
+		match.with(player1);
+		match.with(player2);
 
 		Round round1 = new Round(3);
 		PlayerRound pr11 = new PlayerRound(player1);
@@ -102,8 +102,8 @@ public class DataManagerTest extends AndroidTestCase {
 		// players
 		assertTrue(player1.isPersistent());
 		assertTrue(player2.isPersistent());
-		match2.withPlayer(playerDao.retrieve(player1.getId()));
-		match2.withPlayer(playerDao.retrieve(player2.getId()));
+		match2.with(playerDao.retrieve(player1.getId()));
+		match2.with(playerDao.retrieve(player2.getId()));
 
 		// rounds
 		assertTrue(round1.isPersistent());
@@ -146,11 +146,11 @@ public class DataManagerTest extends AndroidTestCase {
 		long matchId = dataManager.saveMatch(match);
 
 		// add a Player and save
-		match.withPlayer(player1);
+		match.with(player1);
 		dataManager.saveMatch(match);
 
 		// add another Player and save
-		match.withPlayer(player2);
+		match.with(player2);
 		dataManager.saveMatch(match);
 
 		long player1Id = player1.getId();
@@ -177,7 +177,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
-		match.withPlayer(player1).withPlayer(player2);
+		match.with(player1).with(player2);
 
 		// first save
 		long matchId = dataManager.saveMatch(match);
@@ -213,7 +213,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match1 = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
-		match1.withPlayer(player1).withPlayer(player2);
+		match1.with(player1).with(player2);
 
 		// first save
 		dataManager.saveMatch(match1);
@@ -262,7 +262,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
-		match.withPlayer(player1).withPlayer(player2);
+		match.with(player1).with(player2);
 
 		Round round1 = new Round(3);
 		round1.addPlayerRound(new PlayerRound(player1));
@@ -331,7 +331,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		Player player2 = new Player("Another Player");
-		match.withPlayer(player).withPlayer(player2);
+		match.with(player).with(player2);
 
 		Round round = new Round(7);
 		PlayerRound playerRound1 = new PlayerRound(player);
@@ -367,7 +367,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Another Player");
-		match.withPlayer(player1).withPlayer(player2);
+		match.with(player1).with(player2);
 
 		Round round1 = new Round(7);
 		round1.addPlayerRound(new PlayerRound(player1));
@@ -385,7 +385,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Another Player");
-		match.withPlayer(player1).withPlayer(player2);
+		match.with(player1).with(player2);
 
 		Round round = new Round(7);
 		round.addPlayerRound(new PlayerRound(player1));
@@ -406,7 +406,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Another Player");
 
-		match.withPlayer(player1).withPlayer(player2);
+		match.with(player1).with(player2);
 
 		PlayerRound playerRound1 = new PlayerRound(player1);
 		PlayerRound playerRound2 = new PlayerRound(player2);
@@ -457,8 +457,8 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match1 = new Match("Match One");
 		Match match2 = new Match("Match Two");
 		Player player = new Player("A Player");
-		match1.withPlayer(player);
-		match2.withPlayer(player);
+		match1.with(player);
+		match2.with(player);
 
 		// save both
 		long matchId1 = dataManager.saveMatch(match1);
