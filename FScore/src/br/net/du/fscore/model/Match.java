@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import android.text.format.DateFormat;
 
@@ -93,6 +94,12 @@ public class Match implements Serializable, Comparable<Match> {
 
 		for (Player player : players) {
 			PlayerRound playerRound = new PlayerRound(player);
+
+			// TODO this must be REMOVED after activities are ready
+			Random r = new Random();
+			playerRound.setBet(r.nextInt((int) numberOfCards + 1));
+			playerRound.setWins(r.nextInt((int) numberOfCards + 1));
+
 			round.addPlayerRound(playerRound);
 		}
 

@@ -3,6 +3,7 @@ package br.net.du.fscore.activity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -123,11 +124,15 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			} else {
 				// New Round
 				// TODO should get numberOfCards from user
-				match.newRound(7);
+				match.newRound(new Random().nextInt(10) + 1);
+
 				dataManager.saveMatch(match);
 
 				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
 					refreshRoundsList();
+				} else if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+					// TODO this is only useful when testing
+					refreshPlayersList();
 				}
 
 				unregisterForContextMenu(playerScoresView);
@@ -298,17 +303,18 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				android.R.layout.simple_list_item_1, playerScores);
 		playerScoresView.setAdapter(playerScoresAdapter);
 
-		playerScoresView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, int position, long id) {
-				// for editing/deleting
-				selectedPlayer = (Player) playerScoresAdapter.getItem(position)
-						.getPlayer();
-				// won't consume the action
-				return false;
-			}
-		});
+		playerScoresView
+				.setOnItemLongClickListener(new OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> adapterView,
+							View view, int position, long id) {
+						// for editing/deleting
+						selectedPlayer = (Player) playerScoresAdapter.getItem(
+								position).getPlayer();
+						// won't consume the action
+						return false;
+					}
+				});
 
 		if (match.getRounds().isEmpty()) {
 			registerForContextMenu(playerScoresView);
