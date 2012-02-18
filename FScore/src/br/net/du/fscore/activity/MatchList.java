@@ -122,10 +122,6 @@ public class MatchList extends Activity {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 				selectedMatch = (Match) adapter.getItem(position);
-				Toast.makeText(MatchList.this,
-						"Opening Match " + selectedMatch, Toast.LENGTH_SHORT)
-						.show();
-
 				Intent match = new Intent(MatchList.this, SingleMatch.class);
 				match.putExtra("selectedMatchId", selectedMatch.getId());
 				startActivity(match);
