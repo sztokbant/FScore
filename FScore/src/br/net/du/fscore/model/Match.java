@@ -3,7 +3,9 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.text.format.DateFormat;
 
@@ -80,17 +82,42 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
-	public void addRound(Round round) throws IllegalArgumentException {
+	public Match addRound(Round round) throws IllegalArgumentException {
 		if (round == null) {
 			throw new IllegalArgumentException("Round cannot be null");
 		}
 
 		round.setMatchId(this.getId());
 		rounds.add(round);
+
+		return this;
 	}
 
 	public List<Round> getRounds() {
 		return rounds;
+	}
+
+	public Map<Player, Long> getScores() {
+		Map<Player, Long> scores = new HashMap<Player, Long>();
+
+		// keys
+		for (Player player : players) {
+			scores.put(player, new Long(0));
+		}
+
+		System.out.println(scores.keySet().toString());
+
+		// values
+		for (Round round : rounds) {
+			for (PlayerRound playerRound : round.getPlayerRounds()) {
+				Player player = playerRound.getPlayer();
+				Long score = scores.get(player);
+				score = score + playerRound.getScore();
+				scores.put(player, score);
+			}
+		}
+
+		return scores;
 	}
 
 	public long getId() {

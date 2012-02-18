@@ -1,6 +1,7 @@
 package br.net.du.fscore.model;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import android.test.AndroidTestCase;
 
@@ -148,5 +149,56 @@ public class MatchTest extends AndroidTestCase {
 		}
 
 		assertEquals(0, match1.getPlayers().size());
+	}
+
+	public void testGetScores() {
+		Match match = new Match("Match");
+
+		Player player1 = new Player("1");
+		Player player2 = new Player("2");
+		Player player3 = new Player("3");
+		match.withPlayer(player1).withPlayer(player2).withPlayer(player3);
+
+		Round round1 = new Round(7);
+		PlayerRound pr1_1 = new PlayerRound(player1);
+		pr1_1.setBet(4).setWins(5); // 5
+		round1.addPlayerRound(pr1_1);
+		PlayerRound pr1_2 = new PlayerRound(player2);
+		pr1_2.setBet(2).setWins(2); // 7
+		round1.addPlayerRound(pr1_2);
+		PlayerRound pr1_3 = new PlayerRound(player3);
+		pr1_3.setBet(7).setWins(0); // 0
+		round1.addPlayerRound(pr1_3);
+
+		Round round2 = new Round(8);
+		PlayerRound pr2_1 = new PlayerRound(player1);
+		pr2_1.setBet(8).setWins(3); // 5+3 = 8
+		round2.addPlayerRound(pr2_1);
+		PlayerRound pr2_2 = new PlayerRound(player2);
+		pr2_2.setBet(0).setWins(2); // 7+2 = 9
+		round2.addPlayerRound(pr2_2);
+		PlayerRound pr2_3 = new PlayerRound(player3);
+		pr2_3.setBet(0).setWins(0); // 0+5 = 5
+		round2.addPlayerRound(pr2_3);
+
+		Round round3 = new Round(9);
+		PlayerRound pr3_1 = new PlayerRound(player1);
+		pr3_1.setBet(5).setWins(5); // 8+10 = 18
+		round3.addPlayerRound(pr3_1);
+		PlayerRound pr3_2 = new PlayerRound(player2);
+		pr3_2.setBet(6).setWins(1); // 9+1 = 10
+		round3.addPlayerRound(pr3_2);
+		PlayerRound pr3_3 = new PlayerRound(player3);
+		pr3_3.setBet(3).setWins(3); // 5+8 = 13
+		round3.addPlayerRound(pr3_3);
+
+		match.addRound(round1).addRound(round2).addRound(round3);
+
+		Map<Player, Long> scores = match.getScores();
+
+		assertEquals(3, scores.size());
+		assertEquals(new Long(18), scores.get(player1));
+		assertEquals(new Long(10), scores.get(player2));
+		assertEquals(new Long(13), scores.get(player3));
 	}
 }
