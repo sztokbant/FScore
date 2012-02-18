@@ -20,16 +20,18 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 		return bet;
 	}
 
-	public void setBet(long bet) {
+	public PlayerRound setBet(long bet) {
 		this.bet = bet;
+		return this;
 	}
 
 	public long getWins() {
 		return wins;
 	}
 
-	public void setWins(long wins) {
+	public PlayerRound setWins(long wins) {
 		this.wins = wins;
+		return this;
 	}
 
 	public Player getPlayer() {
