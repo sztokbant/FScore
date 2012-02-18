@@ -138,6 +138,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return hash;
 	}
 
+	@Override
 	public String toString() {
 		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
 	}

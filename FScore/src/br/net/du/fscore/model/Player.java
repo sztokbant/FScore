@@ -53,6 +53,7 @@ public class Player implements Serializable, Comparable<Player> {
 		return hash;
 	}
 
+	@Override
 	public String toString() {
 		return name;
 	}

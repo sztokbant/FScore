@@ -105,6 +105,7 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 		return hash;
 	}
 
+	@Override
 	public String toString() {
 		String myString = player.toString() + " ";
 		myString += (wins == EMPTY) ? "-" : wins;
