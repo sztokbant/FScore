@@ -93,31 +93,25 @@ public class SingleRound extends Activity {
 
 			Player rndPlayer = players
 					.get(new Random().nextInt(players.size()));
-			boolean playerAlreadyInRound = false;
-			for (PlayerRound pr : playerRounds) {
-				if (pr.getPlayer().equals(rndPlayer)) {
-					playerAlreadyInRound = true;
-					break;
-				}
-			}
 
-			if (playerAlreadyInRound) {
+			PlayerRound playerRound = new PlayerRound(rndPlayer);
+			playerRound.setBet(new Random().nextInt(7) + 1);
+			playerRound
+					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
+
+			try {
+				round.addPlayerRound(playerRound);
+			} catch (IllegalStateException e) {
 				Toast.makeText(
 						SingleRound.this,
 						"Player " + rndPlayer.getName()
 								+ " already in this round", Toast.LENGTH_SHORT)
 						.show();
-			} else {
-				PlayerRound playerRound = new PlayerRound(rndPlayer);
-				playerRound.setBet(new Random().nextInt(7) + 1);
-				playerRound.setBet(new Random().nextInt((int) playerRound
-						.getBet()) + 1);
-
-				playerRounds.add(playerRound);
-
-				dataManager.saveMatch(match);
-				refreshPlayerRoundsList();
+				return false;
 			}
+
+			dataManager.saveMatch(match);
+			refreshPlayerRoundsList();
 		}
 
 		return false;
