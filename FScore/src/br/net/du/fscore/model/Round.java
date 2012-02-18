@@ -37,7 +37,20 @@ public class Round implements Serializable, Comparable<Round> {
 		return playerRounds;
 	}
 
-	public void addPlayerRound(PlayerRound playerRound) {
+	public void addPlayerRound(PlayerRound playerRound)
+			throws IllegalStateException, IllegalArgumentException {
+		if (playerRound == null) {
+			throw new IllegalArgumentException("playerRound cannot be null");
+		}
+
+		for (PlayerRound pr : playerRounds) {
+			if (pr.getPlayer().equals(playerRound.getPlayer())) {
+				throw new IllegalStateException("Player "
+						+ playerRound.getPlayer().getName()
+						+ " already in round");
+			}
+		}
+
 		this.playerRounds.add(playerRound);
 	}
 

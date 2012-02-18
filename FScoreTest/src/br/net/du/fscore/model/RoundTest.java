@@ -65,7 +65,25 @@ public class RoundTest extends AndroidTestCase {
 
 	public void testDifferentSetOfPlayerRoundsImpliesDifference() {
 		assertEquals(round1, round2);
-		round2.addPlayerRound(playerRound1);
+		round2.addPlayerRound(new PlayerRound(new Player("Another")));
 		assertFalse(round1.equals(round2));
+	}
+
+	public void testCannotAddMoreThanOnePlayerRoundForSamePlayer() {
+		try {
+			round1.addPlayerRound(new PlayerRound(new Player("Player One")));
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
+	public void testPlayerRoundCannotBeNull() {
+		try {
+			round1.addPlayerRound(null);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 }
