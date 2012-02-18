@@ -156,8 +156,24 @@ public class MatchTest extends AndroidTestCase {
 
 	public void testNewRound() {
 		Match match = new Match("Match");
-		match.with(new Player("A Player")).with(new Player("Another"))
-				.newRound(7);
+
+		try {
+			match.newRound(7);
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+
+		match.with(new Player("A Player")).with(new Player("Another"));
+
+		try {
+			match.newRound(0);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		match.newRound(7);
 		Round round = match.getRounds().get(0);
 		assertEquals(2, round.getPlayerRounds().size());
 		assertEquals(new Player("A Player"), round.getPlayerRounds().get(0)
