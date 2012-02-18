@@ -107,10 +107,12 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 
 	@Override
 	public String toString() {
-		String myString = player.toString() + " ";
-		myString += (wins == EMPTY) ? "-" : wins;
-		myString += "/";
-		myString += (bet == EMPTY) ? "-" : bet;
-		return myString;
+		StringBuilder sb = new StringBuilder();
+		sb.append(player.toString() + " " + getScore() + " (");
+		sb.append((wins == EMPTY) ? "-" : wins);
+		sb.append("/");
+		sb.append((bet == EMPTY) ? "-" : bet);
+		sb.append(")");
+		return sb.toString();
 	}
 }
