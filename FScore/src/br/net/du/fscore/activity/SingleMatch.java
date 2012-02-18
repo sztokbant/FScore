@@ -96,8 +96,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// MenuItem addPlayer =
 		menu.add(0, 0, 0, "Add Player");
-		// MenuItem addRound =
-		menu.add(0, 1, 0, "Add Round");
+		// MenuItem newRound =
+		menu.add(0, 1, 0, "New Round");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -120,10 +120,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						"Match must have at least 2 players.",
 						Toast.LENGTH_SHORT).show();
 			} else {
-				// Add Round
-				// TODO this Round is dummy
-				Round round = new Round(7);
-				match.addRound(round);
+				// New Round
+				// TODO should get numberOfCards from user
+				match.newRound(7);
 				dataManager.saveMatch(match);
 
 				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {

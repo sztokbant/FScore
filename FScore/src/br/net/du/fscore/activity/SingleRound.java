@@ -3,7 +3,6 @@ package br.net.du.fscore.activity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
-import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
@@ -66,52 +63,6 @@ public class SingleRound extends Activity {
 	protected void onPause() {
 		super.onPause();
 		dataManager.closeDb();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newPlayerRound =
-		menu.add(0, 0, 0, "New Player Entry");
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			List<Player> players = match.getPlayers();
-
-			if (players.size() == 0) {
-				Toast.makeText(SingleRound.this, "No players in this match",
-						Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			// TODO this PlayerRound is dummy
-			Player rndPlayer = players
-					.get(new Random().nextInt(players.size()));
-
-			PlayerRound playerRound = new PlayerRound(rndPlayer);
-			playerRound.setBet(new Random().nextInt((int) round
-					.getNumberOfCards()) + 1);
-			playerRound.setWins(new Random().nextInt((int) round
-					.getNumberOfCards() + 1));
-
-			try {
-				round.addPlayerRound(playerRound);
-			} catch (IllegalStateException e) {
-				Toast.makeText(
-						SingleRound.this,
-						"Player " + rndPlayer.getName()
-								+ " already in this round", Toast.LENGTH_SHORT)
-						.show();
-				return false;
-			}
-
-			dataManager.saveMatch(match);
-			refreshPlayerRoundsList();
-		}
-
-		return false;
 	}
 
 	@Override
