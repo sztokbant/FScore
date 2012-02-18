@@ -64,4 +64,20 @@ public class PlayerRoundTest extends TestCase {
 		playerRound2.setWins(5);
 		assertFalse(playerRound1.equals(playerRound2));
 	}
+
+	public void testGetScore() {
+		// new instance
+		PlayerRound playerRound = new PlayerRound(new Player("Name"));
+		assertEquals(0, playerRound.getScore());
+
+		// bet == wins
+		playerRound.setBet(7);
+		playerRound.setWins(7);
+		assertEquals(7 + 5, playerRound.getScore());
+
+		// bet != wins
+		playerRound.setBet(3);
+		playerRound.setWins(2);
+		assertEquals(2, playerRound.getScore());
+	}
 }

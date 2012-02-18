@@ -3,11 +3,12 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 
 public class PlayerRound implements Serializable, Comparable<PlayerRound> {
+	public static final long EMPTY = -1;
 	private static final long serialVersionUID = 1L;
 
 	private long id = 0;
-	private long bet = 0;
-	private long wins = 0;
+	private long bet = EMPTY;
+	private long wins = EMPTY;
 	private Player player = null;
 	private long roundId = 0;
 
@@ -45,6 +46,17 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 
 	public void setRoundId(long roundId) {
 		this.roundId = roundId;
+	}
+
+	public long getScore() {
+		if (bet == EMPTY || wins == EMPTY) {
+			return 0;
+		}
+
+		long score = wins;
+		score += (wins == bet) ? 5 : 0;
+
+		return score;
 	}
 
 	public long getId() {
