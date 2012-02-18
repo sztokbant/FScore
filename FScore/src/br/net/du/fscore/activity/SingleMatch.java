@@ -105,19 +105,27 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
 			// Add Player
-			Intent chooser = new Intent(Intent.ACTION_PICK,
-					ContactsContract.Contacts.CONTENT_URI);
-			startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
+			if (!match.getRounds().isEmpty()) {
+				Toast.makeText(SingleMatch.this,
+						"Cannot add more players after match has started.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Intent chooser = new Intent(Intent.ACTION_PICK,
+						ContactsContract.Contacts.CONTENT_URI);
+				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
+			}
 		} else if (item.getItemId() == 1) {
 			// Add Round
 			// TODO this Round is dummy
 			Round round = new Round(7);
 			match.addRound(round);
-
 			dataManager.saveMatch(match);
+
 			if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
 				refreshRoundsList();
 			}
+
+			unregisterForContextMenu(playerView);
 		}
 		return false;
 	}
@@ -176,8 +184,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					}
 				} else {
 					Toast.makeText(SingleMatch.this,
-							"Contact not supported =(",
-							Toast.LENGTH_SHORT).show();
+							"Contact not supported =(", Toast.LENGTH_SHORT)
+							.show();
 				}
 
 				if (!cursor.isClosed()) {
@@ -245,6 +253,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 								match.getRounds().remove(selectedRound);
 								dataManager.saveMatch(match);
 								refreshRoundsList();
+
+								if (match.getRounds().isEmpty()) {
+									registerForContextMenu(playerView);
+								}
 							}
 						}).setNegativeButton("No", null).show();
 
@@ -291,7 +303,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			}
 		});
 
-		registerForContextMenu(playerView);
+		if (match.getRounds().isEmpty()) {
+			registerForContextMenu(playerView);
+		}
 	}
 
 	private void createRoundsListAdapter() {

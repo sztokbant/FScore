@@ -44,9 +44,15 @@ public class Match implements Serializable, Comparable<Match> {
 		this.date = date;
 	}
 
-	public Match withPlayer(Player player) throws IllegalArgumentException {
+	public Match withPlayer(Player player) throws IllegalArgumentException,
+			IllegalStateException {
 		if (player == null) {
 			throw new IllegalArgumentException("Player cannot be null");
+		}
+
+		if (!rounds.isEmpty()) {
+			throw new IllegalStateException(
+					"Cannot add players after the match has started");
 		}
 
 		for (Player p : players) {
@@ -60,17 +66,13 @@ public class Match implements Serializable, Comparable<Match> {
 	}
 
 	public boolean deletePlayer(Player player) throws IllegalStateException {
-		if (!players.contains(player)) {
-			return false;
+		if (!rounds.isEmpty()) {
+			throw new IllegalStateException(
+					"Cannot delete players after the match has started");
 		}
 
-		for (Round round : rounds) {
-			for (PlayerRound playerRound : round.getPlayerRounds()) {
-				if (playerRound.getPlayer().equals(player)) {
-					throw new IllegalStateException("Player '" + player
-							+ "' is participating in at least one Round.");
-				}
-			}
+		if (!players.contains(player)) {
+			return false;
 		}
 
 		players.remove(player);

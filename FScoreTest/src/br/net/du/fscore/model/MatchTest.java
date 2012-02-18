@@ -46,14 +46,14 @@ public class MatchTest extends AndroidTestCase {
 		match1 = new Match();
 		match1.setName("Super Match");
 		match1.setDate(date);
-		match1.addRound(round1);
 		match1.withPlayer(player1);
+		match1.addRound(round1);
 
 		match2 = new Match();
 		match2.setName("Super Match");
 		match2.setDate(date);
-		match2.addRound(round2);
 		match2.withPlayer(player2);
+		match2.addRound(round2);
 	}
 
 	public void testEquals() {
@@ -100,9 +100,15 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testDifferentPlayersImpliesDifference() {
-		assertEquals(match1, match2);
-		match2.withPlayer(new Player("Yet Another Player"));
-		assertFalse(match1.equals(match2));
+		String name = "Same Name";
+		Match aMatch = new Match(name);
+		Match anotherMatch = new Match(name);
+		aMatch.withPlayer(new Player(name));
+		anotherMatch.withPlayer(new Player(name));
+
+		assertEquals(aMatch, anotherMatch);
+		aMatch.withPlayer(new Player("Another Player"));
+		assertFalse(aMatch.equals(anotherMatch));
 	}
 
 	public void testDifferentRoundsImpliesDifference() {
@@ -120,6 +126,21 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testCannotAddPlayersAfterMatchHasStarted() {
+		Match match = new Match("Match");
+		match.withPlayer(new Player("Player 1")).withPlayer(
+				new Player("Player 2"));
+
+		match.addRound(new Round(3));
+
+		try {
+			match.withPlayer(new Player("Player 3"));
+			fail("Should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
 	public void testRoundCannotBeNull() {
 		try {
 			match1.addRound(null);
@@ -132,7 +153,7 @@ public class MatchTest extends AndroidTestCase {
 	public void testDeletePlayer() {
 		try {
 			match1.deletePlayer(player1);
-			fail("cannot delete a Player that participates in a Round");
+			fail("should not delete after match has started");
 		} catch (IllegalStateException e) {
 			assertTrue(true);
 		}
