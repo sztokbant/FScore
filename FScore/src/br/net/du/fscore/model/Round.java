@@ -37,7 +37,7 @@ public class Round implements Serializable, Comparable<Round> {
 		return playerRounds;
 	}
 
-	public void addPlayerRound(PlayerRound playerRound)
+	public Round addPlayerRound(PlayerRound playerRound)
 			throws IllegalStateException, IllegalArgumentException {
 		if (playerRound == null) {
 			throw new IllegalArgumentException("playerRound cannot be null");
@@ -52,6 +52,8 @@ public class Round implements Serializable, Comparable<Round> {
 		}
 
 		this.playerRounds.add(playerRound);
+
+		return this;
 	}
 
 	public long getId() {
