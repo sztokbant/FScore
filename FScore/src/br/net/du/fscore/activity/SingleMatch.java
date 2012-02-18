@@ -218,24 +218,17 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								try {
-									boolean playerDeleted = match
-											.deletePlayer(selectedPlayer);
-									if (playerDeleted) {
-										Toast.makeText(
-												SingleMatch.this,
-												"Deleting " + selectedPlayer
-														+ "...",
-												Toast.LENGTH_SHORT).show();
-
-										dataManager.saveMatch(match);
-										refreshPlayersList();
-									}
-								} catch (IllegalStateException e) {
+								boolean playerDeleted = match
+										.deletePlayer(selectedPlayer);
+								if (playerDeleted) {
 									Toast.makeText(
 											SingleMatch.this,
-											"Cannot delete players belonging to rounds",
-											Toast.LENGTH_SHORT).show();
+											"Deleting " + selectedPlayer
+													+ "...", Toast.LENGTH_SHORT)
+											.show();
+
+									dataManager.saveMatch(match);
+									refreshPlayersList();
 								}
 							}
 						}).setNegativeButton("No", null).show();
