@@ -53,9 +53,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	private List<Round> rounds = new ArrayList<Round>();
 	private Round selectedRound;
 
-	private ListView playerView;
-	private ArrayAdapter<PlayerScore> playerAdapter;
-	private List<PlayerScore> players = new ArrayList<PlayerScore>();
+	private ListView playerScoresView;
+	private ArrayAdapter<PlayerScore> playerScoresAdapter;
+	private List<PlayerScore> playerScores = new ArrayList<PlayerScore>();
 	private Player selectedPlayer;
 
 	private TabHost tabHost;
@@ -130,7 +130,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					refreshRoundsList();
 				}
 
-				unregisterForContextMenu(playerView);
+				unregisterForContextMenu(playerScoresView);
 			}
 		}
 		return false;
@@ -139,7 +139,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
-		if (view == playerView) {
+		if (view == playerScoresView) {
 			menu.setHeaderTitle(selectedPlayer.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
 			delete.setOnMenuItemClickListener(playerDeleteClickListener());
@@ -261,7 +261,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 								refreshRoundsList();
 
 								if (match.getRounds().isEmpty()) {
-									registerForContextMenu(playerView);
+									registerForContextMenu(playerScoresView);
 								}
 							}
 						}).setNegativeButton("No", null).show();
@@ -287,23 +287,23 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				.setIndicator(PLAYERS_TAB_TAG)
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
-						return playerView;
+						return playerScoresView;
 					}
 				}));
 	}
 
 	private void createPlayersListAdapter() {
-		playerView = new ListView(this);
-		playerAdapter = new ArrayAdapter<PlayerScore>(this,
-				android.R.layout.simple_list_item_1, players);
-		playerView.setAdapter(playerAdapter);
+		playerScoresView = new ListView(this);
+		playerScoresAdapter = new ArrayAdapter<PlayerScore>(this,
+				android.R.layout.simple_list_item_1, playerScores);
+		playerScoresView.setAdapter(playerScoresAdapter);
 
-		playerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		playerScoresView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
 				// for editing/deleting
-				selectedPlayer = (Player) playerAdapter.getItem(position)
+				selectedPlayer = (Player) playerScoresAdapter.getItem(position)
 						.getPlayer();
 				// won't consume the action
 				return false;
@@ -311,7 +311,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		});
 
 		if (match.getRounds().isEmpty()) {
-			registerForContextMenu(playerView);
+			registerForContextMenu(playerScoresView);
 		}
 	}
 
@@ -352,10 +352,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	}
 
 	private void refreshPlayersList() {
-		players.clear();
-		players.addAll(match.getPlayerScores());
-		Collections.sort(players);
-		playerAdapter.notifyDataSetChanged();
+		playerScores.clear();
+		playerScores.addAll(match.getPlayerScores());
+		Collections.sort(playerScores);
+		playerScoresAdapter.notifyDataSetChanged();
 	}
 
 	private void refreshRoundsList() {
