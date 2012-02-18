@@ -117,7 +117,7 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(player.toString() + " " + getScore() + " (");
+		sb.append(player.toString() + " [" + getScore() + "] (");
 		sb.append((wins == EMPTY) ? "-" : wins);
 		sb.append("/");
 		sb.append((bet == EMPTY) ? "-" : bet);
