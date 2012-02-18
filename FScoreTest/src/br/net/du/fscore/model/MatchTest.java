@@ -154,6 +154,19 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testNewRound() {
+		Match match = new Match("Match");
+		match.with(new Player("A Player")).with(new Player("Another"))
+				.newRound(7);
+		Round round = match.getRounds().get(0);
+		assertEquals(2, round.getPlayerRounds().size());
+		assertEquals(new Player("A Player"), round.getPlayerRounds().get(0)
+				.getPlayer());
+		assertEquals(new Player("Another"), round.getPlayerRounds().get(1)
+				.getPlayer());
+		assertEquals(match.getId(), round.getMatchId());
+	}
+
 	public void testCannotAddRoundIfMatchHasLessThan2Players() {
 		match1.getRounds().remove(0);
 		match1.deletePlayer(player1);
