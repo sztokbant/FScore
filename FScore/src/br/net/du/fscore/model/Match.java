@@ -84,6 +84,26 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
+	public Match newRound(long numberOfCards) throws IllegalArgumentException,
+			IllegalStateException {
+		if (players.size() < 2) {
+			throw new IllegalStateException(
+					"Match must have at least 2 players to begin");
+		}
+
+		Round round = new Round(numberOfCards);
+
+		for (Player player : players) {
+			PlayerRound playerRound = new PlayerRound(player);
+			round.addPlayerRound(playerRound);
+		}
+
+		round.setMatchId(this.getId());
+		rounds.add(round);
+
+		return this;
+	}
+
 	public Match addRound(Round round) throws IllegalArgumentException,
 			IllegalStateException {
 		if (round == null) {
@@ -132,6 +152,9 @@ public class Match implements Serializable, Comparable<Match> {
 
 	public void setId(long id) {
 		this.id = id;
+		for (Round round : rounds) {
+			round.setMatchId(id);
+		}
 	}
 
 	public boolean isPersistent() {

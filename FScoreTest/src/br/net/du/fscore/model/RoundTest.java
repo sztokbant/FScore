@@ -86,4 +86,40 @@ public class RoundTest extends AndroidTestCase {
 			assertTrue(true);
 		}
 	}
+
+	public void testNumberOfCardsMustBeGreaterThanZero() {
+		Round round = null;
+		try {
+			round = new Round(0);
+			fail("should have thrown an Exeption");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		try {
+			round = new Round(-1);
+			fail("should have thrown an Exeption");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		round = new Round(19);
+
+		try {
+			round.setNumberOfCards(0);
+			fail("should have thrown an Exeption");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		try {
+			round.setNumberOfCards(-1);
+			fail("should have thrown an Exeption");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		round.setNumberOfCards(47);
+		assertEquals(47, round.getNumberOfCards());
+	}
 }

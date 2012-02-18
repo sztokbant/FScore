@@ -12,8 +12,8 @@ public class Round implements Serializable, Comparable<Round> {
 	private long matchId;
 	private List<PlayerRound> playerRounds = null;
 
-	public Round(long numberOfCards) {
-		this.numberOfCards = numberOfCards;
+	public Round(long numberOfCards) throws IllegalArgumentException {
+		this.setNumberOfCards(numberOfCards);
 		playerRounds = new ArrayList<PlayerRound>();
 	}
 
@@ -29,7 +29,13 @@ public class Round implements Serializable, Comparable<Round> {
 		return numberOfCards;
 	}
 
-	public void setNumberOfCards(long numberOfCards) {
+	public void setNumberOfCards(long numberOfCards)
+			throws IllegalArgumentException {
+		if (numberOfCards <= 0) {
+			throw new IllegalArgumentException(
+					"Number of cards must be greater than 0");
+		}
+
 		this.numberOfCards = numberOfCards;
 	}
 

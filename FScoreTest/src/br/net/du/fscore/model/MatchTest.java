@@ -123,8 +123,7 @@ public class MatchTest extends AndroidTestCase {
 
 	public void testCannotAddPlayersAfterMatchHasStarted() {
 		Match match = new Match("Match");
-		match.with(new Player("Player 1")).with(
-				new Player("Player 2"));
+		match.with(new Player("Player 1")).with(new Player("Player 2"));
 
 		match.addRound(new Round(3));
 
@@ -134,6 +133,16 @@ public class MatchTest extends AndroidTestCase {
 		} catch (IllegalStateException e) {
 			assertTrue(true);
 		}
+	}
+
+	public void testSettingMatchIdSetsRoundsIds() {
+		long newMatchId = match1.getId() + 19;
+
+		assertFalse(match1.getRounds().get(0).getMatchId() == newMatchId);
+
+		match1.setId(newMatchId);
+
+		assertEquals(newMatchId, match1.getRounds().get(0).getMatchId());
 	}
 
 	public void testRoundCannotBeNull() {
