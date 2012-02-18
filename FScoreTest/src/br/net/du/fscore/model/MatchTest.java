@@ -1,7 +1,7 @@
 package br.net.du.fscore.model;
 
 import java.util.Calendar;
-import java.util.Map;
+import java.util.List;
 
 import android.test.AndroidTestCase;
 
@@ -261,11 +261,11 @@ public class MatchTest extends AndroidTestCase {
 
 		match.addRound(round1).addRound(round2).addRound(round3);
 
-		Map<Player, Long> scores = match.getScores();
+		List<PlayerScore> scores = match.getPlayerScores();
 
 		assertEquals(3, scores.size());
-		assertEquals(new Long(18), scores.get(player1));
-		assertEquals(new Long(10), scores.get(player2));
-		assertEquals(new Long(13), scores.get(player3));
+		assertEquals(18, scores.get(0).getScore());
+		assertEquals(10, scores.get(1).getScore());
+		assertEquals(13, scores.get(2).getScore());
 	}
 }

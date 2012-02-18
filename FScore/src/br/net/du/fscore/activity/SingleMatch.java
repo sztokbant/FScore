@@ -32,6 +32,7 @@ import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.PlayerScore;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 
@@ -53,8 +54,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	private Round selectedRound;
 
 	private ListView playerView;
-	private ArrayAdapter<Player> playerAdapter;
-	private List<Player> players = new ArrayList<Player>();
+	private ArrayAdapter<PlayerScore> playerAdapter;
+	private List<PlayerScore> players = new ArrayList<PlayerScore>();
 	private Player selectedPlayer;
 
 	private TabHost tabHost;
@@ -293,7 +294,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void createPlayersListAdapter() {
 		playerView = new ListView(this);
-		playerAdapter = new ArrayAdapter<Player>(this,
+		playerAdapter = new ArrayAdapter<PlayerScore>(this,
 				android.R.layout.simple_list_item_1, players);
 		playerView.setAdapter(playerAdapter);
 
@@ -302,7 +303,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			public boolean onItemLongClick(AdapterView<?> adapterView,
 					View view, int position, long id) {
 				// for editing/deleting
-				selectedPlayer = (Player) playerAdapter.getItem(position);
+				selectedPlayer = (Player) playerAdapter.getItem(position)
+						.getPlayer();
 				// won't consume the action
 				return false;
 			}
@@ -351,7 +353,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void refreshPlayersList() {
 		players.clear();
-		players.addAll(match.getPlayers());
+		players.addAll(match.getPlayerScores());
 		Collections.sort(players);
 		playerAdapter.notifyDataSetChanged();
 	}

@@ -3,9 +3,7 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.text.format.DateFormat;
 
@@ -125,22 +123,22 @@ public class Match implements Serializable, Comparable<Match> {
 		return rounds;
 	}
 
-	public Map<Player, Long> getScores() {
-		Map<Player, Long> scores = new HashMap<Player, Long>();
+	public List<PlayerScore> getPlayerScores() {
+		List<PlayerScore> scores = new ArrayList<PlayerScore>();
 
-		// keys
 		for (Player player : players) {
-			scores.put(player, new Long(0));
-		}
+			long score = 0L;
 
-		// values
-		for (Round round : rounds) {
-			for (PlayerRound playerRound : round.getPlayerRounds()) {
-				Player player = playerRound.getPlayer();
-				Long score = scores.get(player);
-				score += playerRound.getScore();
-				scores.put(player, score);
+			for (Round round : rounds) {
+				for (PlayerRound playerRound : round.getPlayerRounds()) {
+					Player prPlayer = playerRound.getPlayer();
+					if (player.equals(prPlayer)) {
+						score += playerRound.getScore();
+					}
+				}
 			}
+
+			scores.add(new PlayerScore(player, score));
 		}
 
 		return scores;
