@@ -21,7 +21,7 @@ public final class MatchTable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CREATE TABLE " + MatchTable.NAME + " (");
 		sb.append(BaseColumns._ID + " INTEGER PRIMARY KEY, ");
-		sb.append(MatchColumns.NAME + " TEXT UNIQUE NOT NULL, ");
+		sb.append(MatchColumns.NAME + " TEXT NOT NULL, ");
 		sb.append(MatchColumns.DATE + " INTEGER NOT NULL");
 		sb.append(");");
 

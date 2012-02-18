@@ -20,7 +20,7 @@ import br.net.du.fscore.persist.dao.RoundDAO;
 
 public class DataManager {
 
-	public static final int DATABASE_VERSION = 10;
+	public static final int DATABASE_VERSION = 11;
 
 	private Context context;
 	private SQLiteDatabase db;
