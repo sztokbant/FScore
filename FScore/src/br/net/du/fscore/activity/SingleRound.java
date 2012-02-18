@@ -87,17 +87,14 @@ public class SingleRound extends Activity {
 			}
 
 			// TODO this PlayerRound is dummy
-			int idx = match.getRounds().indexOf(round);
-			List<PlayerRound> playerRounds = match.getRounds().get(idx)
-					.getPlayerRounds();
-
 			Player rndPlayer = players
 					.get(new Random().nextInt(players.size()));
 
 			PlayerRound playerRound = new PlayerRound(rndPlayer);
-			playerRound.setBet(new Random().nextInt(7) + 1);
-			playerRound
-					.setBet(new Random().nextInt((int) playerRound.getBet()) + 1);
+			playerRound.setBet(new Random().nextInt((int) round
+					.getNumberOfCards()) + 1);
+			playerRound.setWins(new Random().nextInt((int) round
+					.getNumberOfCards() + 1));
 
 			try {
 				round.addPlayerRound(playerRound);
