@@ -105,8 +105,6 @@ public class Match implements Serializable, Comparable<Match> {
 			scores.put(player, new Long(0));
 		}
 
-		System.out.println(scores.keySet().toString());
-
 		// values
 		for (Round round : rounds) {
 			for (PlayerRound playerRound : round.getPlayerRounds()) {
