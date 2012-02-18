@@ -110,7 +110,7 @@ public class Match implements Serializable, Comparable<Match> {
 			for (PlayerRound playerRound : round.getPlayerRounds()) {
 				Player player = playerRound.getPlayer();
 				Long score = scores.get(player);
-				score = score + playerRound.getScore();
+				score += playerRound.getScore();
 				scores.put(player, score);
 			}
 		}
