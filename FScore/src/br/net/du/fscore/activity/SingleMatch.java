@@ -115,17 +115,23 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
 			}
 		} else if (item.getItemId() == 1) {
-			// Add Round
-			// TODO this Round is dummy
-			Round round = new Round(7);
-			match.addRound(round);
-			dataManager.saveMatch(match);
+			if (match.getPlayers().size() < 2) {
+				Toast.makeText(SingleMatch.this,
+						"Match must have at least 2 players.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				// Add Round
+				// TODO this Round is dummy
+				Round round = new Round(7);
+				match.addRound(round);
+				dataManager.saveMatch(match);
 
-			if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-				refreshRoundsList();
+				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+					refreshRoundsList();
+				}
+
+				unregisterForContextMenu(playerView);
 			}
-
-			unregisterForContextMenu(playerView);
 		}
 		return false;
 	}

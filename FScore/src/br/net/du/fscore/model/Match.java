@@ -84,9 +84,15 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
-	public Match addRound(Round round) throws IllegalArgumentException {
+	public Match addRound(Round round) throws IllegalArgumentException,
+			IllegalStateException {
 		if (round == null) {
 			throw new IllegalArgumentException("Round cannot be null");
+		}
+
+		if (players.size() < 2) {
+			throw new IllegalStateException(
+					"Match must have at least 2 players to begin");
 		}
 
 		round.setMatchId(this.getId());

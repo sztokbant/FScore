@@ -177,8 +177,7 @@ public class DataManagerTest extends AndroidTestCase {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
-		match.withPlayer(player1);
-		match.withPlayer(player2);
+		match.withPlayer(player1).withPlayer(player2);
 
 		// first save
 		long matchId = dataManager.saveMatch(match);
@@ -212,8 +211,9 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testSaveAnExistingMatchAfterAddingARound() {
 		Match match1 = new Match("Match Name");
-		Player player = new Player("A Player");
-		match1.withPlayer(player);
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("A Second Player");
+		match1.withPlayer(player1).withPlayer(player2);
 
 		// first save
 		dataManager.saveMatch(match1);
@@ -225,7 +225,7 @@ public class DataManagerTest extends AndroidTestCase {
 
 		// add a round with a playerround and save
 		Round round2 = new Round(3);
-		PlayerRound playerRound = new PlayerRound(player);
+		PlayerRound playerRound = new PlayerRound(player1);
 		playerRound.setBet(3);
 		round2.addPlayerRound(playerRound);
 		match1.addRound(round2);
@@ -260,22 +260,29 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testSaveAnExistingMatchAfterRemovingARound() {
 		Match match = new Match("Match Name");
-		Player player = new Player("A Player");
-		match.withPlayer(player);
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("A Second Player");
+		match.withPlayer(player1).withPlayer(player2);
 
 		Round round1 = new Round(3);
-		round1.addPlayerRound(new PlayerRound(player));
+		round1.addPlayerRound(new PlayerRound(player1));
+		round1.addPlayerRound(new PlayerRound(player2));
 		Round round2 = new Round(7);
-		round2.addPlayerRound(new PlayerRound(player));
+		round2.addPlayerRound(new PlayerRound(player1));
+		round2.addPlayerRound(new PlayerRound(player2));
 
 		match.addRound(round1);
 		match.addRound(round2);
 
-		PlayerRound playerRound1 = round1.getPlayerRounds().get(0);
-		PlayerRound playerRound2 = round2.getPlayerRounds().get(0);
+		PlayerRound playerRound1_1 = round1.getPlayerRounds().get(0);
+		PlayerRound playerRound1_2 = round1.getPlayerRounds().get(1);
+		PlayerRound playerRound2_1 = round2.getPlayerRounds().get(0);
+		PlayerRound playerRound2_2 = round2.getPlayerRounds().get(1);
 
-		assertEquals(0, playerRound1.getId());
-		assertEquals(0, playerRound2.getId());
+		assertEquals(0, playerRound1_1.getId());
+		assertEquals(0, playerRound1_2.getId());
+		assertEquals(0, playerRound2_1.getId());
+		assertEquals(0, playerRound2_2.getId());
 
 		// first save
 		long matchId = dataManager.saveMatch(match);
@@ -283,13 +290,25 @@ public class DataManagerTest extends AndroidTestCase {
 		long round1Id = round1.getId();
 		long round2Id = round2.getId();
 
-		assertTrue(playerRound1.getId() > 0);
-		assertEquals(playerRound1,
-				playerRoundDao.retrieve(playerRound1.getId()));
-		assertTrue(playerRound2.getId() > 0);
-		assertEquals(playerRound2,
-				playerRoundDao.retrieve(playerRound2.getId()));
-		assertTrue(playerRound2.getId() > playerRound1.getId());
+		assertTrue(playerRound1_1.getId() > 0);
+		assertEquals(playerRound1_1,
+				playerRoundDao.retrieve(playerRound1_1.getId()));
+
+		assertTrue(playerRound1_2.getId() > 0);
+		assertEquals(playerRound1_2,
+				playerRoundDao.retrieve(playerRound1_2.getId()));
+
+		assertTrue(playerRound2_1.getId() > 0);
+		assertEquals(playerRound2_1,
+				playerRoundDao.retrieve(playerRound2_1.getId()));
+
+		assertTrue(playerRound2_2.getId() > 0);
+		assertEquals(playerRound2_2,
+				playerRoundDao.retrieve(playerRound2_2.getId()));
+
+		assertTrue(playerRound1_2.getId() > playerRound1_1.getId());
+		assertTrue(playerRound2_1.getId() > playerRound1_2.getId());
+		assertTrue(playerRound2_2.getId() > playerRound2_1.getId());
 
 		// remove a Round and save
 		match.getRounds().remove(round1);
@@ -346,11 +365,13 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testRetrieveMatch() {
 		Match match = new Match("Match Name");
-		Player player = new Player("A Player");
-		match.withPlayer(player);
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("Another Player");
+		match.withPlayer(player1).withPlayer(player2);
 
 		Round round1 = new Round(7);
-		round1.addPlayerRound(new PlayerRound(player));
+		round1.addPlayerRound(new PlayerRound(player1));
+		round1.addPlayerRound(new PlayerRound(player2));
 		match.addRound(round1);
 
 		dataManager.saveMatch(match);
@@ -362,11 +383,13 @@ public class DataManagerTest extends AndroidTestCase {
 
 	public void testRetrieveAllMatches() {
 		Match match = new Match("Match Name");
-		Player player = new Player("A Player");
-		match.withPlayer(player);
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("Another Player");
+		match.withPlayer(player1).withPlayer(player2);
 
 		Round round = new Round(7);
-		round.addPlayerRound(new PlayerRound(player));
+		round.addPlayerRound(new PlayerRound(player1));
+		round.addPlayerRound(new PlayerRound(player2));
 		match.addRound(round);
 
 		List<Match> matches = new ArrayList<Match>();
@@ -380,38 +403,53 @@ public class DataManagerTest extends AndroidTestCase {
 	public void testDeleteMatch() {
 		Match match = new Match("Match Name");
 
-		Player player = new Player("A Player");
-		match.withPlayer(player);
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("Another Player");
 
-		PlayerRound playerRound = new PlayerRound(player);
+		match.withPlayer(player1).withPlayer(player2);
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		PlayerRound playerRound2 = new PlayerRound(player2);
 		Round round = new Round(7);
-		round.addPlayerRound(playerRound);
+		round.addPlayerRound(playerRound1);
+		round.addPlayerRound(playerRound2);
+
 		match.addRound(round);
 
 		long matchId = dataManager.saveMatch(match);
 
-		long playerId = player.getId();
-		MatchPlayerKey key = new MatchPlayerKey(matchId, playerId);
+		long player1Id = player1.getId();
+		long player2Id = player2.getId();
+		MatchPlayerKey key1 = new MatchPlayerKey(matchId, player1Id);
+		MatchPlayerKey key2 = new MatchPlayerKey(matchId, player2Id);
 		long roundId = round.getId();
-		long playerRoundId = playerRound.getId();
+		long playerRound1Id = playerRound1.getId();
+		long playerRound2Id = playerRound2.getId();
 
 		assertTrue(match.isPersistent());
-		assertTrue(player.isPersistent());
+		assertTrue(player1.isPersistent());
+		assertTrue(player2.isPersistent());
 		assertTrue(round.isPersistent());
-		assertTrue(playerRound.isPersistent());
+		assertTrue(playerRound1.isPersistent());
+		assertTrue(playerRound2.isPersistent());
 
 		dataManager.deleteMatch(match);
 
 		assertFalse(match.isPersistent());
-		assertFalse(player.isPersistent());
+		assertFalse(player1.isPersistent());
+		assertFalse(player2.isPersistent());
 		assertFalse(round.isPersistent());
-		assertFalse(playerRound.isPersistent());
+		assertFalse(playerRound1.isPersistent());
+		assertFalse(playerRound2.isPersistent());
 
 		assertNull(matchDao.retrieve(matchId));
-		assertNull(playerDao.retrieve(playerId));
+		assertNull(playerDao.retrieve(player1Id));
+		assertNull(playerDao.retrieve(player2Id));
 		assertNull(roundDao.retrieve(roundId));
-		assertFalse(matchPlayerDao.exists(key));
-		assertNull(playerRoundDao.retrieve(playerRoundId));
+		assertFalse(matchPlayerDao.exists(key1));
+		assertFalse(matchPlayerDao.exists(key2));
+		assertNull(playerRoundDao.retrieve(playerRound1Id));
+		assertNull(playerRoundDao.retrieve(playerRound2Id));
 	}
 
 	public void testDeletingAMatchWontDeleteNonOrphanPlayers() {

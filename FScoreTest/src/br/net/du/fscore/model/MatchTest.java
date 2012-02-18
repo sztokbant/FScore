@@ -23,36 +23,31 @@ public class MatchTest extends AndroidTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		String name = "Player Name";
-		player1 = new Player(name);
-		player2 = new Player(name);
+		// creating 2 equal matches
 
-		round1 = new Round(7);
-		round2 = new Round(7);
+		player1 = new Player("Player Name");
+		player2 = new Player("Another Player Name");
 
-		playerRound1 = new PlayerRound(player1);
-		playerRound1.setBet(7);
-		playerRound1.setWins(4);
+		playerRound1 = new PlayerRound(player1).setBet(7).setWins(4);
+		playerRound2 = new PlayerRound(player2).setBet(7).setWins(4);
 
-		playerRound2 = new PlayerRound(player2);
-		playerRound2.setBet(7);
-		playerRound2.setWins(4);
-
-		round1.addPlayerRound(playerRound1);
-		round2.addPlayerRound(playerRound2);
+		round1 = new Round(7).addPlayerRound(playerRound1).addPlayerRound(
+				playerRound2);
+		round2 = new Round(7).addPlayerRound(playerRound1).addPlayerRound(
+				playerRound2);
 
 		Calendar date = Calendar.getInstance();
 
 		match1 = new Match();
 		match1.setName("Super Match");
 		match1.setDate(date);
-		match1.withPlayer(player1);
+		match1.withPlayer(player1).withPlayer(player2);
 		match1.addRound(round1);
 
 		match2 = new Match();
 		match2.setName("Super Match");
 		match2.setDate(date);
-		match2.withPlayer(player2);
+		match2.withPlayer(player1).withPlayer(player2);
 		match2.addRound(round2);
 	}
 
@@ -150,6 +145,17 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testCannotAddRoundIfMatchHasLessThan2Players() {
+		match1.getRounds().remove(0);
+		match1.deletePlayer(player1);
+		try {
+			match1.addRound(round1);
+			fail("should not be able to add round when less than 2 players");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
 	public void testDeletePlayer() {
 		try {
 			match1.deletePlayer(player1);
@@ -160,6 +166,8 @@ public class MatchTest extends AndroidTestCase {
 
 		match1.getRounds().remove(round1);
 
+		assertEquals(2, match1.getPlayers().size());
+
 		try {
 			// delete successful
 			assertEquals(true, match1.deletePlayer(player1));
@@ -169,7 +177,7 @@ public class MatchTest extends AndroidTestCase {
 			fail("deleting should be allowed at this point");
 		}
 
-		assertEquals(0, match1.getPlayers().size());
+		assertEquals(1, match1.getPlayers().size());
 	}
 
 	public void testGetScores() {
