@@ -3,7 +3,6 @@ package br.net.du.fscore.activity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +14,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -123,19 +125,55 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						Toast.LENGTH_SHORT).show();
 			} else {
 				// New Round
-				// TODO should get numberOfCards from user
-				match.newRound(new Random().nextInt(10) + 1);
+				final EditText input = new EditText(this);
+				input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
-				dataManager.saveMatch(match);
+				new AlertDialog.Builder(SingleMatch.this)
+						.setTitle("New Round")
+						.setMessage("Enter number of cards")
+						.setView(input)
+						.setPositiveButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										Editable value = input.getText();
+										try {
+											long numberOfRounds = Long
+													.parseLong(value.toString());
 
-				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-					refreshRoundsList();
-				} else if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-					// TODO this is only useful when testing
-					refreshPlayersList();
-				}
+											if (numberOfRounds <= 0) {
+												throw new NumberFormatException();
+											}
 
-				unregisterForContextMenu(playerScoresView);
+											match.newRound(numberOfRounds);
+
+											dataManager.saveMatch(match);
+
+											if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+												refreshRoundsList();
+											} else if (tabHost
+													.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+												// TODO this is only useful when
+												// testing
+												refreshPlayersList();
+											}
+
+											unregisterForContextMenu(playerScoresView);
+										} catch (NumberFormatException e) {
+											Toast.makeText(
+													SingleMatch.this,
+													"Please enter a number greater than zero",
+													Toast.LENGTH_SHORT).show();
+										}
+									}
+								})
+						.setNegativeButton("Cancel",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										// Do nothing.
+									}
+								}).show();
 			}
 		}
 		return false;
