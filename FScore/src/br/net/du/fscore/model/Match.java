@@ -90,6 +90,12 @@ public class Match implements Serializable, Comparable<Match> {
 					"Match must have at least 2 players to begin");
 		}
 
+		long maxCards = 51 / players.size();
+		if (numberOfCards < 1 || numberOfCards > maxCards) {
+			throw new IllegalArgumentException("numberOfCards must be between "
+					+ String.valueOf(1) + " and " + maxCards);
+		}
+
 		Round round = new Round(numberOfCards);
 
 		for (Player player : players) {
