@@ -127,6 +127,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				// New Round
 				final EditText input = new EditText(this);
 				input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+				input.setText(String.valueOf(match.getNumberOfCardsSuggestion()));
 
 				new AlertDialog.Builder(SingleMatch.this)
 						.setTitle("New Round")

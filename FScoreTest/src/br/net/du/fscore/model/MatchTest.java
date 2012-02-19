@@ -245,6 +245,39 @@ public class MatchTest extends AndroidTestCase {
 		match.newRound(match.getMaxCardsPerRound());
 	}
 
+	public void testNumberOfCardsSuggestion() {
+		Match match = new Match("Match");
+
+		Player player1 = new Player("1");
+		Player player2 = new Player("2");
+		Player player3 = new Player("3");
+		Player player4 = new Player("4");
+
+		match.with(player1).with(player2).with(player3).with(player4);
+
+		long suggestion = match.getNumberOfCardsSuggestion();
+		assertEquals(1, suggestion);
+
+		for (long i = 1; i < match.getMaxCardsPerRound(); i++) {
+			match.newRound(i);
+			suggestion = match.getNumberOfCardsSuggestion();
+			assertEquals(i + 1, suggestion);
+		}
+
+		for (long i = match.getMaxCardsPerRound() - 1; i > 1; i--) {
+			match.newRound(i);
+			suggestion = match.getNumberOfCardsSuggestion();
+			assertEquals(i - 1, suggestion);
+		}
+
+		match.newRound(1);
+		assertEquals(1, match.getNumberOfCardsSuggestion());
+		match.newRound(1);
+		assertEquals(1, match.getNumberOfCardsSuggestion());
+		match.newRound(1);
+		assertEquals(1, match.getNumberOfCardsSuggestion());
+	}
+
 	public void testGetScores() {
 		Match match = new Match("Match");
 

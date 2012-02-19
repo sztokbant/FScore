@@ -47,6 +47,25 @@ public class Match implements Serializable, Comparable<Match> {
 		return 51 / players.size();
 	}
 
+	public long getNumberOfCardsSuggestion() {
+		if (rounds.isEmpty()) {
+			return 1;
+		}
+
+		long lastRoundCardsPerPlayer = rounds.get(rounds.size() - 1)
+				.getNumberOfCards();
+
+		if (rounds.size() >= getMaxCardsPerRound()) {
+			if (lastRoundCardsPerPlayer == 1) {
+				return 1;
+			}
+
+			return lastRoundCardsPerPlayer - 1;
+		}
+
+		return lastRoundCardsPerPlayer + 1;
+	}
+
 	public Match with(Player player) throws IllegalArgumentException,
 			IllegalStateException {
 		if (player == null) {
