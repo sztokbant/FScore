@@ -224,17 +224,25 @@ public class MatchTest extends AndroidTestCase {
 		Player player1 = new Player("1");
 		Player player2 = new Player("2");
 		Player player3 = new Player("3");
-		match.with(player1).with(player2).with(player3);
+		Player player4 = new Player("4");
 
-		// maxCards must be 51 / 3 = 17
+		match.with(player1).with(player2);
+		assertEquals(25, match.getMaxCardsPerRound());
+
+		match.with(player3);
+		assertEquals(17, match.getMaxCardsPerRound());
+
+		match.with(player4);
+		assertEquals(12, match.getMaxCardsPerRound());
+
 		try {
-			match.newRound(18);
+			match.newRound(match.getMaxCardsPerRound() + 1);
 			fail("should have thrown an Exception");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
 
-		match.newRound(17);
+		match.newRound(match.getMaxCardsPerRound());
 	}
 
 	public void testGetScores() {

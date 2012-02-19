@@ -141,10 +141,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 											long numberOfRounds = Long
 													.parseLong(value.toString());
 
-											if (numberOfRounds <= 0) {
-												throw new NumberFormatException();
-											}
-
 											match.newRound(numberOfRounds);
 
 											dataManager.saveMatch(match);
@@ -162,7 +158,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 										} catch (NumberFormatException e) {
 											Toast.makeText(
 													SingleMatch.this,
-													"Please enter a number greater than zero",
+													"Please enter a number between 1 and "
+															+ match.getMaxCardsPerRound(),
+													Toast.LENGTH_SHORT).show();
+										} catch (IllegalArgumentException e) {
+											Toast.makeText(
+													SingleMatch.this,
+													"Number of cards must be between 1 and "
+															+ match.getMaxCardsPerRound(),
 													Toast.LENGTH_SHORT).show();
 										}
 									}

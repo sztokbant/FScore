@@ -43,6 +43,10 @@ public class Match implements Serializable, Comparable<Match> {
 		this.date = date;
 	}
 
+	public long getMaxCardsPerRound() {
+		return 51 / players.size();
+	}
+
 	public Match with(Player player) throws IllegalArgumentException,
 			IllegalStateException {
 		if (player == null) {
@@ -90,10 +94,9 @@ public class Match implements Serializable, Comparable<Match> {
 					"Match must have at least 2 players to begin");
 		}
 
-		long maxCards = 51 / players.size();
-		if (numberOfCards < 1 || numberOfCards > maxCards) {
+		if (numberOfCards < 1 || numberOfCards > getMaxCardsPerRound()) {
 			throw new IllegalArgumentException("numberOfCards must be between "
-					+ String.valueOf(1) + " and " + maxCards);
+					+ String.valueOf(1) + " and " + getMaxCardsPerRound());
 		}
 
 		Round round = new Round(numberOfCards);
