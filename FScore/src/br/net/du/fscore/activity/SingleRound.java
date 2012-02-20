@@ -81,26 +81,28 @@ public class SingleRound extends Activity {
 				new AlertDialog.Builder(SingleRound.this)
 						.setTitle("Delete " + selectedPlayerRound)
 						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(
-										SingleRound.this,
-										"Deleting " + selectedPlayerRound
-												+ "...", Toast.LENGTH_SHORT)
-										.show();
-
-								int idx = match.getRounds().indexOf(round);
-								match.getRounds().get(idx).getPlayerRounds()
-										.remove(selectedPlayerRound);
-
-								dataManager.saveMatch(match);
-								refreshPlayerRoundsList();
-							}
-						}).setNegativeButton("No", null).show();
+						.setPositiveButton("Yes", getDoDeletePlayerRoundClick())
+						.setNegativeButton("No", null).show();
 
 				return true;
+			}
+
+			private OnClickListener getDoDeletePlayerRoundClick() {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(SingleRound.this,
+								"Deleting " + selectedPlayerRound + "...",
+								Toast.LENGTH_SHORT).show();
+
+						int idx = match.getRounds().indexOf(round);
+						match.getRounds().get(idx).getPlayerRounds()
+								.remove(selectedPlayerRound);
+
+						dataManager.saveMatch(match);
+						refreshPlayerRoundsList();
+					}
+				};
 			}
 		};
 	}
