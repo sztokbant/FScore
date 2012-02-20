@@ -122,6 +122,10 @@ public class SingleRound extends Activity {
 						try {
 							long bet = Long.parseLong(value.toString());
 
+							if (bet > round.getNumberOfCards()) {
+								throw new IllegalArgumentException();
+							}
+
 							selectedPlayerRound.setBet(bet);
 							dataManager.saveMatch(match);
 							refreshPlayerRoundsList();
@@ -152,6 +156,10 @@ public class SingleRound extends Activity {
 
 						try {
 							long wins = Long.parseLong(value.toString());
+
+							if (wins > round.getNumberOfCards()) {
+								throw new IllegalArgumentException();
+							}
 
 							selectedPlayerRound.setWins(wins);
 							dataManager.saveMatch(match);
