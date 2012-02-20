@@ -6,20 +6,20 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
@@ -68,41 +68,56 @@ public class SingleRound extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle(selectedPlayerRound.toString());
-		MenuItem delete = menu.add(0, 0, 0, "Delete");
-		delete.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+		menu.setHeaderTitle(selectedPlayerRound.getPlayer().toString());
+		MenuItem bet = menu.add(0, 0, 0, "Bet");
+		bet.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+		MenuItem wins = menu.add(0, 1, 0, "Wins");
+		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
 	private OnMenuItemClickListener playerRoundDeleteClickListener() {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(SingleRound.this)
-						.setTitle("Delete " + selectedPlayerRound)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", getDoDeletePlayerRoundClick())
-						.setNegativeButton("No", null).show();
+				if (item.getItemId() == 0) {
+					// bet
+					final EditText betInput = new EditText(SingleRound.this);
+					betInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+					new AlertDialog.Builder(SingleRound.this)
+							.setTitle(
+									selectedPlayerRound.getPlayer().toString())
+							.setMessage("Bet")
+							.setView(betInput)
+							.setPositiveButton("Ok",
+									getDoMakeBetClick(betInput))
+							.setNegativeButton("Cancel", null).show();
+				} else if (item.getItemId() == 1) {
+					// wins
+					final EditText winsInput = new EditText(SingleRound.this);
+					winsInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+					new AlertDialog.Builder(SingleRound.this)
+							.setTitle(
+									selectedPlayerRound.getPlayer().toString())
+							.setMessage("Wins")
+							.setView(winsInput)
+							.setPositiveButton("Ok",
+									getDoMakeWinsClick(winsInput))
+							.setNegativeButton("Cancel", null).show();
+				}
 
 				return true;
 			}
 
-			private OnClickListener getDoDeletePlayerRoundClick() {
-				return new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(SingleRound.this,
-								"Deleting " + selectedPlayerRound + "...",
-								Toast.LENGTH_SHORT).show();
+			private OnClickListener getDoMakeBetClick(EditText betInput) {
+				Editable value = betInput.getText();
+				return null;
+			}
 
-						int idx = match.getRounds().indexOf(round);
-						match.getRounds().get(idx).getPlayerRounds()
-								.remove(selectedPlayerRound);
-
-						dataManager.saveMatch(match);
-						refreshPlayerRoundsList();
-					}
-				};
+			private OnClickListener getDoMakeWinsClick(EditText winsInput) {
+				Editable value = winsInput.getText();
+				return null;
 			}
 		};
 	}
@@ -113,32 +128,16 @@ public class SingleRound extends Activity {
 				android.R.layout.simple_list_item_1, playerRounds);
 		playerRoundsView.setAdapter(playerRoundAdapter);
 
-		playerRoundsView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-				selectedPlayerRound = (PlayerRound) playerRoundAdapter
-						.getItem(position);
-				Toast.makeText(SingleRound.this,
-						"Opening PlayerRound " + selectedPlayerRound,
-						Toast.LENGTH_SHORT).show();
-
-				// Intent singlePlayerRound = new Intent(SingleRound.this,
-				// SinglePlayerRound.class);
-				// singlePlayerRound.putExtra("selectedPlayerRound",
-				// selectedPlayerRound);
-				// startActivity(singlePlayerRound);
-			}
-		});
-
 		playerRoundsView
 				.setOnItemLongClickListener(new OnItemLongClickListener() {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> adapterView,
 							View view, int position, long id) {
 						// for context menu title and deleting
-						selectedPlayerRound = round.getPlayerRounds().get(
-								position);
+						List<PlayerRound> playerRounds = round
+								.getPlayerRounds();
+						Collections.sort(playerRounds);
+						selectedPlayerRound = playerRounds.get(position);
 
 						// won't consume the action
 						return false;
