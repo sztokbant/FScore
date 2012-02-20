@@ -7,11 +7,6 @@ Refactor it!
   SingleRound
 * I18n for hard-coded strings
 
-Code smells:
-* MatchList.onCreateContextMenu()
-* SingleMatch.onCreateContextMenu()
-* SingleMatch.onActivityResult()
-
 KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 
