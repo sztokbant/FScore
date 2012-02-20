@@ -7,6 +7,8 @@ import java.util.List;
 public class Round implements Serializable, Comparable<Round> {
 	private static final long serialVersionUID = 1L;
 
+	public static final long NO_FORBIDDEN_BET = -1;
+
 	private long id = 0;
 	private long numberOfCards = 0;
 	private long matchId;
@@ -62,6 +64,30 @@ public class Round implements Serializable, Comparable<Round> {
 		return this;
 	}
 
+	public long getForbiddenBet(PlayerRound selectedPlayerRound) {
+		if (!isLastPlayerToBet()) {
+			return NO_FORBIDDEN_BET;
+		}
+
+		long betTotal = 0;
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound == selectedPlayerRound) {
+				continue;
+			}
+
+			if (playerRound.getBet() != PlayerRound.EMPTY) {
+				betTotal += playerRound.getBet();
+			}
+		}
+
+		long forbiddenBet = numberOfCards - betTotal;
+		if (forbiddenBet >= 0) {
+			return forbiddenBet;
+		}
+
+		return NO_FORBIDDEN_BET;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -109,5 +135,21 @@ public class Round implements Serializable, Comparable<Round> {
 	@Override
 	public String toString() {
 		return "Round - " + numberOfCards + " cards";
+	}
+
+	private boolean isLastPlayerToBet() {
+		long betCount = 0;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getBet() != PlayerRound.EMPTY) {
+				betCount++;
+			}
+		}
+
+		if (betCount < playerRounds.size() - 1) {
+			return false;
+		}
+
+		return true;
 	}
 }

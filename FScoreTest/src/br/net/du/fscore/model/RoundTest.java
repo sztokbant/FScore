@@ -122,4 +122,26 @@ public class RoundTest extends AndroidTestCase {
 		round.setNumberOfCards(47);
 		assertEquals(47, round.getNumberOfCards());
 	}
+
+	public void testGetForbiddenBet() {
+		PlayerRound playerRound1 = new PlayerRound(new Player("Player 1"));
+		PlayerRound playerRound2 = new PlayerRound(new Player("Player 2"));
+		PlayerRound playerRound3 = new PlayerRound(new Player("Player 3"));
+
+		Round round = new Round(3).addPlayerRound(playerRound1)
+				.addPlayerRound(playerRound2).addPlayerRound(playerRound3);
+
+		assertEquals(Round.NO_FORBIDDEN_BET,
+				round.getForbiddenBet(playerRound3));
+
+		round.getPlayerRounds().get(0).setBet(1);
+		assertEquals(Round.NO_FORBIDDEN_BET,
+				round.getForbiddenBet(playerRound3));
+
+		round.getPlayerRounds().get(1).setBet(1);
+		assertEquals(1, round.getForbiddenBet(playerRound3));
+
+		round.getPlayerRounds().get(2).setBet(2);
+		assertEquals(0, round.getForbiddenBet(playerRound2));
+	}
 }
