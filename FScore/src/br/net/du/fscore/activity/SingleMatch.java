@@ -135,6 +135,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						.setNegativeButton("Cancel", null).show();
 			}
 		}
+
 		return false;
 	}
 
