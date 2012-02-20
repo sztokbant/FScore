@@ -82,33 +82,39 @@ public class MatchList extends Activity {
 
 		MenuItem delete = menu.add(0, 0, 0, "Delete");
 
-		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		delete.setOnMenuItemClickListener(matchDeleteDialog());
+	}
+
+	private OnMenuItemClickListener matchDeleteDialog() {
+		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// delete
 				new AlertDialog.Builder(MatchList.this).setTitle("Delete")
 						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(
-										MatchList.this,
-										"Deleting " + selectedMatch.getName()
-												+ "...", Toast.LENGTH_SHORT)
-										.show();
-
-								dataManager.deleteMatch(selectedMatch);
-
-								// it's not necessary to reload the full list
-								matches.remove(selectedMatch);
-								adapter.notifyDataSetChanged();
-							}
-						}).setNegativeButton("No", null).show();
+						.setPositiveButton("Yes", getDoMatchDeleteClick())
+						.setNegativeButton("No", null).show();
 
 				return true;
 			}
-		});
+
+			private OnClickListener getDoMatchDeleteClick() {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(MatchList.this,
+								"Deleting " + selectedMatch.getName() + "...",
+								Toast.LENGTH_SHORT).show();
+
+						dataManager.deleteMatch(selectedMatch);
+
+						// it's not necessary to reload the full list
+						matches.remove(selectedMatch);
+						adapter.notifyDataSetChanged();
+					}
+				};
+			}
+		};
 	}
 
 	private void createMatchListAdapter() {
