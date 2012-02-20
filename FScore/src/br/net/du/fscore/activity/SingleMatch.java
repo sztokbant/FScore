@@ -129,55 +129,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 				input.setText(String.valueOf(match.getNumberOfCardsSuggestion()));
 
-				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("New Round")
-						.setMessage("Enter number of cards")
-						.setView(input)
-						.setPositiveButton("Ok",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int whichButton) {
-										Editable value = input.getText();
-										try {
-											long numberOfRounds = Long
-													.parseLong(value.toString());
-
-											match.newRound(numberOfRounds);
-
-											dataManager.saveMatch(match);
-
-											if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-												refreshRoundsList();
-											} else if (tabHost
-													.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-												// TODO this is only useful when
-												// testing
-												refreshPlayersList();
-											}
-
-											unregisterForContextMenu(playerScoresView);
-										} catch (NumberFormatException e) {
-											Toast.makeText(
-													SingleMatch.this,
-													"Please enter a number between 1 and "
-															+ match.getMaxCardsPerRound(),
-													Toast.LENGTH_SHORT).show();
-										} catch (IllegalArgumentException e) {
-											Toast.makeText(
-													SingleMatch.this,
-													"Number of cards must be between 1 and "
-															+ match.getMaxCardsPerRound(),
-													Toast.LENGTH_SHORT).show();
-										}
-									}
-								})
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int whichButton) {
-										// Do nothing.
-									}
-								}).show();
+				new AlertDialog.Builder(SingleMatch.this).setTitle("New Round")
+						.setMessage("Enter number of cards").setView(input)
+						.setPositiveButton("Ok", getDoNewRoundClick(input))
+						.setNegativeButton("Cancel", null).show();
 			}
 		}
 		return false;
@@ -189,11 +144,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		if (view == playerScoresView) {
 			menu.setHeaderTitle(selectedPlayer.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
-			delete.setOnMenuItemClickListener(playerDeleteClickListener());
+			delete.setOnMenuItemClickListener(playerDeleteDialog());
 		} else if (view == roundView) {
 			menu.setHeaderTitle(selectedRound.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
-			delete.setOnMenuItemClickListener(roundDeleteClickListener());
+			delete.setOnMenuItemClickListener(roundDeleteDialog());
 		}
 	}
 
@@ -248,7 +203,44 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		}
 	}
 
-	private OnMenuItemClickListener playerDeleteClickListener() {
+	private OnClickListener getDoNewRoundClick(final EditText input) {
+		return new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Editable value = input.getText();
+				try {
+					long numberOfRounds = Long.parseLong(value.toString());
+
+					match.newRound(numberOfRounds);
+
+					dataManager.saveMatch(match);
+
+					if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+						refreshRoundsList();
+					} else if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+						// TODO this is only useful when
+						// testing
+						refreshPlayersList();
+					}
+
+					unregisterForContextMenu(playerScoresView);
+				} catch (NumberFormatException e) {
+					Toast.makeText(
+							SingleMatch.this,
+							"Please enter a number between 1 and "
+									+ match.getMaxCardsPerRound(),
+							Toast.LENGTH_SHORT).show();
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(
+							SingleMatch.this,
+							"Number of cards must be between 1 and "
+									+ match.getMaxCardsPerRound(),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		};
+	}
+
+	private OnMenuItemClickListener playerDeleteDialog() {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -256,31 +248,33 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				new AlertDialog.Builder(SingleMatch.this)
 						.setTitle("Delete " + selectedPlayer)
 						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								boolean playerDeleted = match
-										.deletePlayer(selectedPlayer);
-								if (playerDeleted) {
-									Toast.makeText(
-											SingleMatch.this,
-											"Deleting " + selectedPlayer
-													+ "...", Toast.LENGTH_SHORT)
-											.show();
-
-									dataManager.saveMatch(match);
-									refreshPlayersList();
-								}
-							}
-						}).setNegativeButton("No", null).show();
+						.setPositiveButton("Yes", getDoDeletePlayerClick())
+						.setNegativeButton("No", null).show();
 
 				return true;
+			}
+
+			private OnClickListener getDoDeletePlayerClick() {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						boolean playerDeleted = match
+								.deletePlayer(selectedPlayer);
+						if (playerDeleted) {
+							Toast.makeText(SingleMatch.this,
+									"Deleting " + selectedPlayer + "...",
+									Toast.LENGTH_SHORT).show();
+
+							dataManager.saveMatch(match);
+							refreshPlayersList();
+						}
+					}
+				};
 			}
 		};
 	}
 
-	private OnMenuItemClickListener roundDeleteClickListener() {
+	private OnMenuItemClickListener roundDeleteDialog() {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -288,25 +282,29 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				new AlertDialog.Builder(SingleMatch.this)
 						.setTitle("Delete " + selectedRound)
 						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", new OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								Toast.makeText(SingleMatch.this,
-										"Deleting " + selectedRound + "...",
-										Toast.LENGTH_SHORT).show();
-
-								match.getRounds().remove(selectedRound);
-								dataManager.saveMatch(match);
-								refreshRoundsList();
-
-								if (match.getRounds().isEmpty()) {
-									registerForContextMenu(playerScoresView);
-								}
-							}
-						}).setNegativeButton("No", null).show();
+						.setPositiveButton("Yes", getDoDeleteRoundClick())
+						.setNegativeButton("No", null).show();
 
 				return true;
+			}
+
+			private OnClickListener getDoDeleteRoundClick() {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(SingleMatch.this,
+								"Deleting " + selectedRound + "...",
+								Toast.LENGTH_SHORT).show();
+
+						match.getRounds().remove(selectedRound);
+						dataManager.saveMatch(match);
+						refreshRoundsList();
+
+						if (match.getRounds().isEmpty()) {
+							registerForContextMenu(playerScoresView);
+						}
+					}
+				};
 			}
 		};
 	}
