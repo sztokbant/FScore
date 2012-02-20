@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +21,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
@@ -110,14 +112,66 @@ public class SingleRound extends Activity {
 				return true;
 			}
 
-			private OnClickListener getDoMakeBetClick(EditText betInput) {
-				Editable value = betInput.getText();
-				return null;
+			private OnClickListener getDoMakeBetClick(final EditText betInput) {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						Editable value = betInput.getText();
+
+						try {
+							long bet = Long.parseLong(value.toString());
+
+							selectedPlayerRound.setBet(bet);
+							dataManager.saveMatch(match);
+							refreshPlayerRoundsList();
+
+						} catch (NumberFormatException e) {
+							Toast.makeText(
+									SingleRound.this,
+									"Please enter a number between 0 and "
+											+ round.getNumberOfCards(),
+									Toast.LENGTH_SHORT).show();
+						} catch (IllegalArgumentException e) {
+							Toast.makeText(
+									SingleRound.this,
+									"Bet must be between 0 and "
+											+ round.getNumberOfCards(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				};
 			}
 
-			private OnClickListener getDoMakeWinsClick(EditText winsInput) {
-				Editable value = winsInput.getText();
-				return null;
+			private OnClickListener getDoMakeWinsClick(final EditText winsInput) {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						Editable value = winsInput.getText();
+
+						try {
+							long wins = Long.parseLong(value.toString());
+
+							selectedPlayerRound.setWins(wins);
+							dataManager.saveMatch(match);
+							refreshPlayerRoundsList();
+
+						} catch (NumberFormatException e) {
+							Toast.makeText(
+									SingleRound.this,
+									"Please enter a number between 0 and "
+											+ round.getNumberOfCards(),
+									Toast.LENGTH_SHORT).show();
+						} catch (IllegalArgumentException e) {
+							Toast.makeText(
+									SingleRound.this,
+									"Wins must be between 0 and "
+											+ round.getNumberOfCards(),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				};
 			}
 		};
 	}
