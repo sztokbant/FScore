@@ -160,10 +160,8 @@ public class SingleRound extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				if (item.getItemId() == 0) {
-					// bet
 					getBetDialog().show();
 				} else if (item.getItemId() == 1) {
-					// wins
 					getWinsDialog().show();
 				}
 
