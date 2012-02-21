@@ -99,27 +99,25 @@ public class Round implements Serializable, Comparable<Round> {
 	}
 
 	private boolean isAllowedWins(Player player, long wins) {
-		if (!isLastPlayerToWin()) {
-			return true;
-		}
-
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		long winsSum = wins;
 
 		for (PlayerRound playerRound : playerRounds) {
-			if (playerRound == selectedPlayerRound) {
+			if (playerRound == selectedPlayerRound
+					|| playerRound.getWins() == PlayerRound.EMPTY) {
 				continue;
 			}
 
 			winsSum += playerRound.getWins();
 		}
 
-		if (winsSum != numberOfCards) {
-			return false;
+		if (winsSum == numberOfCards
+				|| (winsSum < numberOfCards && !isLastPlayerToWin())) {
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	private PlayerRound getPlayerRound(Player player)
