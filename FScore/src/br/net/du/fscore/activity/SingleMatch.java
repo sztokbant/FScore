@@ -177,10 +177,15 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					}
 
 					Player player = new Player(name);
-					match.with(player);
-					dataManager.saveMatch(match);
-					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-						refreshPlayersList();
+					try {
+						match.with(player);
+						dataManager.saveMatch(match);
+						if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+							refreshPlayersList();
+						}
+					} catch (IllegalStateException e) {
+						Toast.makeText(SingleMatch.this, e.getMessage(),
+								Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					Toast.makeText(SingleMatch.this,
