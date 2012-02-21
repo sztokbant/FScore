@@ -149,11 +149,7 @@ public class SingleRound extends Activity {
 						try {
 							long wins = Long.parseLong(value.toString());
 
-							if (wins > round.getNumberOfCards()) {
-								throw new IllegalArgumentException();
-							}
-
-							selectedPlayerRound.setWins(wins);
+							round.setWins(selectedPlayerRound.getPlayer(), wins);
 							dataManager.saveMatch(match);
 							refreshPlayerRoundsList();
 
@@ -164,10 +160,7 @@ public class SingleRound extends Activity {
 											+ round.getNumberOfCards(),
 									Toast.LENGTH_SHORT).show();
 						} catch (IllegalArgumentException e) {
-							Toast.makeText(
-									SingleRound.this,
-									"Wins must be between 0 and "
-											+ round.getNumberOfCards(),
+							Toast.makeText(SingleRound.this, e.getMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 					}

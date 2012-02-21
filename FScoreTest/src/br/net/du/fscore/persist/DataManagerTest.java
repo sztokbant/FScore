@@ -225,14 +225,13 @@ public class DataManagerTest extends AndroidTestCase {
 
 		// add a round with a playerround and save
 		Round round2 = new Round(3);
-		PlayerRound playerRound = new PlayerRound(player1);
-		round2.addPlayerRound(playerRound);
+		round2.addPlayerRound(new PlayerRound(player1));
 		round2.setBet(player1, 2);
 		match1.addRound(round2);
 		dataManager.saveMatch(match1);
 
-		// update a playerround and save
-		playerRound.setWins(2);
+		// update a PlayerRound and save
+		round2.setWins(player1, 3);
 		dataManager.saveMatch(match1);
 
 		Match match2 = dataManager.retrieveMatch(match1.getId());
@@ -334,8 +333,7 @@ public class DataManagerTest extends AndroidTestCase {
 		match.with(player).with(player2);
 
 		Round round = new Round(7);
-		PlayerRound playerRound1 = new PlayerRound(player);
-		round.addPlayerRound(playerRound1);
+		round.addPlayerRound(new PlayerRound(player));
 		round.setBet(player, 5);
 
 		match.addRound(round);
@@ -345,15 +343,14 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 
 		// add a new PlayerRound and save
-		PlayerRound playerRound2 = new PlayerRound(player2);
-		round.addPlayerRound(playerRound2);
+		round.addPlayerRound(new PlayerRound(player2));
 		round.setBet(player2, 3);
 		dataManager.saveMatch(match);
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 
 		// update a PlayerRound and save
-		playerRound1.setWins(6);
-		playerRound2.setWins(1);
+		round.setWins(player, 6);
+		round.setWins(player2, 1);
 		dataManager.saveMatch(match);
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 
