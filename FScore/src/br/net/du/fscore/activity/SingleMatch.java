@@ -14,8 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -26,7 +24,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -119,20 +116,18 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
 			}
 		} else if (item.getItemId() == 1) {
-			if (match.getPlayers().size() < 2) {
-				Toast.makeText(SingleMatch.this,
-						"Match must have at least 2 players.",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				// New Round
-				final EditText input = new EditText(this);
-				input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-				input.setText(String.valueOf(match.getNumberOfCardsSuggestion()));
+			try {
+				match.newRound();
+				dataManager.saveMatch(match);
 
-				new AlertDialog.Builder(SingleMatch.this).setTitle("New Round")
-						.setMessage("Enter number of cards").setView(input)
-						.setPositiveButton("Ok", getDoNewRoundClick(input))
-						.setNegativeButton("Cancel", null).show();
+				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+					refreshRoundsList();
+				}
+
+				unregisterForContextMenu(playerScoresView);
+			} catch (IllegalStateException e) {
+				Toast.makeText(SingleMatch.this, e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -198,37 +193,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				}
 			}
 		}
-	}
-
-	private OnClickListener getDoNewRoundClick(final EditText input) {
-		return new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				Editable value = input.getText();
-				try {
-					long numberOfRounds = Long.parseLong(value.toString());
-					match.newRound(numberOfRounds);
-					dataManager.saveMatch(match);
-
-					if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-						refreshRoundsList();
-					}
-
-					unregisterForContextMenu(playerScoresView);
-				} catch (NumberFormatException e) {
-					Toast.makeText(
-							SingleMatch.this,
-							"Please enter a number between 1 and "
-									+ match.getMaxCardsPerRound(),
-							Toast.LENGTH_SHORT).show();
-				} catch (IllegalArgumentException e) {
-					Toast.makeText(
-							SingleMatch.this,
-							"Number of cards must be between 1 and "
-									+ match.getMaxCardsPerRound(),
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		};
 	}
 
 	private OnMenuItemClickListener playerDeleteDialog() {

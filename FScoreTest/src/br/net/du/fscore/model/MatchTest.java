@@ -154,6 +154,42 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testNewRoundNoArgs() {
+		Match match = new Match("Match");
+		match.with(new Player("1")).with(new Player("2")).with(new Player("3"));
+
+		match.newRound();
+
+		assertEquals(1, match.getRounds().size());
+		assertEquals(1, match.getRounds().get(0).getNumberOfCards());
+
+		for (int i = 0; i < 16; i++) {
+			match.newRound();
+		}
+
+		assertEquals(17, match.getRounds().size());
+		assertEquals(17, match.getRounds().get(16).getNumberOfCards());
+
+		match.newRound();
+
+		assertEquals(18, match.getRounds().size());
+		assertEquals(16, match.getRounds().get(17).getNumberOfCards());
+
+		for (int i = 0; i < 15; i++) {
+			match.newRound();
+		}
+
+		assertEquals(33, match.getRounds().size());
+		assertEquals(1, match.getRounds().get(32).getNumberOfCards());
+
+		try {
+			match.newRound();
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
 	public void testNewRound() {
 		Match match = new Match("Match");
 
@@ -271,11 +307,7 @@ public class MatchTest extends AndroidTestCase {
 		}
 
 		match.newRound(1);
-		assertEquals(1, match.getNumberOfCardsSuggestion());
-		match.newRound(1);
-		assertEquals(1, match.getNumberOfCardsSuggestion());
-		match.newRound(1);
-		assertEquals(1, match.getNumberOfCardsSuggestion());
+		assertEquals(0, match.getNumberOfCardsSuggestion());
 	}
 
 	public void testGetScores() {

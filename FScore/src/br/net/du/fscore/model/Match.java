@@ -55,10 +55,6 @@ public class Match implements Serializable, Comparable<Match> {
 				.getNumberOfCards();
 
 		if (rounds.size() >= getMaxCardsPerRound()) {
-			if (lastRoundCardsPerPlayer == 1) {
-				return 1;
-			}
-
 			return lastRoundCardsPerPlayer - 1;
 		}
 
@@ -103,6 +99,20 @@ public class Match implements Serializable, Comparable<Match> {
 
 	public List<Player> getPlayers() {
 		return players;
+	}
+
+	public Match newRound() throws IllegalStateException {
+		if (players.size() < 2) {
+			throw new IllegalStateException(
+					"Match must have at least 2 players.");
+		}
+
+		long nextRoundsCards = getNumberOfCardsSuggestion();
+		if (nextRoundsCards == 0) {
+			throw new IllegalStateException("Match is over.");
+		}
+
+		return this.newRound(nextRoundsCards);
 	}
 
 	public Match newRound(long numberOfCards) throws IllegalArgumentException,
