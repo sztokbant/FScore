@@ -91,8 +91,7 @@ public class Round implements Serializable, Comparable<Round> {
 
 		if (!isAllowedWins(player, wins)) {
 			throw new IllegalArgumentException(
-					"There's something wrong, total wins must be equal round's cards "
-							+ wins);
+					"Total wins must be equal to round's cards");
 		}
 
 		selectedPlayerRound.setWins(wins);
@@ -210,7 +209,11 @@ public class Round implements Serializable, Comparable<Round> {
 
 	@Override
 	public String toString() {
-		return "Round - " + numberOfCards + " cards";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Round - ");
+		sb.append(numberOfCards);
+		sb.append(numberOfCards > 1 ? " cards" : " card");
+		return sb.toString();
 	}
 
 	private boolean isLastPlayerToBet() {

@@ -72,6 +72,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		matchId = (Long) getIntent().getSerializableExtra("selectedMatchId");
 		match = dataManager.retrieveMatch(matchId);
 
+		SingleMatch.this.setTitle(match.toString());
+
 		createRoundsListAdapter();
 		createPlayersListAdapter();
 		makeTabs();
@@ -83,6 +85,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		dataManager.openDb();
 
 		match = dataManager.retrieveMatch(matchId);
+
 		refreshPlayersList();
 		refreshRoundsList();
 	}

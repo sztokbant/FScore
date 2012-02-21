@@ -60,6 +60,8 @@ public class SingleRound extends Activity {
 		super.onResume();
 		dataManager.openDb();
 		refreshPlayerRoundsList();
+
+		SingleRound.this.setTitle(round.toString());
 	}
 
 	@Override
