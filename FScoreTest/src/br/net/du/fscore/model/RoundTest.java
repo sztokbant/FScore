@@ -87,6 +87,43 @@ public class RoundTest extends AndroidTestCase {
 		}
 	}
 
+	public void testSetBetForPlayer() {
+		Round round = new Round(5);
+
+		Player player1 = new Player("Player 1");
+		Player player2 = new Player("Player 2");
+		Player player3 = new Player("Player 3");
+		Player player4 = new Player("Player 4");
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		PlayerRound playerRound3 = new PlayerRound(player3);
+		PlayerRound playerRound4 = new PlayerRound(player4);
+
+		round.addPlayerRound(playerRound1).addPlayerRound(playerRound2)
+				.addPlayerRound(playerRound3).addPlayerRound(playerRound4);
+
+		round.setBet(player1, 0);
+		round.setBet(player2, 2);
+		round.setBet(player3, 3);
+
+		try {
+			round.setBet(player4, 9);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		try {
+			round.setBet(player4, 0);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		round.setBet(player4, 2);
+	}
+
 	public void testNumberOfCardsMustBeGreaterThanZero() {
 		Round round = null;
 		try {

@@ -122,27 +122,17 @@ public class SingleRound extends Activity {
 						try {
 							long bet = Long.parseLong(value.toString());
 
-							if (bet > round.getNumberOfCards()) {
-								Toast.makeText(
-										SingleRound.this,
-										"Bet must be between 0 and "
-												+ round.getNumberOfCards(),
-										Toast.LENGTH_SHORT).show();
-							} else if (bet == round
-									.getForbiddenBet(selectedPlayerRound)) {
-								Toast.makeText(SingleRound.this,
-										"Sorry, your bed cannot be " + bet,
-										Toast.LENGTH_SHORT).show();
-							} else {
-								selectedPlayerRound.setBet(bet);
-								dataManager.saveMatch(match);
-								refreshPlayerRoundsList();
-							}
+							round.setBet(selectedPlayerRound.getPlayer(), bet);
+							dataManager.saveMatch(match);
+							refreshPlayerRoundsList();
 						} catch (NumberFormatException e) {
 							Toast.makeText(
 									SingleRound.this,
 									"Please enter a number between 0 and "
 											+ round.getNumberOfCards(),
+									Toast.LENGTH_SHORT).show();
+						} catch (IllegalArgumentException e) {
+							Toast.makeText(SingleRound.this, e.getMessage(),
 									Toast.LENGTH_SHORT).show();
 						}
 					}

@@ -64,6 +64,33 @@ public class Round implements Serializable, Comparable<Round> {
 		return this;
 	}
 
+	public void setBet(Player player, long bet) {
+		PlayerRound selectedPlayerRound = null;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getPlayer().equals(player)) {
+				selectedPlayerRound = playerRound;
+				break;
+			}
+		}
+
+		if (selectedPlayerRound == null) {
+			throw new IllegalArgumentException("Player not found!");
+		}
+
+		if (bet > numberOfCards) {
+			throw new IllegalArgumentException("Bet must be between 0 and "
+					+ numberOfCards);
+		}
+
+		if (bet == getForbiddenBet(selectedPlayerRound)) {
+			throw new IllegalArgumentException("Sorry, your bed cannot be "
+					+ bet);
+		}
+
+		selectedPlayerRound.setBet(bet);
+	}
+
 	public long getForbiddenBet(PlayerRound selectedPlayerRound) {
 		if (!isLastPlayerToBet()) {
 			return NO_FORBIDDEN_BET;
