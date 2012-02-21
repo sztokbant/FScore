@@ -13,9 +13,6 @@ KNOWN ISSUES
 "GHOST" ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
-Code Smells
-* Some model logic is being controlled by activities
-
 Desired Improvements
 * Facebook-only contacts still don't get added to Match
 
