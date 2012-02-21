@@ -84,7 +84,7 @@ public class Round implements Serializable, Comparable<Round> {
 		}
 
 		if (bet == getForbiddenBet(selectedPlayerRound)) {
-			throw new IllegalArgumentException("Sorry, your bed cannot be "
+			throw new IllegalArgumentException("Sorry, your bet cannot be "
 					+ bet);
 		}
 
