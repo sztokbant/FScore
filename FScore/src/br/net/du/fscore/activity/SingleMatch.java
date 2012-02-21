@@ -146,10 +146,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			menu.setHeaderTitle(selectedPlayer.toString());
 			MenuItem delete = menu.add(0, 0, 0, "Delete");
 			delete.setOnMenuItemClickListener(playerDeleteDialog());
-		} else if (view == roundView) {
-			menu.setHeaderTitle(selectedRound.toString());
-			MenuItem delete = menu.add(0, 0, 0, "Delete");
-			delete.setOnMenuItemClickListener(roundDeleteDialog());
 		}
 	}
 
@@ -262,41 +258,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 							dataManager.saveMatch(match);
 							refreshPlayersList();
-						}
-					}
-				};
-			}
-		};
-	}
-
-	private OnMenuItemClickListener roundDeleteDialog() {
-		return new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("Delete " + selectedRound)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", getDoDeleteRoundClick())
-						.setNegativeButton("No", null).show();
-
-				return true;
-			}
-
-			private OnClickListener getDoDeleteRoundClick() {
-				return new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(SingleMatch.this,
-								"Deleting " + selectedRound + "...",
-								Toast.LENGTH_SHORT).show();
-
-						match.getRounds().remove(selectedRound);
-						dataManager.saveMatch(match);
-						refreshRoundsList();
-
-						if (match.getRounds().isEmpty()) {
-							registerForContextMenu(playerScoresView);
 						}
 					}
 				};
