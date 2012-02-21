@@ -135,6 +135,21 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
+	public void testCannotAddMoreThan51Players() {
+		Match match = new Match("Match");
+
+		for (int i = 0; i < 51; i++) {
+			match.with(new Player("Player " + String.valueOf(i)));
+		}
+
+		try {
+			match.with(new Player("Yet Another"));
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
 	public void testSettingMatchIdSetsRoundsIds() {
 		long newMatchId = match1.getId() + 19;
 

@@ -63,6 +63,11 @@ public class Match implements Serializable, Comparable<Match> {
 
 	public Match with(Player player) throws IllegalArgumentException,
 			IllegalStateException {
+		if (players.size() >= 51) {
+			throw new IllegalStateException(
+					"Maximmum number of players reached");
+		}
+
 		if (player == null) {
 			throw new IllegalArgumentException("Player cannot be null");
 		}
