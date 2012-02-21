@@ -144,7 +144,6 @@ public class SingleRound extends Activity {
 									"Please enter a number between 0 and "
 											+ round.getNumberOfCards(),
 									Toast.LENGTH_SHORT).show();
-						} catch (IllegalArgumentException e) {
 						}
 					}
 				};
