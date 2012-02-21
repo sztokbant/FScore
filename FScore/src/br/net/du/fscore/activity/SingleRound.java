@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -77,94 +78,96 @@ public class SingleRound extends Activity {
 		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
+	private AlertDialog.Builder getBetDialog() {
+		final EditText betInput = new EditText(SingleRound.this);
+		betInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+		return new AlertDialog.Builder(SingleRound.this)
+				.setTitle(selectedPlayerRound.getPlayer().toString())
+				.setMessage("Bet").setView(betInput)
+				.setPositiveButton("Ok", getDoMakeBetClick(betInput))
+				.setNegativeButton("Cancel", null);
+	}
+
+	private OnClickListener getDoMakeBetClick(final EditText betInput) {
+		return new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Editable value = betInput.getText();
+
+				try {
+					long bet = Long.parseLong(value.toString());
+
+					round.setBet(selectedPlayerRound.getPlayer(), bet);
+					dataManager.saveMatch(match);
+					refreshPlayerRoundsList();
+				} catch (NumberFormatException e) {
+					Toast.makeText(
+							SingleRound.this,
+							"Please enter a number between 0 and "
+									+ round.getNumberOfCards(),
+							Toast.LENGTH_SHORT).show();
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(SingleRound.this, e.getMessage(),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		};
+	}
+
+	private AlertDialog.Builder getWinsDialog() {
+		final EditText winsInput = new EditText(SingleRound.this);
+		winsInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+		return new AlertDialog.Builder(SingleRound.this)
+				.setTitle(selectedPlayerRound.getPlayer().toString())
+				.setMessage("Wins").setView(winsInput)
+				.setPositiveButton("Ok", getDoMakeWinsClick(winsInput))
+				.setNegativeButton("Cancel", null);
+	}
+
+	private OnClickListener getDoMakeWinsClick(final EditText winsInput) {
+		return new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Editable value = winsInput.getText();
+
+				try {
+					long wins = Long.parseLong(value.toString());
+
+					round.setWins(selectedPlayerRound.getPlayer(), wins);
+					dataManager.saveMatch(match);
+					refreshPlayerRoundsList();
+
+				} catch (NumberFormatException e) {
+					Toast.makeText(
+							SingleRound.this,
+							"Please enter a number between 0 and "
+									+ round.getNumberOfCards(),
+							Toast.LENGTH_SHORT).show();
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(SingleRound.this, e.getMessage(),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		};
+	}
+
 	private OnMenuItemClickListener playerRoundDeleteClickListener() {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				if (item.getItemId() == 0) {
 					// bet
-					final EditText betInput = new EditText(SingleRound.this);
-					betInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-
-					new AlertDialog.Builder(SingleRound.this)
-							.setTitle(
-									selectedPlayerRound.getPlayer().toString())
-							.setMessage("Bet")
-							.setView(betInput)
-							.setPositiveButton("Ok",
-									getDoMakeBetClick(betInput))
-							.setNegativeButton("Cancel", null).show();
+					getBetDialog().show();
 				} else if (item.getItemId() == 1) {
 					// wins
-					final EditText winsInput = new EditText(SingleRound.this);
-					winsInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-
-					new AlertDialog.Builder(SingleRound.this)
-							.setTitle(
-									selectedPlayerRound.getPlayer().toString())
-							.setMessage("Wins")
-							.setView(winsInput)
-							.setPositiveButton("Ok",
-									getDoMakeWinsClick(winsInput))
-							.setNegativeButton("Cancel", null).show();
+					getWinsDialog().show();
 				}
 
 				return true;
-			}
-
-			private OnClickListener getDoMakeBetClick(final EditText betInput) {
-				return new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-						Editable value = betInput.getText();
-
-						try {
-							long bet = Long.parseLong(value.toString());
-
-							round.setBet(selectedPlayerRound.getPlayer(), bet);
-							dataManager.saveMatch(match);
-							refreshPlayerRoundsList();
-						} catch (NumberFormatException e) {
-							Toast.makeText(
-									SingleRound.this,
-									"Please enter a number between 0 and "
-											+ round.getNumberOfCards(),
-									Toast.LENGTH_SHORT).show();
-						} catch (IllegalArgumentException e) {
-							Toast.makeText(SingleRound.this, e.getMessage(),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				};
-			}
-
-			private OnClickListener getDoMakeWinsClick(final EditText winsInput) {
-				return new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-						Editable value = winsInput.getText();
-
-						try {
-							long wins = Long.parseLong(value.toString());
-
-							round.setWins(selectedPlayerRound.getPlayer(), wins);
-							dataManager.saveMatch(match);
-							refreshPlayerRoundsList();
-
-						} catch (NumberFormatException e) {
-							Toast.makeText(
-									SingleRound.this,
-									"Please enter a number between 0 and "
-											+ round.getNumberOfCards(),
-									Toast.LENGTH_SHORT).show();
-						} catch (IllegalArgumentException e) {
-							Toast.makeText(SingleRound.this, e.getMessage(),
-									Toast.LENGTH_SHORT).show();
-						}
-					}
-				};
 			}
 		};
 	}
@@ -190,6 +193,23 @@ public class SingleRound extends Activity {
 						return false;
 					}
 				});
+
+		playerRoundsView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view,
+					int position, long id) {
+
+				List<PlayerRound> playerRounds = round.getPlayerRounds();
+				Collections.sort(playerRounds);
+				selectedPlayerRound = playerRounds.get(position);
+
+				if (selectedPlayerRound.getBet() == PlayerRound.EMPTY) {
+					getBetDialog().show();
+				} else {
+					getWinsDialog().show();
+				}
+			}
+		});
 
 		registerForContextMenu(playerRoundsView);
 	}
