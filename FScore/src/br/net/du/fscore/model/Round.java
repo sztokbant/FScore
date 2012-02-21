@@ -64,7 +64,66 @@ public class Round implements Serializable, Comparable<Round> {
 		return this;
 	}
 
-	public void setBet(Player player, long bet) {
+	public void setBet(Player player, long bet) throws IllegalArgumentException {
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
+
+		if (bet > numberOfCards) {
+			throw new IllegalArgumentException("Bet must be between 0 and "
+					+ numberOfCards);
+		}
+
+		if (bet == getForbiddenBet(player)) {
+			throw new IllegalArgumentException("Sorry, your bet cannot be "
+					+ bet);
+		}
+
+		selectedPlayerRound.setBet(bet);
+	}
+
+	public void setWins(Player player, long wins)
+			throws IllegalArgumentException {
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
+
+		if (wins > numberOfCards) {
+			throw new IllegalArgumentException("Wins cannot be greater than "
+					+ numberOfCards);
+		}
+
+		if (!isAllowedWins(player, wins)) {
+			throw new IllegalArgumentException(
+					"There's something wrong, total wins must be equal round's cards "
+							+ wins);
+		}
+
+		selectedPlayerRound.setWins(wins);
+	}
+
+	private boolean isAllowedWins(Player player, long wins) {
+		if (!isLastPlayerToWin()) {
+			return true;
+		}
+
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
+
+		long winsSum = wins;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound == selectedPlayerRound) {
+				continue;
+			}
+
+			winsSum += playerRound.getWins();
+		}
+
+		if (winsSum != numberOfCards) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private PlayerRound getPlayerRound(Player player)
+			throws IllegalArgumentException {
 		PlayerRound selectedPlayerRound = null;
 
 		for (PlayerRound playerRound : playerRounds) {
@@ -78,23 +137,15 @@ public class Round implements Serializable, Comparable<Round> {
 			throw new IllegalArgumentException("Player not found!");
 		}
 
-		if (bet > numberOfCards) {
-			throw new IllegalArgumentException("Bet must be between 0 and "
-					+ numberOfCards);
-		}
-
-		if (bet == getForbiddenBet(selectedPlayerRound)) {
-			throw new IllegalArgumentException("Sorry, your bet cannot be "
-					+ bet);
-		}
-
-		selectedPlayerRound.setBet(bet);
+		return selectedPlayerRound;
 	}
 
-	public long getForbiddenBet(PlayerRound selectedPlayerRound) {
+	public long getForbiddenBet(Player player) {
 		if (!isLastPlayerToBet()) {
 			return NO_FORBIDDEN_BET;
 		}
+
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		long betTotal = 0;
 		for (PlayerRound playerRound : playerRounds) {
@@ -174,6 +225,22 @@ public class Round implements Serializable, Comparable<Round> {
 		}
 
 		if (betCount < playerRounds.size() - 1) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isLastPlayerToWin() {
+		long winsCount = 0;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getWins() != PlayerRound.EMPTY) {
+				winsCount++;
+			}
+		}
+
+		if (winsCount < playerRounds.size() - 1) {
 			return false;
 		}
 

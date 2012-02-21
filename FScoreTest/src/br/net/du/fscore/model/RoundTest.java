@@ -124,6 +124,36 @@ public class RoundTest extends AndroidTestCase {
 		round.setBet(player4, 2);
 	}
 
+	public void testSetWinsForPlayer() {
+		Round round = new Round(5);
+
+		Player player1 = new Player("Player 1");
+		Player player2 = new Player("Player 2");
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		PlayerRound playerRound2 = new PlayerRound(player2);
+
+		round.addPlayerRound(playerRound1).addPlayerRound(playerRound2);
+
+		round.setWins(player1, 2);
+
+		try {
+			round.setWins(player2, 9);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		try {
+			round.setWins(player2, 2);
+			fail("should have thrown an Exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+
+		round.setBet(player2, 3);
+	}
+
 	public void testNumberOfCardsMustBeGreaterThanZero() {
 		Round round = null;
 		try {
@@ -161,24 +191,26 @@ public class RoundTest extends AndroidTestCase {
 	}
 
 	public void testGetForbiddenBet() {
-		PlayerRound playerRound1 = new PlayerRound(new Player("Player 1"));
-		PlayerRound playerRound2 = new PlayerRound(new Player("Player 2"));
-		PlayerRound playerRound3 = new PlayerRound(new Player("Player 3"));
+		Player player1 = new Player("Player 1");
+		Player player2 = new Player("Player 2");
+		Player player3 = new Player("Player 3");
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		PlayerRound playerRound3 = new PlayerRound(player3);
 
 		Round round = new Round(3).addPlayerRound(playerRound1)
 				.addPlayerRound(playerRound2).addPlayerRound(playerRound3);
 
-		assertEquals(Round.NO_FORBIDDEN_BET,
-				round.getForbiddenBet(playerRound3));
+		assertEquals(Round.NO_FORBIDDEN_BET, round.getForbiddenBet(player3));
 
 		round.getPlayerRounds().get(0).setBet(1);
-		assertEquals(Round.NO_FORBIDDEN_BET,
-				round.getForbiddenBet(playerRound3));
+		assertEquals(Round.NO_FORBIDDEN_BET, round.getForbiddenBet(player3));
 
 		round.getPlayerRounds().get(1).setBet(1);
-		assertEquals(1, round.getForbiddenBet(playerRound3));
+		assertEquals(1, round.getForbiddenBet(player3));
 
 		round.getPlayerRounds().get(2).setBet(2);
-		assertEquals(0, round.getForbiddenBet(playerRound2));
+		assertEquals(0, round.getForbiddenBet(player2));
 	}
 }
