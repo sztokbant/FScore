@@ -210,17 +210,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				Editable value = input.getText();
 				try {
 					long numberOfRounds = Long.parseLong(value.toString());
-
 					match.newRound(numberOfRounds);
-
 					dataManager.saveMatch(match);
 
 					if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
 						refreshRoundsList();
-					} else if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-						// TODO this is only useful when
-						// testing
-						refreshPlayersList();
 					}
 
 					unregisterForContextMenu(playerScoresView);
