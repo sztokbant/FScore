@@ -237,6 +237,6 @@ public class Match implements Serializable, Comparable<Match> {
 
 	@Override
 	public String toString() {
-		return name + DateFormat.format(" (dd-MM-yyyy hh:mm:ss)", date);
+		return name + DateFormat.format(" (dd-MM-yyyy hh:mm)", date);
 	}
 }
