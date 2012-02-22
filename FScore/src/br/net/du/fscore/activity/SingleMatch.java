@@ -36,7 +36,7 @@ import br.net.du.fscore.model.PlayerScore;
 import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 
-// Tabs based on tutorial on http://joshclemm.com/blog/?p=59
+// Tabs based on tutorial at http://joshclemm.com/blog/?p=59
 public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	// used by "Add Player"
@@ -293,9 +293,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 				selectedRound = (Round) roundAdapter.getItem(position);
-				Toast.makeText(SingleMatch.this,
-						"Opening Round " + selectedRound, Toast.LENGTH_SHORT)
-						.show();
 				Intent singleRound = new Intent(SingleMatch.this,
 						SingleRound.class);
 				singleRound.putExtra("selectedRoundId", selectedRound.getId());
