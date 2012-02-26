@@ -107,11 +107,6 @@ public class Match implements Serializable, Comparable<Match> {
 	}
 
 	public Match newRound() throws IllegalStateException {
-		if (players.size() < 2) {
-			throw new IllegalStateException(
-					"Match must have at least 2 players.");
-		}
-
 		long nextRoundsCards = getNumberOfCardsSuggestion();
 		if (nextRoundsCards == 0) {
 			throw new IllegalStateException("Match is over.");
@@ -120,7 +115,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return this.newRound(nextRoundsCards);
 	}
 
-	public Match newRound(long numberOfCards) throws IllegalArgumentException,
+	Match newRound(long numberOfCards) throws IllegalArgumentException,
 			IllegalStateException {
 		if (players.size() < 2) {
 			throw new IllegalStateException(
