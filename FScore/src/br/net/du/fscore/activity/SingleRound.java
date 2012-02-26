@@ -118,7 +118,12 @@ public class SingleRound extends Activity {
 		};
 	}
 
-	private AlertDialog.Builder getWinsDialog() {
+	private AlertDialog.Builder getWinsDialog() throws IllegalStateException {
+		if (!round.hasAllBets()) {
+			throw new IllegalStateException(
+					"Cannot set wins while not all players have placed bets.");
+		}
+
 		final EditText winsInput = new EditText(SingleRound.this);
 		winsInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -133,7 +138,6 @@ public class SingleRound extends Activity {
 		return new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-
 				Editable value = winsInput.getText();
 
 				try {
@@ -164,7 +168,12 @@ public class SingleRound extends Activity {
 				if (item.getItemId() == 0) {
 					getBetDialog().show();
 				} else if (item.getItemId() == 1) {
-					getWinsDialog().show();
+					try {
+						getWinsDialog().show();
+					} catch (IllegalStateException e) {
+						Toast.makeText(SingleRound.this, e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
 				}
 
 				return true;
@@ -206,7 +215,12 @@ public class SingleRound extends Activity {
 				if (selectedPlayerRound.getBet() == PlayerRound.EMPTY) {
 					getBetDialog().show();
 				} else {
-					getWinsDialog().show();
+					try {
+						getWinsDialog().show();
+					} catch (IllegalStateException e) {
+						Toast.makeText(SingleRound.this, e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		});
