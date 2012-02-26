@@ -106,7 +106,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
-	public Match newRound() throws IllegalStateException {
+	public Round newRound() throws IllegalStateException {
 		if (!rounds.isEmpty() && !rounds.get(rounds.size() - 1).isComplete()) {
 			throw new IllegalStateException("Last round is incomplete.");
 		}
@@ -119,7 +119,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return this.newRound(nextRoundsCards);
 	}
 
-	Match newRound(long numberOfCards) throws IllegalArgumentException,
+	Round newRound(long numberOfCards) throws IllegalArgumentException,
 			IllegalStateException {
 		if (players.size() < 2) {
 			throw new IllegalStateException(
@@ -141,7 +141,7 @@ public class Match implements Serializable, Comparable<Match> {
 		round.setMatchId(this.getId());
 		rounds.add(round);
 
-		return this;
+		return round;
 	}
 
 	public Match addRound(Round round) throws IllegalArgumentException,

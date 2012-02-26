@@ -81,7 +81,18 @@ public class Round implements Serializable, Comparable<Round> {
 	}
 
 	public void setWins(Player player, long wins)
-			throws IllegalArgumentException {
+			throws IllegalArgumentException, IllegalStateException {
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getPlayer().equals(player)) {
+				continue;
+			}
+
+			if (playerRound.getBet() == PlayerRound.EMPTY) {
+				throw new IllegalStateException(
+						"Cannot set wins while not all players have placed bets.");
+			}
+		}
+
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		if (wins > numberOfCards) {

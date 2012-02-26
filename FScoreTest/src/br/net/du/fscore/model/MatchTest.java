@@ -171,27 +171,68 @@ public class MatchTest extends AndroidTestCase {
 
 	public void testNewRoundNoArgs() {
 		Match match = new Match("Match");
-		match.with(new Player("1")).with(new Player("2")).with(new Player("3"));
 
-		match.newRound();
+		Player player1 = new Player("1");
+		Player player2 = new Player("2");
+		Player player3 = new Player("3");
+
+		match.with(player1).with(player2).with(player3);
+
+		Round currentRound = match.newRound();
+		long numberOfCards = currentRound.getNumberOfCards();
 
 		assertEquals(1, match.getRounds().size());
 		assertEquals(1, match.getRounds().get(0).getNumberOfCards());
 
+		currentRound.setBet(player1, 0);
+		currentRound.setBet(player2, 0);
+		currentRound.setBet(player3, numberOfCards - 1);
+
+		currentRound.setWins(player1, 0);
+		currentRound.setWins(player2, 0);
+		currentRound.setWins(player3, numberOfCards);
+
 		for (int i = 0; i < 16; i++) {
-			match.newRound();
+			currentRound = match.newRound();
+			numberOfCards = currentRound.getNumberOfCards();
+
+			currentRound.setBet(player1, 0);
+			currentRound.setBet(player2, 0);
+			currentRound.setBet(player3, numberOfCards - 1);
+
+			currentRound.setWins(player1, 0);
+			currentRound.setWins(player2, 0);
+			currentRound.setWins(player3, numberOfCards);
 		}
 
 		assertEquals(17, match.getRounds().size());
 		assertEquals(17, match.getRounds().get(16).getNumberOfCards());
 
-		match.newRound();
+		currentRound = match.newRound();
+		numberOfCards = currentRound.getNumberOfCards();
+
+		currentRound.setBet(player1, 0);
+		currentRound.setBet(player2, 0);
+		currentRound.setBet(player3, numberOfCards - 1);
+
+		currentRound.setWins(player1, 0);
+		currentRound.setWins(player2, 0);
+		currentRound.setWins(player3, numberOfCards);
 
 		assertEquals(18, match.getRounds().size());
 		assertEquals(16, match.getRounds().get(17).getNumberOfCards());
 
 		for (int i = 0; i < 15; i++) {
-			match.newRound();
+			currentRound = match.newRound();
+			numberOfCards = currentRound.getNumberOfCards();
+
+			currentRound.setBet(player1, 0);
+			currentRound.setBet(player2, 0);
+			currentRound.setBet(player3, numberOfCards - 1);
+
+			currentRound.setWins(player1, 0);
+			currentRound.setWins(player2, 0);
+			currentRound.setWins(player3, numberOfCards);
 		}
 
 		assertEquals(33, match.getRounds().size());

@@ -135,6 +135,23 @@ public class RoundTest extends AndroidTestCase {
 
 		round.addPlayerRound(playerRound1).addPlayerRound(playerRound2);
 
+		try {
+			round.setWins(player1, 2);
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+
+		round.setBet(player1, 4);
+
+		try {
+			round.setWins(player1, 2);
+			fail("should have thrown an Exception");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+
+		round.setBet(player2, 2);
 		round.setWins(player1, 2);
 
 		try {
