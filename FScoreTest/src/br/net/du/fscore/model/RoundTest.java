@@ -213,4 +213,28 @@ public class RoundTest extends AndroidTestCase {
 		round.getPlayerRounds().get(2).setBet(2);
 		assertEquals(0, round.getForbiddenBet(player2));
 	}
+
+	public void testIsComplete() {
+		Player player1 = new Player("Player 1");
+		Player player2 = new Player("Player 2");
+		Player player3 = new Player("Player 3");
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		PlayerRound playerRound3 = new PlayerRound(player3);
+
+		Round round = new Round(3).addPlayerRound(playerRound1)
+				.addPlayerRound(playerRound2).addPlayerRound(playerRound3);
+
+		assertEquals(false, round.isComplete());
+
+		playerRound1.setBet(0).setWins(1);
+		assertEquals(false, round.isComplete());
+
+		playerRound2.setBet(1).setWins(1);
+		assertEquals(false, round.isComplete());
+
+		playerRound3.setBet(3).setWins(1);
+		assertEquals(true, round.isComplete());
+	}
 }

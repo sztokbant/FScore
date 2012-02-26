@@ -107,6 +107,10 @@ public class Match implements Serializable, Comparable<Match> {
 	}
 
 	public Match newRound() throws IllegalStateException {
+		if (!rounds.isEmpty() && !rounds.get(rounds.size() - 1).isComplete()) {
+			throw new IllegalStateException("Last round is incomplete.");
+		}
+
 		long nextRoundsCards = getNumberOfCardsSuggestion();
 		if (nextRoundsCards == 0) {
 			throw new IllegalStateException("Match is over.");
