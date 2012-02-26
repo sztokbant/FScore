@@ -98,27 +98,16 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem addPlayer =
-		menu.add(0, 0, 0, "Add Player");
 		// MenuItem newRound =
-		menu.add(0, 1, 0, "New Round");
+		menu.add(0, 0, 0, "New Round");
+		// MenuItem addPlayer =
+		menu.add(0, 1, 0, "Add Player");
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
-			// Add Player
-			if (!match.getRounds().isEmpty()) {
-				Toast.makeText(SingleMatch.this,
-						"Cannot add more players after match has started.",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				Intent chooser = new Intent(Intent.ACTION_PICK,
-						ContactsContract.Contacts.CONTENT_URI);
-				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
-			}
-		} else if (item.getItemId() == 1) {
 			try {
 				match.newRound();
 				dataManager.saveMatch(match);
@@ -131,6 +120,17 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			} catch (IllegalStateException e) {
 				Toast.makeText(SingleMatch.this, e.getMessage(),
 						Toast.LENGTH_SHORT).show();
+			}
+		} else if (item.getItemId() == 1) {
+			// Add Player
+			if (!match.getRounds().isEmpty()) {
+				Toast.makeText(SingleMatch.this,
+						"Cannot add more players after match has started.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Intent chooser = new Intent(Intent.ACTION_PICK,
+						ContactsContract.Contacts.CONTENT_URI);
+				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
 			}
 		}
 
