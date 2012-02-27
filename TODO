@@ -5,7 +5,6 @@ Refactor it!
   MatchList
   SingleMatch
   SingleRound
-* I18n for hard-coded strings
 
 KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
@@ -13,8 +12,9 @@ KNOWN ISSUES
 "GHOST" ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
-Desired Improvements
-* Facebook-only contacts still don't get added to Match
-
-TODO for 1st ALPHA
-- fix known issues above
+TODO for 2nd ALPHA
+- improve UI
+  * player names should be acquired from user input instead of contacts
+  * app icon
+  * icons for tabs
+  * i18n: pt + en
