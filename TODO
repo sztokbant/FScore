@@ -1,6 +1,7 @@
 TECHNICAL DEBTS
 
 Refactor it!
+* Tests should be cleaned up and standardized concerning what should be in setUp()/tearDown()
 * Convert MenuItem's "Magic Numbers" into enums for:
   MatchList
   SingleMatch
