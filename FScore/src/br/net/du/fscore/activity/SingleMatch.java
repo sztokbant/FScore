@@ -108,31 +108,38 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
-			try {
-				match.newRound();
-				dataManager.saveMatch(match);
-
-				if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-					refreshRoundsList();
-				}
-
-				unregisterForContextMenu(playerScoresView);
-			} catch (IllegalStateException e) {
-				Toast.makeText(SingleMatch.this, e.getMessage(),
-						Toast.LENGTH_SHORT).show();
-			}
+			createNewRound();
 		} else if (item.getItemId() == 1) {
-			// Add Player
-			if (!match.getRounds().isEmpty()) {
-				Toast.makeText(SingleMatch.this,
-						"Cannot add more players after match has started.",
-						Toast.LENGTH_SHORT).show();
-			} else {
-				getAddPlayerDialog().show();
-			}
+			addNewPlayer();
 		}
 
 		return false;
+	}
+
+	private void createNewRound() {
+		try {
+			match.newRound();
+			dataManager.saveMatch(match);
+
+			if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
+				refreshRoundsList();
+			}
+
+			unregisterForContextMenu(playerScoresView);
+		} catch (IllegalStateException e) {
+			Toast.makeText(SingleMatch.this, e.getMessage(), Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	private void addNewPlayer() {
+		if (!match.getRounds().isEmpty()) {
+			Toast.makeText(SingleMatch.this,
+					"Cannot add more players after match has started.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			getAddPlayerDialog().show();
+		}
 	}
 
 	@Override
