@@ -43,4 +43,18 @@ public class PlayerTest extends AndroidTestCase {
 		player2.setName("Other Player");
 		assertFalse(player1.equals(player2));
 	}
+
+	public void testPlayerNameCannotBeBlank() {
+		try {
+			new Player("  ");
+			fail("should have thrown an exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	public void testPlayerNameMustBeTrimmed() {
+		Player player = new Player("  Player name  ");
+		assertEquals("Player name", player.getName());
+	}
 }
