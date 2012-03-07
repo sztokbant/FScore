@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -24,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -128,9 +126,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						"Cannot add more players after match has started.",
 						Toast.LENGTH_SHORT).show();
 			} else {
-				Intent chooser = new Intent(Intent.ACTION_PICK,
-						ContactsContract.Contacts.CONTENT_URI);
-				startActivityForResult(chooser, CONTACT_SELECTED_RESULT_ID);
+				getAddPlayerDialog().show();
 			}
 		}
 
@@ -156,51 +152,40 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		dataManager.openDb();
+	private AlertDialog.Builder getAddPlayerDialog() {
+		final EditText input = new EditText(SingleMatch.this);
 
-		switch (requestCode) {
-		case (CONTACT_SELECTED_RESULT_ID):
-			if (resultCode == Activity.RESULT_OK) {
-				Uri contactData = data.getData();
+		return new AlertDialog.Builder(SingleMatch.this)
+				.setTitle(match.toString()).setMessage("Player name").setView(input)
+				.setPositiveButton("Ok", getDoAddPlayerClick(input))
+				.setNegativeButton("Cancel", null);
+	}
 
-				Cursor cursor = managedQuery(contactData, null, null, null,
-						null);
+	private OnClickListener getDoAddPlayerClick(final EditText winsInput) {
+		return new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Editable value = winsInput.getText();
 
-				if (cursor.moveToFirst()) {
-					int nameIndex = cursor
-							.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
-					String name = cursor.getString(nameIndex);
+				String name = value.toString();
 
-					// sanity check
-					if (name == null) {
-						name = "(Unknown)";
-					}
-
+				try {
 					Player player = new Player(name);
-					try {
-						match.with(player);
-						dataManager.saveMatch(match);
-						if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-							refreshPlayersList();
-						}
-					} catch (IllegalStateException e) {
-						Toast.makeText(SingleMatch.this, e.getMessage(),
-								Toast.LENGTH_SHORT).show();
+					match.with(player);
+					dataManager.saveMatch(match);
+					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
+						refreshPlayersList();
 					}
-				} else {
-					Toast.makeText(SingleMatch.this,
-							"Contact not supported =(", Toast.LENGTH_SHORT)
-							.show();
+				} catch (IllegalStateException e) {
+					Toast.makeText(SingleMatch.this, e.getMessage(),
+							Toast.LENGTH_SHORT).show();
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(SingleMatch.this, e.getMessage(),
+							Toast.LENGTH_SHORT).show();
 				}
 
-				if (!cursor.isClosed()) {
-					cursor.close();
-				}
 			}
-		}
+		};
 	}
 
 	private OnMenuItemClickListener playerDeleteDialog() {
