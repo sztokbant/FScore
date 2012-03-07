@@ -72,15 +72,13 @@ public class Match implements Serializable, Comparable<Match> {
 			throw new IllegalArgumentException("Player cannot be null");
 		}
 
+		if (this.players.contains(player)) {
+			throw new IllegalArgumentException("Player already in this match");
+		}
+
 		if (!rounds.isEmpty()) {
 			throw new IllegalStateException(
 					"Cannot add players after the match has started");
-		}
-
-		for (Player p : players) {
-			if (p.equals(player)) {
-				return this;
-			}
 		}
 
 		players.add(player);
@@ -184,11 +182,6 @@ public class Match implements Serializable, Comparable<Match> {
 		}
 
 		return scores;
-	}
-
-	public boolean hasPlayer(String name) {
-		Player player = new Player(name);
-		return this.players.contains(player);
 	}
 
 	public long getId() {

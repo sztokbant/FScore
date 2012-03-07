@@ -419,16 +419,15 @@ public class MatchTest extends AndroidTestCase {
 		assertEquals(13, scores.get(2).getScore());
 	}
 
-	public void testHasPlayerByName() {
+	public void testCannotAddDuplicatedPlayers() {
 		Match match = new Match();
+		match.with(new Player("Player Name"));
 
-		Player player1 = new Player("Name");
-		Player player2 = new Player("Other");
-
-		assertFalse(match.hasPlayer(player1.getName()));
-
-		match.with(player1).with(player2);
-
-		assertTrue(match.hasPlayer(player1.getName()));
+		try {
+			match.with(new Player("Player Name"));
+			fail("should have thrown an exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 }
