@@ -96,10 +96,12 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newRound =
-		menu.add(0, 0, 0, "New Round");
-		// MenuItem addPlayer =
-		menu.add(0, 1, 0, "Add Player");
+		MenuItem newRound = menu.add(0, 0, 0, "New Round");
+		newRound.setIcon(R.drawable.new_round);
+
+		MenuItem addPlayer = menu.add(0, 1, 0, "Add Player");
+		addPlayer.setIcon(R.drawable.add_players);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -156,7 +158,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		final EditText input = new EditText(SingleMatch.this);
 
 		return new AlertDialog.Builder(SingleMatch.this)
-				.setTitle(match.toString()).setMessage("Player name").setView(input)
+				.setTitle(match.toString()).setMessage("Player name")
+				.setView(input)
 				.setPositiveButton("Ok", getDoAddPlayerClick(input))
 				.setNegativeButton("Cancel", null);
 	}
@@ -226,16 +229,20 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);
 
-		tabHost.addTab(tabHost.newTabSpec(ROUNDS_TAB_TAG)
-				.setIndicator(ROUNDS_TAB_TAG)
+		tabHost.addTab(tabHost
+				.newTabSpec(ROUNDS_TAB_TAG)
+				.setIndicator(ROUNDS_TAB_TAG,
+						getResources().getDrawable(R.drawable.rounds))
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
 						return roundView;
 					}
 				}));
 
-		tabHost.addTab(tabHost.newTabSpec(PLAYERS_TAB_TAG)
-				.setIndicator(PLAYERS_TAB_TAG)
+		tabHost.addTab(tabHost
+				.newTabSpec(PLAYERS_TAB_TAG)
+				.setIndicator(PLAYERS_TAB_TAG,
+						getResources().getDrawable(R.drawable.players))
 				.setContent(new TabContentFactory() {
 					public View createTabContent(String arg0) {
 						return playerScoresView;
