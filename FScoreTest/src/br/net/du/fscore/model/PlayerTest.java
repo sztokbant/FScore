@@ -57,4 +57,10 @@ public class PlayerTest extends AndroidTestCase {
 		Player player = new Player("  Player name  ");
 		assertEquals("Player name", player.getName());
 	}
+
+	public void testDifferentCasesInPlayerNamesStillImplyEquivalence() {
+		Player player1 = new Player("CaSe");
+		Player player2 = new Player("cAsE");
+		assertTrue(player1.equals(player2));
+	}
 }

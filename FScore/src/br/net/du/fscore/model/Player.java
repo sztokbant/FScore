@@ -49,7 +49,7 @@ public class Player implements Serializable, Comparable<Player> {
 			return false;
 		}
 
-		return this.name.equals(((Player) other).getName());
+		return this.name.equalsIgnoreCase(((Player) other).getName());
 	}
 
 	@Override
