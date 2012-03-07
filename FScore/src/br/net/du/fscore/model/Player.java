@@ -15,7 +15,12 @@ public class Player implements Serializable, Comparable<Player> {
 			throw new IllegalArgumentException("Name cannot be empty.");
 		}
 
-		this.setName(name);
+		this.setName(capitalizeFirstLetter(name));
+	}
+
+	private String capitalizeFirstLetter(String name) {
+		return String.format("%s%s", Character.toUpperCase(name.charAt(0)),
+				name.substring(1));
 	}
 
 	public String getName() {

@@ -63,4 +63,9 @@ public class PlayerTest extends AndroidTestCase {
 		Player player2 = new Player("cAsE");
 		assertTrue(player1.equals(player2));
 	}
+
+	public void testFirstLetterOfNameMustBeCapitalized() {
+		Player player = new Player("player");
+		assertEquals('P', player.getName().charAt(0));
+	}
 }
