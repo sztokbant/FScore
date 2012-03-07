@@ -158,7 +158,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		final EditText input = new EditText(SingleMatch.this);
 
 		return new AlertDialog.Builder(SingleMatch.this)
-				.setTitle(match.toString()).setMessage("Player name")
+				.setTitle("Add player to match").setMessage("Player name")
 				.setView(input)
 				.setPositiveButton("Ok", getDoAddPlayerClick(input))
 				.setNegativeButton("Cancel", null);
