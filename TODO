@@ -13,7 +13,7 @@ KNOWN ISSUES
 "GHOST" ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
-TODO for 2nd ALPHA
+TODO for next ALPHA
 - improve UI
   * on-screen buttons instead of menuitems
   * i18n: pt + en
