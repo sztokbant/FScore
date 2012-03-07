@@ -73,7 +73,8 @@ public class Match implements Serializable, Comparable<Match> {
 		}
 
 		if (this.players.contains(player)) {
-			throw new IllegalArgumentException("Player already in this match");
+			throw new IllegalArgumentException("Player '" + player.getName()
+					+ "' already in this match");
 		}
 
 		if (!rounds.isEmpty()) {
