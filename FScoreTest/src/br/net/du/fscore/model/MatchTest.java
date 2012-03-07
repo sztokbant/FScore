@@ -98,6 +98,8 @@ public class MatchTest extends AndroidTestCase {
 		String name = "Same Name";
 		Match aMatch = new Match(name);
 		Match anotherMatch = new Match(name);
+		anotherMatch.setDate(aMatch.getDate());
+
 		aMatch.with(new Player(name));
 		anotherMatch.with(new Player(name));
 
@@ -415,5 +417,18 @@ public class MatchTest extends AndroidTestCase {
 		assertEquals(18, scores.get(0).getScore());
 		assertEquals(10, scores.get(1).getScore());
 		assertEquals(13, scores.get(2).getScore());
+	}
+
+	public void testHasPlayerByName() {
+		Match match = new Match();
+
+		Player player1 = new Player("Name");
+		Player player2 = new Player("Other");
+
+		assertFalse(match.hasPlayer(player1.getName()));
+
+		match.with(player1).with(player2);
+
+		assertTrue(match.hasPlayer(player1.getName()));
 	}
 }

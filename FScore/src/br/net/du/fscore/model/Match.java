@@ -186,6 +186,11 @@ public class Match implements Serializable, Comparable<Match> {
 		return scores;
 	}
 
+	public boolean hasPlayer(String name) {
+		Player player = new Player(name);
+		return this.players.contains(player);
+	}
+
 	public long getId() {
 		return id;
 	}
