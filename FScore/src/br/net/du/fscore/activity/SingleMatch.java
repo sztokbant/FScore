@@ -128,13 +128,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 			unregisterForContextMenu(playerScoresView);
 		} catch (IllegalStateException e) {
-			ActivityUtils.showErrorDialog(SingleMatch.this, e.getMessage());
+			new ActivityUtils().showErrorDialog(SingleMatch.this,
+					e.getMessage());
 		}
 	}
 
 	private void addNewPlayer() {
 		if (!match.getRounds().isEmpty()) {
-			ActivityUtils.showErrorDialog(SingleMatch.this,
+			new ActivityUtils().showErrorDialog(SingleMatch.this,
 					"Cannot add more players after match has started.");
 		} else {
 			getAddPlayerDialog().show();
@@ -186,7 +187,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 						refreshPlayersList();
 					}
 				} catch (Exception e) {
-					ActivityUtils.showErrorDialog(SingleMatch.this,
+					new ActivityUtils().showErrorDialog(SingleMatch.this,
 							e.getMessage());
 				}
 			}

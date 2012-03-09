@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 public class ActivityUtils {
-	public static void showErrorDialog(Context context, String message) {
+	public void showErrorDialog(Context context, String message) {
 		new AlertDialog.Builder(context).setTitle("Error").setMessage(message)
 				.setPositiveButton("Ok", null).show();
 	}

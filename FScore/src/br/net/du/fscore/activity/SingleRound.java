@@ -110,12 +110,13 @@ public class SingleRound extends Activity {
 					dataManager.saveMatch(match);
 					refreshPlayerRoundsList();
 				} catch (NumberFormatException e) {
-					ActivityUtils.showErrorDialog(
+					new ActivityUtils().showErrorDialog(
 							SingleRound.this,
 							"Please enter a number between 0 and "
 									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							e.getMessage());
 				}
 			}
 		};
@@ -151,10 +152,13 @@ public class SingleRound extends Activity {
 					refreshPlayerRoundsList();
 
 				} catch (NumberFormatException e) {
-					ActivityUtils.showErrorDialog(SingleRound.this, "Please enter a number between 0 and "
-							+ round.getNumberOfCards() + ".");
+					new ActivityUtils().showErrorDialog(
+							SingleRound.this,
+							"Please enter a number between 0 and "
+									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							e.getMessage());
 				}
 			}
 		};
@@ -171,7 +175,8 @@ public class SingleRound extends Activity {
 						getWinsDialog().show();
 					}
 				} catch (IllegalStateException e) {
-					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							e.getMessage());
 				}
 
 				return true;
@@ -214,13 +219,15 @@ public class SingleRound extends Activity {
 					try {
 						getBetDialog().show();
 					} catch (IllegalStateException e) {
-						ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
+						new ActivityUtils().showErrorDialog(SingleRound.this,
+								e.getMessage());
 					}
 				} else {
 					try {
 						getWinsDialog().show();
 					} catch (IllegalStateException e) {
-						ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
+						new ActivityUtils().showErrorDialog(SingleRound.this,
+								e.getMessage());
 					}
 				}
 			}
