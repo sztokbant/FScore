@@ -119,13 +119,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 	private void createNewRound() {
 		try {
-			match.newRound();
+			Round round = match.newRound();
 			dataManager.saveMatch(match);
-
-			if (tabHost.getCurrentTabTag() == ROUNDS_TAB_TAG) {
-				refreshRoundsList();
-			}
-
+			openRound(round);
 			unregisterForContextMenu(playerScoresView);
 		} catch (IllegalStateException e) {
 			new ActivityUtils().showErrorDialog(SingleMatch.this,
@@ -183,9 +179,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					Player player = new Player(name);
 					match.with(player);
 					dataManager.saveMatch(match);
-					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
-						refreshPlayersList();
-					}
+					tabHost.setCurrentTabByTag(PLAYERS_TAB_TAG);
+					refreshPlayersList();
 				} catch (Exception e) {
 					new ActivityUtils().showErrorDialog(SingleMatch.this,
 							e.getMessage());
@@ -279,12 +274,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				selectedRound = (Round) roundAdapter.getItem(position);
-				Intent singleRound = new Intent(SingleMatch.this,
-						SingleRound.class);
-				singleRound.putExtra("selectedRoundId", selectedRound.getId());
-				singleRound.putExtra("matchId", match.getId());
-				startActivity(singleRound);
+				openRound((Round) roundAdapter.getItem(position));
 			}
 		});
 
@@ -300,6 +290,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		});
 
 		registerForContextMenu(roundView);
+	}
+
+	protected void openRound(Round round) {
+		selectedRound = round;
+		Intent singleRound = new Intent(SingleMatch.this, SingleRound.class);
+		singleRound.putExtra("selectedRoundId", selectedRound.getId());
+		singleRound.putExtra("matchId", match.getId());
+		startActivity(singleRound);
 	}
 
 	private void refreshPlayersList() {
