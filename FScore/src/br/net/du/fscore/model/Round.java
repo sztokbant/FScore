@@ -184,6 +184,16 @@ public class Round implements Serializable, Comparable<Round> {
 		return true;
 	}
 
+	public boolean hasAnyWins() {
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getWins() != PlayerRound.EMPTY) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public boolean isComplete() {
 		if (!hasAllBets()) {
 			return false;

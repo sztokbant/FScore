@@ -80,7 +80,12 @@ public class SingleRound extends Activity {
 		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
-	private AlertDialog.Builder getBetDialog() {
+	private AlertDialog.Builder getBetDialog() throws IllegalStateException {
+		if (round.hasAnyWins()) {
+			throw new IllegalStateException(
+					"Cannot set bet after setting any player's wins.");
+		}
+
 		final EditText betInput = new EditText(SingleRound.this);
 		betInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -166,7 +171,12 @@ public class SingleRound extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				if (item.getItemId() == 0) {
-					getBetDialog().show();
+					try {
+						getBetDialog().show();
+					} catch (IllegalStateException e) {
+						Toast.makeText(SingleRound.this, e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
 				} else if (item.getItemId() == 1) {
 					try {
 						getWinsDialog().show();
@@ -213,7 +223,12 @@ public class SingleRound extends Activity {
 				selectedPlayerRound = playerRounds.get(position);
 
 				if (selectedPlayerRound.getBet() == PlayerRound.EMPTY) {
-					getBetDialog().show();
+					try {
+						getBetDialog().show();
+					} catch (IllegalStateException e) {
+						Toast.makeText(SingleRound.this, e.getMessage(),
+								Toast.LENGTH_SHORT).show();
+					}
 				} else {
 					try {
 						getWinsDialog().show();
