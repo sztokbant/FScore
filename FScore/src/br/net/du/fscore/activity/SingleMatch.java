@@ -236,21 +236,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				.newTabSpec(ROUNDS_TAB_TAG)
 				.setIndicator(ROUNDS_TAB_TAG,
 						getResources().getDrawable(R.drawable.rounds))
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return roundView;
-					}
-				}));
+				.setContent(new SingleMatchTabContentFactory()));
 
 		tabHost.addTab(tabHost
 				.newTabSpec(PLAYERS_TAB_TAG)
 				.setIndicator(PLAYERS_TAB_TAG,
 						getResources().getDrawable(R.drawable.players))
-				.setContent(new TabContentFactory() {
-					public View createTabContent(String arg0) {
-						return playerScoresView;
-					}
-				}));
+				.setContent(new SingleMatchTabContentFactory()));
 	}
 
 	private void createPlayersListAdapter() {
@@ -321,5 +313,18 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		rounds.clear();
 		rounds.addAll(match.getRounds());
 		roundAdapter.notifyDataSetChanged();
+	}
+
+	public class SingleMatchTabContentFactory implements TabContentFactory {
+		@Override
+		public View createTabContent(String tag) {
+			if (tag == PLAYERS_TAB_TAG) {
+				return playerScoresView;
+			} else if (tag == ROUNDS_TAB_TAG) {
+				return roundView;
+			}
+
+			return null;
+		}
 	}
 }
