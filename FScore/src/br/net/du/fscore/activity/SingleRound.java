@@ -22,7 +22,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
@@ -80,6 +79,11 @@ public class SingleRound extends Activity {
 		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
+	protected void showErrorDialog(String message) {
+		new AlertDialog.Builder(SingleRound.this).setTitle("Error")
+				.setMessage(message).setPositiveButton("Ok", null).show();
+	}
+
 	private AlertDialog.Builder getBetDialog() throws IllegalStateException {
 		if (round.hasAnyWins()) {
 			throw new IllegalStateException(
@@ -110,14 +114,10 @@ public class SingleRound extends Activity {
 					dataManager.saveMatch(match);
 					refreshPlayerRoundsList();
 				} catch (NumberFormatException e) {
-					Toast.makeText(
-							SingleRound.this,
-							"Please enter a number between 0 and "
-									+ round.getNumberOfCards(),
-							Toast.LENGTH_SHORT).show();
+					showErrorDialog("Please enter a number between 0 and "
+							+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					Toast.makeText(SingleRound.this, e.getMessage(),
-							Toast.LENGTH_SHORT).show();
+					showErrorDialog(e.getMessage());
 				}
 			}
 		};
@@ -153,14 +153,10 @@ public class SingleRound extends Activity {
 					refreshPlayerRoundsList();
 
 				} catch (NumberFormatException e) {
-					Toast.makeText(
-							SingleRound.this,
-							"Please enter a number between 0 and "
-									+ round.getNumberOfCards(),
-							Toast.LENGTH_SHORT).show();
+					showErrorDialog("Please enter a number between 0 and "
+							+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					Toast.makeText(SingleRound.this, e.getMessage(),
-							Toast.LENGTH_SHORT).show();
+					showErrorDialog(e.getMessage());
 				}
 			}
 		};
@@ -170,20 +166,14 @@ public class SingleRound extends Activity {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				if (item.getItemId() == 0) {
-					try {
+				try {
+					if (item.getItemId() == 0) {
 						getBetDialog().show();
-					} catch (IllegalStateException e) {
-						Toast.makeText(SingleRound.this, e.getMessage(),
-								Toast.LENGTH_SHORT).show();
-					}
-				} else if (item.getItemId() == 1) {
-					try {
+					} else if (item.getItemId() == 1) {
 						getWinsDialog().show();
-					} catch (IllegalStateException e) {
-						Toast.makeText(SingleRound.this, e.getMessage(),
-								Toast.LENGTH_SHORT).show();
 					}
+				} catch (IllegalStateException e) {
+					showErrorDialog(e.getMessage());
 				}
 
 				return true;
@@ -226,15 +216,13 @@ public class SingleRound extends Activity {
 					try {
 						getBetDialog().show();
 					} catch (IllegalStateException e) {
-						Toast.makeText(SingleRound.this, e.getMessage(),
-								Toast.LENGTH_SHORT).show();
+						showErrorDialog(e.getMessage());
 					}
 				} else {
 					try {
 						getWinsDialog().show();
 					} catch (IllegalStateException e) {
-						Toast.makeText(SingleRound.this, e.getMessage(),
-								Toast.LENGTH_SHORT).show();
+						showErrorDialog(e.getMessage());
 					}
 				}
 			}
