@@ -521,6 +521,30 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(round1, round2);
 	}
 
+	public void testSaveRoundWithRepeatedPlayer() {
+		Player player1 = new Player("player 1");
+		playerDao.save(player1);
+
+		Player player1Copy = new Player("player 1");
+		Player player2 = new Player("player 2");
+
+		Match match = new Match();
+		match.with(player1Copy).with(player2);
+
+		PlayerRound playerRound1 = new PlayerRound(player1Copy);
+		PlayerRound playerRound2 = new PlayerRound(player2);
+
+		Round round = new Round(2);
+		round.addPlayerRound(playerRound1);
+		round.addPlayerRound(playerRound2);
+
+		match.addRound(round);
+
+		dataManager.saveMatch(match);
+
+		assertTrue(true);
+	}
+
 	public void testSaveRound() {
 		// TODO! this method has something wrong...
 		// dataManager.saveRound(round);
