@@ -264,6 +264,12 @@ public class DataManager {
 
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
 			playerRound.setRoundId(round.getId());
+
+			// Workaround: retrieve Player to ensure we are handling a valid
+			// object
+			playerRound.setPlayer(playerDao.find(playerRound.getPlayer()
+					.getName()));
+
 			playerRoundDao.save(playerRound);
 
 			// DEBUG

@@ -8,7 +8,6 @@ Refactor it!
   SingleRound
 
 KNOWN ISSUES
-* If a Player exists in another Match, first "New Round" call causes a NullPointerException
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 
 "GHOST" ISSUES
