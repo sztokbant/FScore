@@ -54,6 +54,7 @@ public class MatchList extends Activity {
 				matches.add(0, match);
 				dataManager.saveMatch(match);
 				adapter.notifyDataSetChanged();
+				openMatch(match);
 			}
 		};
 	}
@@ -123,10 +124,7 @@ public class MatchList extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				selectedMatch = (Match) adapter.getItem(position);
-				Intent match = new Intent(MatchList.this, SingleMatch.class);
-				match.putExtra("selectedMatchId", selectedMatch.getId());
-				startActivity(match);
+				openMatch((Match) adapter.getItem(position));
 			}
 		});
 
@@ -143,6 +141,13 @@ public class MatchList extends Activity {
 		});
 
 		registerForContextMenu(matchesView);
+	}
+
+	protected void openMatch(Match match) {
+		selectedMatch = match;
+		Intent singleMatch = new Intent(MatchList.this, SingleMatch.class);
+		singleMatch.putExtra("selectedMatchId", selectedMatch.getId());
+		startActivity(singleMatch);
 	}
 
 	private void refreshMatchList() {
