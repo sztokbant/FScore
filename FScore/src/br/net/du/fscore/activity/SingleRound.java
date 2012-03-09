@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import br.net.du.fscore.R;
+import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
@@ -79,11 +80,6 @@ public class SingleRound extends Activity {
 		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
-	protected void showErrorDialog(String message) {
-		new AlertDialog.Builder(SingleRound.this).setTitle("Error")
-				.setMessage(message).setPositiveButton("Ok", null).show();
-	}
-
 	private AlertDialog.Builder getBetDialog() throws IllegalStateException {
 		if (round.hasAnyWins()) {
 			throw new IllegalStateException(
@@ -114,10 +110,12 @@ public class SingleRound extends Activity {
 					dataManager.saveMatch(match);
 					refreshPlayerRoundsList();
 				} catch (NumberFormatException e) {
-					showErrorDialog("Please enter a number between 0 and "
-							+ round.getNumberOfCards() + ".");
+					ActivityUtils.showErrorDialog(
+							SingleRound.this,
+							"Please enter a number between 0 and "
+									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					showErrorDialog(e.getMessage());
+					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
 				}
 			}
 		};
@@ -153,10 +151,10 @@ public class SingleRound extends Activity {
 					refreshPlayerRoundsList();
 
 				} catch (NumberFormatException e) {
-					showErrorDialog("Please enter a number between 0 and "
+					ActivityUtils.showErrorDialog(SingleRound.this, "Please enter a number between 0 and "
 							+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
-					showErrorDialog(e.getMessage());
+					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
 				}
 			}
 		};
@@ -173,7 +171,7 @@ public class SingleRound extends Activity {
 						getWinsDialog().show();
 					}
 				} catch (IllegalStateException e) {
-					showErrorDialog(e.getMessage());
+					ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
 				}
 
 				return true;
@@ -216,13 +214,13 @@ public class SingleRound extends Activity {
 					try {
 						getBetDialog().show();
 					} catch (IllegalStateException e) {
-						showErrorDialog(e.getMessage());
+						ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
 					}
 				} else {
 					try {
 						getWinsDialog().show();
 					} catch (IllegalStateException e) {
-						showErrorDialog(e.getMessage());
+						ActivityUtils.showErrorDialog(SingleRound.this, e.getMessage());
 					}
 				}
 			}
