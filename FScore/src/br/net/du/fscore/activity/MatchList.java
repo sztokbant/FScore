@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
@@ -38,8 +38,24 @@ public class MatchList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.matchlist);
 
+		Button newMatchBtn = (Button) findViewById(R.id_matchlist.new_match_button);
+		newMatchBtn.setOnClickListener(newMatchOnClickListener());
+
 		dataManager = new DataManager(this);
 		createMatchListAdapter();
+	}
+
+	private android.view.View.OnClickListener newMatchOnClickListener() {
+		return new android.view.View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Match match = new Match("Match");
+				matches.add(0, match);
+				dataManager.saveMatch(match);
+				adapter.notifyDataSetChanged();
+			}
+		};
 	}
 
 	@Override
@@ -53,26 +69,6 @@ public class MatchList extends Activity {
 	protected void onPause() {
 		super.onPause();
 		dataManager.closeDb();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// MenuItem newMatch =
-		menu.add(0, 0, 0, "New Match");
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			// New Match
-			Match match = new Match("Match");
-			matches.add(match);
-			dataManager.saveMatch(match);
-			adapter.notifyDataSetChanged();
-		}
-		return false;
 	}
 
 	@Override

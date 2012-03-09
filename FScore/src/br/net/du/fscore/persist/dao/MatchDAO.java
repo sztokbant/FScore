@@ -86,7 +86,7 @@ public class MatchDAO implements Dao<Match> {
 				null, // values
 				null, // group by
 				null, // having
-				MatchColumns.DATE, // order by
+				MatchColumns.DATE + " DESC", // order by
 				null);
 
 		if (cursor.moveToFirst()) {

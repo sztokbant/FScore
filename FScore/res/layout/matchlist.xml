@@ -4,6 +4,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <Button
+        android:id="@+id_matchlist/new_match_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="New Match" />
+
     <ListView
 		android:id = "@+id_matchlist/matchlist"
         android:layout_width="fill_parent"
