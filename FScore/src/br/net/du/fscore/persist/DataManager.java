@@ -270,10 +270,10 @@ public class DataManager {
 			Log.i("FScore", "saved playerround " + playerRound.getId());
 		}
 
-		List<PlayerRound> toDeleteRounds = playerRoundDao
+		List<PlayerRound> toDeletePlayerRounds = playerRoundDao
 				.retrievePlayerRoundsForRound(round.getId());
-		toDeleteRounds.removeAll(round.getPlayerRounds());
-		for (PlayerRound playerRound : toDeleteRounds) {
+		toDeletePlayerRounds.removeAll(round.getPlayerRounds());
+		for (PlayerRound playerRound : toDeletePlayerRounds) {
 			// DEBUG
 			Log.i("FScore", "deleting playerround " + playerRound.getId());
 			playerRoundDao.delete(playerRound);
