@@ -546,7 +546,18 @@ public class DataManagerTest extends AndroidTestCase {
 	}
 
 	public void testSaveRound() {
-		// TODO! this method has something wrong...
-		// dataManager.saveRound(round);
+		// TODO! the method saveRound() seems to have something wrong...
+		Player player1 = new Player("A Player");
+		Player player2 = new Player("Player 2");
+
+		Round round = new Round(3);
+
+		PlayerRound playerRound1 = new PlayerRound(player1);
+		round.addPlayerRound(playerRound1);
+
+		PlayerRound playerRound2 = new PlayerRound(player2);
+		round.addPlayerRound(playerRound2);
+
+		dataManager.saveRound(round);
 	}
 }
