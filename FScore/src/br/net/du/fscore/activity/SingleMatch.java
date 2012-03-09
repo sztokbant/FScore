@@ -36,7 +36,8 @@ import br.net.du.fscore.model.Round;
 import br.net.du.fscore.persist.DataManager;
 
 // Tabs based on tutorial at http://joshclemm.com/blog/?p=59
-public class SingleMatch extends TabActivity implements OnTabChangeListener {
+public class SingleMatch extends TabActivity implements OnTabChangeListener,
+		TabContentFactory {
 
 	// used by "Add Player"
 	public static final int CONTACT_SELECTED_RESULT_ID = 1;
@@ -157,6 +158,17 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		}
 	}
 
+	@Override
+	public View createTabContent(String tag) {
+		if (tag == PLAYERS_TAB_TAG) {
+			return playerScoresView;
+		} else if (tag == ROUNDS_TAB_TAG) {
+			return roundView;
+		}
+
+		return null;
+	}
+
 	private AlertDialog.Builder getAddPlayerDialog() {
 		final EditText input = new EditText(SingleMatch.this);
 
@@ -231,13 +243,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 				.newTabSpec(ROUNDS_TAB_TAG)
 				.setIndicator(ROUNDS_TAB_TAG,
 						getResources().getDrawable(R.drawable.rounds))
-				.setContent(new SingleMatchTabContentFactory()));
+				.setContent(SingleMatch.this));
 
 		tabHost.addTab(tabHost
 				.newTabSpec(PLAYERS_TAB_TAG)
 				.setIndicator(PLAYERS_TAB_TAG,
 						getResources().getDrawable(R.drawable.players))
-				.setContent(new SingleMatchTabContentFactory()));
+				.setContent(SingleMatch.this));
 	}
 
 	private void createPlayersListAdapter() {
@@ -311,18 +323,5 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 		rounds.clear();
 		rounds.addAll(match.getRounds());
 		roundAdapter.notifyDataSetChanged();
-	}
-
-	public class SingleMatchTabContentFactory implements TabContentFactory {
-		@Override
-		public View createTabContent(String tag) {
-			if (tag == PLAYERS_TAB_TAG) {
-				return playerScoresView;
-			} else if (tag == ROUNDS_TAB_TAG) {
-				return roundView;
-			}
-
-			return null;
-		}
 	}
 }
