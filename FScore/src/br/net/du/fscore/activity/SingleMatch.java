@@ -28,6 +28,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.Toast;
 import br.net.du.fscore.R;
+import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerScore;
@@ -127,16 +128,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 
 			unregisterForContextMenu(playerScoresView);
 		} catch (IllegalStateException e) {
-			Toast.makeText(SingleMatch.this, e.getMessage(), Toast.LENGTH_SHORT)
-					.show();
+			ActivityUtils.showErrorDialog(SingleMatch.this, e.getMessage());
 		}
 	}
 
 	private void addNewPlayer() {
 		if (!match.getRounds().isEmpty()) {
-			Toast.makeText(SingleMatch.this,
-					"Cannot add more players after match has started.",
-					Toast.LENGTH_SHORT).show();
+			ActivityUtils.showErrorDialog(SingleMatch.this,
+					"Cannot add more players after match has started.");
 		} else {
 			getAddPlayerDialog().show();
 		}
@@ -186,14 +185,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener {
 					if (tabHost.getCurrentTabTag() == PLAYERS_TAB_TAG) {
 						refreshPlayersList();
 					}
-				} catch (IllegalStateException e) {
-					Toast.makeText(SingleMatch.this, e.getMessage(),
-							Toast.LENGTH_SHORT).show();
-				} catch (IllegalArgumentException e) {
-					Toast.makeText(SingleMatch.this, e.getMessage(),
-							Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					ActivityUtils.showErrorDialog(SingleMatch.this,
+							e.getMessage());
 				}
-
 			}
 		};
 	}
