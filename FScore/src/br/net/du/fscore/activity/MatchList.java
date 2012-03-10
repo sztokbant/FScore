@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
+import br.net.du.fscore.activity.adapters.MatchesAdapter;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
 
@@ -116,8 +117,7 @@ public class MatchList extends Activity {
 
 	private void createMatchListAdapter() {
 		final ListView matchesView = (ListView) findViewById(R.id_matchlist.matchlist);
-		adapter = new ArrayAdapter<Match>(this,
-				android.R.layout.simple_list_item_1, matches);
+		adapter = new MatchesAdapter(this, 0, matches);
 		matchesView.setAdapter(adapter);
 
 		matchesView.setOnItemClickListener(new OnItemClickListener() {

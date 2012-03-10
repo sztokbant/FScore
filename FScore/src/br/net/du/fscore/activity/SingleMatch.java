@@ -32,6 +32,8 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.Toast;
 import br.net.du.fscore.R;
+import br.net.du.fscore.activity.adapters.PlayerScoresAdapter;
+import br.net.du.fscore.activity.adapters.RoundsAdapter;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
@@ -276,8 +278,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 	private void createPlayersListAdapter() {
 		playerScoresView = new ListView(this);
-		playerScoresAdapter = new ArrayAdapter<PlayerScore>(this,
-				android.R.layout.simple_list_item_1, playerScores);
+		playerScoresAdapter = new PlayerScoresAdapter(this, 0, playerScores);
 		playerScoresView.setAdapter(playerScoresAdapter);
 
 		playerScoresView
@@ -300,8 +301,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 	private void createRoundsListAdapter() {
 		roundView = new ListView(this);
-		roundAdapter = new ArrayAdapter<Round>(this,
-				android.R.layout.simple_list_item_1, rounds);
+		roundAdapter = new RoundsAdapter(this, 0, rounds);
 		roundView.setAdapter(roundAdapter);
 
 		roundView.setOnItemClickListener(new OnItemClickListener() {

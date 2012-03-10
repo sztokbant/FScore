@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import br.net.du.fscore.R;
+import br.net.du.fscore.activity.adapters.PlayerRoundsAdapter;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
@@ -186,8 +187,7 @@ public class SingleRound extends Activity {
 
 	private void createPlayerRoundsListAdapter() {
 		final ListView playerRoundsView = (ListView) findViewById(R.id_singleround.playerroundlist);
-		playerRoundAdapter = new ArrayAdapter<PlayerRound>(this,
-				android.R.layout.simple_list_item_1, playerRounds);
+		playerRoundAdapter = new PlayerRoundsAdapter(this, 0, playerRounds);
 		playerRoundsView.setAdapter(playerRoundAdapter);
 
 		playerRoundsView
