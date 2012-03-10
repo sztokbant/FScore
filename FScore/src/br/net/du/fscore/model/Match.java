@@ -185,6 +185,10 @@ public class Match implements Serializable, Comparable<Match> {
 		return scores;
 	}
 
+	public String getFormattedWhen() {
+		return DateFormat.format("dd-MM-yyyy hh:mm", date).toString();
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -235,6 +239,6 @@ public class Match implements Serializable, Comparable<Match> {
 
 	@Override
 	public String toString() {
-		return name + DateFormat.format(" (dd-MM-yyyy hh:mm)", date);
+		return name + " (" + getFormattedWhen() + ")";
 	}
 }

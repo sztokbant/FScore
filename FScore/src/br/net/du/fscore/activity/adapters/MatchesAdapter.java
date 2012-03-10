@@ -21,7 +21,10 @@ public class MatchesAdapter extends ArrayAdapter<Match> {
 	@Override
 	public View getView(int position, View view, ViewGroup group) {
 		TextView item = new TextView(context);
-		item.setText(getItem(position).toString());
+		Match match = getItem(position);
+		item.setText(match.getName() + "\n" + match.getFormattedWhen());
+		item.setTextSize(18);
+		item.setPadding(0, 8, 0, 8);
 		return item;
 	}
 }
