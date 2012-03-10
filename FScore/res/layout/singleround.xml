@@ -4,6 +4,14 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id_singleround/text_instructions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter bets and wins for each player"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic" />
+
     <ListView
         android:id="@+id_singleround/playerroundlist"
         android:layout_width="fill_parent"
