@@ -249,15 +249,15 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		tabHost.setOnTabChangedListener(this);
 
 		tabHost.addTab(tabHost
-				.newTabSpec(ROUNDS_TAB_TAG)
-				.setIndicator(ROUNDS_TAB_TAG,
-						getResources().getDrawable(R.drawable.rounds))
-				.setContent(SingleMatch.this));
-
-		tabHost.addTab(tabHost
 				.newTabSpec(PLAYERS_TAB_TAG)
 				.setIndicator(PLAYERS_TAB_TAG,
 						getResources().getDrawable(R.drawable.players))
+				.setContent(SingleMatch.this));
+
+		tabHost.addTab(tabHost
+				.newTabSpec(ROUNDS_TAB_TAG)
+				.setIndicator(ROUNDS_TAB_TAG,
+						getResources().getDrawable(R.drawable.rounds))
 				.setContent(SingleMatch.this));
 	}
 
