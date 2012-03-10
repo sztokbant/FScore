@@ -14,8 +14,6 @@ KNOWN ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
 TODO for next ALPHA
-- improve UI
-  * on-screen buttons instead of menuitems for "add player" and "new round"
 - fix issue that doesn't allow user to change round info (reset round option is an alternative)
 
 TODO for future releases
