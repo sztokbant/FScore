@@ -1,7 +1,7 @@
 TECHNICAL DEBTS
 
 Refactor it!
-* Tests should be cleaned up and standardized concerning what should be in setUp()/tearDown()
+* DataManagerTest may be cleaned up
 * Convert MenuItem's "Magic Numbers" into enums for:
   MatchList
   SingleMatch
@@ -13,5 +13,5 @@ KNOWN ISSUES
 "GHOST" ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
-TODO for future releases
+TODO for BETA
   * i18n: pt + en
