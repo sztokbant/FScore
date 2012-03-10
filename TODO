@@ -11,5 +11,4 @@ KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 
 TODO for BETA
-  * create specific exceptions to fix exceptions hack for i18n
   * i18n: pt + en
