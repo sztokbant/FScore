@@ -10,8 +10,5 @@ Refactor it!
 KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 
-"GHOST" ISSUES
-* intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
-
 TODO for BETA
   * i18n: pt + en

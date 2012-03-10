@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
@@ -49,8 +50,12 @@ public class DataManager {
 
 	public boolean closeDb() {
 		if (db != null && db.isOpen()) {
-			db.close();
-			return true;
+			try {
+				db.close();
+				return true;
+			} catch (SQLiteException e) {
+				Log.w("DataManager", e.getMessage());
+			}
 		}
 
 		return false;
