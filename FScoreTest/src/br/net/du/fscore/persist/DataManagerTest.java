@@ -76,17 +76,13 @@ public class DataManagerTest extends AndroidTestCase {
 		match.with(player1);
 		match.with(player2);
 
-		Round round1 = new Round(3);
 		PlayerRound pr11 = new PlayerRound(player1);
-		round1.addPlayerRound(pr11);
 		PlayerRound pr12 = new PlayerRound(player2);
-		round1.addPlayerRound(pr12);
+		Round round1 = new Round(3).addPlayerRound(pr11).addPlayerRound(pr12);
 
-		Round round2 = new Round(7);
 		PlayerRound pr21 = new PlayerRound(player1);
-		round2.addPlayerRound(pr21);
 		PlayerRound pr22 = new PlayerRound(player2);
-		round2.addPlayerRound(pr22);
+		Round round2 = new Round(7).addPlayerRound(pr21).addPlayerRound(pr22);
 
 		match.addRound(round1);
 		match.addRound(round2);
