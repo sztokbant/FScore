@@ -172,7 +172,7 @@ public class SingleRound extends Activity {
 				} catch (NumberFormatException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
 							getString(R.string.msg_enter_number_between_0_and)
-									+ round.getNumberOfCards() + ".");
+									+ " " + round.getNumberOfCards() + ".");
 				} catch (FScoreException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
 							getString(e.getMessageId()));
