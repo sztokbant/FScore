@@ -190,8 +190,7 @@ public class MatchList extends Activity {
 							new ActivityUtils().showErrorDialog(MatchList.this,
 									getString(R.string.msg_enter_match_desc));
 						} else {
-							selectedMatch.setName(getString(R.string.f_match)
-									+ " - " + name);
+							selectedMatch.setName(name);
 							try {
 								dataManager.saveMatch(selectedMatch);
 								adapter.notifyDataSetChanged();
