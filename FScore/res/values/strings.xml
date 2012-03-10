@@ -34,7 +34,7 @@
 	<string name="enter_new_desc">Enter new description</string>
 	<string name="error">Error</string>
 	<string name="f_match">F*-se Match</string>
-	<string name="last_round_incomplete">Last round is incomplete.</string>
+	<string name="last_round_incomplete">Last round is not complete yet.</string>
 	<string name="match_deleted">deleted</string>
 	<string name="msg_enter_match_desc">Please enter a description for the match.</string>
 	<string name="msg_enter_new_match_desc">Please enter a description for the new match.
@@ -60,6 +60,7 @@
 	<string name="player_already_in_this_match">Player already in this match.</string>
 	<string name="player_already_in_this_round">Player already in this round.</string>
 	<string name="player_cannot_be_null">Player cannot be null.</string>
+    <string name="player_deleted">deleted</string>
 	<string name="player_name">Player name</string>
 	<string name="player_not_found">Player not found!</string>
 	<string name="playerround_cannot_be_null">PlayerRound cannot be null.</string>

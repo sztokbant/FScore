@@ -21,7 +21,6 @@
     <string name="delete">Excluir</string>
     <string name="delete_match">Excluir partida</string>
     <string name="delete_player">Excluir jogador</string>
-    <string name="deleting">Excluindo</string>
     <string name="edit_desc">Editar descrição</string>
     <string name="enter_bets_and_wins_for_each_player">Insira as apostas e vitórias de cada jogador</string>
     <string name="enter_new_desc">Insira a nova descrição</string>
@@ -50,6 +49,7 @@
     <string name="player_already_in_this_match">Este jogador já está nesta partida.</string>
     <string name="player_already_in_this_round">Este jogador já está nesta rodada.</string>
     <string name="player_cannot_be_null">Jogador não pode ser null.</string>
+    <string name="player_deleted">excluído</string>
     <string name="player_name">Nome do jogador</string>
     <string name="player_not_found">Jogador não encontrado!</string>
     <string name="playerround_cannot_be_null">PlayerRound não pode ser null.</string>

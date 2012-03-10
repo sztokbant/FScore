@@ -265,8 +265,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 							if (playerDeleted) {
 								Toast.makeText(
 										SingleMatch.this,
-										getString(R.string.deleting) + " "
-												+ selectedPlayer + "...",
+										"'"
+												+ selectedPlayer
+												+ "' "
+												+ getString(R.string.player_deleted),
 										Toast.LENGTH_SHORT).show();
 
 								dataManager.saveMatch(match);
