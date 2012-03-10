@@ -11,7 +11,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -207,9 +206,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		return new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Editable value = nameInput.getText();
-
-				String name = value.toString();
+				String name = nameInput.getText().toString();
 
 				try {
 					Player player = new Player(name);
