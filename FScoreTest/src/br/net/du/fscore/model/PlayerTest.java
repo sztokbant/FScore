@@ -11,7 +11,7 @@ public class PlayerTest extends AndroidTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		String name = "Player Name";
+		String name = "   player Name ";
 		player1 = new Player(name);
 		player2 = new Player(name);
 	}
@@ -53,19 +53,21 @@ public class PlayerTest extends AndroidTestCase {
 		}
 	}
 
-	public void testPlayerNameMustBeTrimmed() {
-		Player player = new Player("  Player name  ");
-		assertEquals("Player name", player.getName());
+	public void testPlayerNameCannotBeNull() {
+		try {
+			new Player(null);
+			fail("should have thrown an exception");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	public void testPlayerNameMustBeTrimmedAndFirstLeterCapitalized() {
+		assertEquals("Player Name", player1.getName());
 	}
 
 	public void testDifferentCasesInPlayerNamesStillImplyEquivalence() {
-		Player player1 = new Player("CaSe");
-		Player player2 = new Player("cAsE");
+		Player player2 = new Player("pLaYer nAme");
 		assertTrue(player1.equals(player2));
-	}
-
-	public void testFirstLetterOfNameMustBeCapitalized() {
-		Player player = new Player("player");
-		assertEquals('P', player.getName().charAt(0));
 	}
 }
