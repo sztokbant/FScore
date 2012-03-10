@@ -3,6 +3,8 @@ package br.net.du.fscore.model;
 import java.util.Calendar;
 import java.util.List;
 
+import br.net.du.fscore.model.exceptions.FScoreException;
+
 import android.test.AndroidTestCase;
 
 public class MatchTest extends AndroidTestCase {
@@ -94,7 +96,7 @@ public class MatchTest extends AndroidTestCase {
 		assertEquals(match1, match2);
 	}
 
-	public void testDifferentPlayersImpliesDifference() {
+	public void testDifferentPlayersImpliesDifference() throws FScoreException {
 		match1.rounds.clear();
 		match2.rounds.clear();
 		assertEquals(match1, match2);
@@ -103,7 +105,7 @@ public class MatchTest extends AndroidTestCase {
 		assertFalse(match1.equals(match2));
 	}
 
-	public void testDifferentRoundsImpliesDifference() {
+	public void testDifferentRoundsImpliesDifference() throws FScoreException {
 		assertEquals(match1, match2);
 		match2.addRound(round1);
 		assertFalse(match1.equals(match2));
@@ -115,7 +117,7 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.with(null);
 			fail("Player should not be null");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
@@ -124,12 +126,12 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.with(new Player("Player 3"));
 			fail("Should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
 
-	public void testCannotAddMoreThan51Players() {
+	public void testCannotAddMoreThan51Players() throws FScoreException {
 		match1.getRounds().clear();
 		match1.getPlayers().clear();
 
@@ -142,7 +144,7 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.with(new Player("Yet Another"));
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
@@ -161,12 +163,13 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.addRound(null);
 			fail("Round should not be null");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
 
-	public void testNewRoundNoArgsShouldIntelligentlySetItsNumberOfCards() {
+	public void testNewRoundNoArgsShouldIntelligentlySetItsNumberOfCards()
+			throws FScoreException {
 		Match match = new Match("Match");
 
 		Player player1 = new Player("1");
@@ -215,18 +218,18 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match.newRound();
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
 
-	public void testNewRound() {
+	public void testNewRound() throws FScoreException {
 		Match match = new Match("Match");
 
 		try {
 			match.newRound(7);
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -235,7 +238,7 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match.newRound(0);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -248,14 +251,15 @@ public class MatchTest extends AndroidTestCase {
 		assertEquals(match.getId(), round.getMatchId());
 	}
 
-	public void testCannotAddRoundIfMatchHasLessThan2Players() {
+	public void testCannotAddRoundIfMatchHasLessThan2Players()
+			throws FScoreException {
 		match1.getRounds().clear();
 		match1.deletePlayer(player1);
 
 		try {
 			match1.addRound(round1);
 			fail("should not be able to add round when less than 2 players");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -267,7 +271,7 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.deletePlayer(player1);
 			fail("should not delete after match has started");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -280,14 +284,14 @@ public class MatchTest extends AndroidTestCase {
 			assertEquals(true, match1.deletePlayer(player1));
 			// delete failed, object not in list anymore
 			assertEquals(false, match1.deletePlayer(player1));
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			fail("deleting should be allowed at this point");
 		}
 
 		assertEquals(1, match1.getPlayers().size());
 	}
 
-	public void testNewRoundMaxCards() {
+	public void testNewRoundMaxCards() throws FScoreException {
 		Match match = new Match("Match");
 
 		match.with(new Player("1")).with(new Player("2"));
@@ -302,14 +306,14 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match.newRound(match.getMaxCardsPerRound() + 1);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		match.newRound(match.getMaxCardsPerRound());
 	}
 
-	public void testGetScores() {
+	public void testGetScores() throws FScoreException {
 		match1.getRounds().clear();
 
 		Player player3 = new Player("3");
@@ -349,7 +353,7 @@ public class MatchTest extends AndroidTestCase {
 		try {
 			match1.with(new Player(player1.getName()));
 			fail("should have thrown an exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}

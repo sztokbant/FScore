@@ -13,6 +13,7 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
@@ -81,7 +82,7 @@ public class DataManager {
 
 	// Match operations
 
-	public long saveMatch(Match match) {
+	public long saveMatch(Match match) throws FScoreException {
 		long matchId = 0L;
 		try {
 			db.beginTransaction();
@@ -104,7 +105,7 @@ public class DataManager {
 		return matchId;
 	}
 
-	public Match retrieveMatch(long matchId) {
+	public Match retrieveMatch(long matchId) throws FScoreException {
 		Match match = matchDao.retrieve(matchId);
 		if (match != null) {
 			match.getPlayers().addAll(retrievePlayers(match.getId()));
@@ -116,7 +117,7 @@ public class DataManager {
 		return match;
 	}
 
-	public List<Match> retrieveAllMatches() {
+	public List<Match> retrieveAllMatches() throws FScoreException {
 		List<Match> matches = new ArrayList<Match>();
 
 		for (Match match : matchDao.retrieveAll()) {
@@ -161,7 +162,7 @@ public class DataManager {
 
 	// Private Match operations
 
-	private void saveMatchPlayers(Match match) {
+	private void saveMatchPlayers(Match match) throws FScoreException {
 		for (Player player : match.getPlayers()) {
 			Player dbPlayer = playerDao.find(player.getName());
 
@@ -176,7 +177,8 @@ public class DataManager {
 		}
 	}
 
-	private void erasePlayersNotInMatchAnymore(Match match) {
+	private void erasePlayersNotInMatchAnymore(Match match)
+			throws FScoreException {
 		List<Player> dbRemainingPlayers = retrievePlayers(match.getId());
 		dbRemainingPlayers.removeAll(match.getPlayers());
 		for (Player player : dbRemainingPlayers) {
@@ -188,7 +190,7 @@ public class DataManager {
 		}
 	}
 
-	private void saveMatchRounds(Match match) {
+	private void saveMatchRounds(Match match) throws FScoreException {
 		for (Round round : match.getRounds()) {
 			if (!round.isPersistent()) {
 				round.setMatchId(match.getId());
@@ -197,7 +199,8 @@ public class DataManager {
 		}
 	}
 
-	private void eraseRoundsNotInMatchAnymore(Match match) {
+	private void eraseRoundsNotInMatchAnymore(Match match)
+			throws FScoreException {
 		List<Long> dbRoundIds = roundDao
 				.retrieveRoundIdsForMatch(match.getId());
 		List<Long> toDeleteRoundIds = new ArrayList<Long>();
@@ -227,7 +230,7 @@ public class DataManager {
 
 	// Player operations
 
-	List<Player> retrievePlayers(long matchId) {
+	List<Player> retrievePlayers(long matchId) throws FScoreException {
 		List<Long> playerIds = matchPlayerDao.retrievePlayerIds(matchId);
 
 		List<Player> players = new ArrayList<Player>();
@@ -243,7 +246,7 @@ public class DataManager {
 
 	// Round operations
 
-	public void saveRound(Round round) {
+	public void saveRound(Round round) throws FScoreException {
 		if (round.getMatchId() == 0) {
 			Log.e(context.getResources().getString(R.string.app_name),
 					"Cannot save a round that has never been saved by a match");
@@ -261,7 +264,7 @@ public class DataManager {
 		}
 	}
 
-	private void saveRoundNoTransaction(Round round) {
+	private void saveRoundNoTransaction(Round round) throws FScoreException {
 		roundDao.save(round);
 
 		// DEBUG
@@ -291,7 +294,7 @@ public class DataManager {
 		}
 	}
 
-	public Round retrieveRound(long roundId) {
+	public Round retrieveRound(long roundId) throws FScoreException {
 		Round round = roundDao.retrieve(roundId);
 
 		if (round != null) {
@@ -302,7 +305,7 @@ public class DataManager {
 		return round;
 	}
 
-	private void deleteRoundById(Long roundId) {
+	private void deleteRoundById(Long roundId) throws FScoreException {
 		Round round = retrieveRound(roundId);
 		deleteRound(round);
 	}

@@ -1,5 +1,6 @@
 package br.net.du.fscore.model;
 
+import br.net.du.fscore.model.exceptions.FScoreException;
 import android.test.AndroidTestCase;
 
 public class PlayerTest extends AndroidTestCase {
@@ -38,7 +39,7 @@ public class PlayerTest extends AndroidTestCase {
 		assertTrue(player1.equals(player2));
 	}
 
-	public void testDifferentNamesImpliesDifference() {
+	public void testDifferentNamesImpliesDifference() throws FScoreException {
 		assertEquals(player1, player2);
 		player2.setName("Other Player");
 		assertFalse(player1.equals(player2));
@@ -48,7 +49,7 @@ public class PlayerTest extends AndroidTestCase {
 		try {
 			new Player("  ");
 			fail("should have thrown an exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
@@ -57,7 +58,7 @@ public class PlayerTest extends AndroidTestCase {
 		try {
 			new Player(null);
 			fail("should have thrown an exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
@@ -66,7 +67,8 @@ public class PlayerTest extends AndroidTestCase {
 		assertEquals("Player Name", player1.getName());
 	}
 
-	public void testDifferentCasesInPlayerNamesStillImplyEquivalence() {
+	public void testDifferentCasesInPlayerNamesStillImplyEquivalence()
+			throws FScoreException {
 		Player player2 = new Player("pLaYer nAme");
 		assertTrue(player1.equals(player2));
 	}

@@ -3,6 +3,7 @@ package br.net.du.fscore.model;
 import java.io.Serializable;
 
 import br.net.du.fscore.R;
+import br.net.du.fscore.model.exceptions.FScoreException;
 
 public class Player implements Serializable, Comparable<Player> {
 	private static final long serialVersionUID = 1L;
@@ -10,7 +11,7 @@ public class Player implements Serializable, Comparable<Player> {
 	private long id = 0;
 	private String name;
 
-	public Player(String name) throws IllegalArgumentException {
+	public Player(String name) throws FScoreException {
 		this.setName(name);
 	}
 
@@ -23,17 +24,15 @@ public class Player implements Serializable, Comparable<Player> {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws FScoreException {
 		if (name == null) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.name_cannot_be_null));
+			throw new FScoreException(R.string.name_cannot_be_null);
 		}
 
 		name = name.trim();
 
 		if (name.equals("")) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.name_cannot_be_empty));
+			throw new FScoreException(R.string.name_cannot_be_empty);
 		}
 
 		this.name = capitalizeFirstLetter(name);

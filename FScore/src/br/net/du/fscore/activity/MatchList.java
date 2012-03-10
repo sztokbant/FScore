@@ -26,6 +26,7 @@ import br.net.du.fscore.R;
 import br.net.du.fscore.activity.adapters.MatchesAdapter;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 
 public class MatchList extends Activity {
@@ -80,9 +81,14 @@ public class MatchList extends Activity {
 					Match match = new Match(getString(R.string.f_match) + " - "
 							+ name);
 					matches.add(0, match);
-					dataManager.saveMatch(match);
-					adapter.notifyDataSetChanged();
-					openMatch(match);
+					try {
+						dataManager.saveMatch(match);
+						adapter.notifyDataSetChanged();
+						openMatch(match);
+					} catch (FScoreException e) {
+						new ActivityUtils().showErrorDialog(MatchList.this,
+								getString(e.getMessageId()));
+					}
 				}
 			}
 		};
@@ -92,7 +98,12 @@ public class MatchList extends Activity {
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
-		refreshMatchList();
+		try {
+			refreshMatchList();
+		} catch (FScoreException e) {
+			new ActivityUtils().showErrorDialog(MatchList.this,
+					getString(e.getMessageId()));
+		}
 	}
 
 	@Override
@@ -182,8 +193,14 @@ public class MatchList extends Activity {
 						} else {
 							selectedMatch.setName(getString(R.string.f_match)
 									+ " - " + name);
-							dataManager.saveMatch(selectedMatch);
-							adapter.notifyDataSetChanged();
+							try {
+								dataManager.saveMatch(selectedMatch);
+								adapter.notifyDataSetChanged();
+							} catch (FScoreException e) {
+								new ActivityUtils().showErrorDialog(
+										MatchList.this,
+										getString(e.getMessageId()));
+							}
 						}
 					}
 				};
@@ -226,7 +243,7 @@ public class MatchList extends Activity {
 		startActivity(singleMatch);
 	}
 
-	private void refreshMatchList() {
+	private void refreshMatchList() throws FScoreException {
 		matches.clear();
 		matches.addAll(dataManager.retrieveAllMatches());
 		adapter.notifyDataSetChanged();

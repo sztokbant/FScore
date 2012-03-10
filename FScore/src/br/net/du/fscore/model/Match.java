@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.text.format.DateFormat;
 import br.net.du.fscore.R;
+import br.net.du.fscore.model.exceptions.FScoreException;
 
 public class Match implements Serializable, Comparable<Match> {
 	private static final long serialVersionUID = 1L;
@@ -62,36 +63,32 @@ public class Match implements Serializable, Comparable<Match> {
 		return lastRoundCardsPerPlayer + 1;
 	}
 
-	public Match with(Player player) throws IllegalArgumentException,
-			IllegalStateException {
+	public Match with(Player player) throws FScoreException {
 		if (players.size() >= 51) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.max_num_of_players_reached));
+			throw new FScoreException(R.string.max_num_of_players_reached);
 		}
 
 		if (player == null) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.player_cannot_be_null));
+			throw new FScoreException(R.string.player_cannot_be_null);
 		}
 
 		if (this.players.contains(player)) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.player_already_in_this_match));
+			throw new FScoreException(R.string.player_already_in_this_match);
 		}
 
 		if (!rounds.isEmpty()) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.cannot_add_players_after_match_started));
+			throw new FScoreException(
+					R.string.cannot_add_players_after_match_started);
 		}
 
 		players.add(player);
 		return this;
 	}
 
-	public boolean deletePlayer(Player player) throws IllegalStateException {
+	public boolean deletePlayer(Player player) throws FScoreException {
 		if (!rounds.isEmpty()) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.cannot_delete_players_after_match_started));
+			throw new FScoreException(
+					R.string.cannot_delete_players_after_match_started);
 		}
 
 		if (!players.contains(player)) {
@@ -107,30 +104,28 @@ public class Match implements Serializable, Comparable<Match> {
 		return players;
 	}
 
-	public Round newRound() throws IllegalStateException {
+	public Round newRound() throws FScoreException {
 		if (!rounds.isEmpty() && !rounds.get(rounds.size() - 1).isComplete()) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.last_round_incomplete));
+			throw new FScoreException(R.string.last_round_incomplete);
 		}
 
 		long nextRoundsCards = getNumberOfCardsSuggestion();
 		if (nextRoundsCards == 0) {
-			throw new IllegalStateException(String.valueOf(R.string.match_over));
+			throw new FScoreException(R.string.match_over);
 		}
 
 		return this.newRound(nextRoundsCards);
 	}
 
-	Round newRound(long numberOfCards) throws IllegalArgumentException,
-			IllegalStateException {
+	Round newRound(long numberOfCards) throws FScoreException {
 		if (players.size() < 2) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.match_must_have_at_least_2_players));
+			throw new FScoreException(
+					R.string.match_must_have_at_least_2_players);
 		}
 
 		if (numberOfCards < 1 || numberOfCards > getMaxCardsPerRound()) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.num_of_cards_must_be_between_1_and_max));
+			throw new FScoreException(
+					R.string.num_of_cards_must_be_between_1_and_max);
 		}
 
 		Round round = new Round(numberOfCards);
@@ -146,16 +141,14 @@ public class Match implements Serializable, Comparable<Match> {
 		return round;
 	}
 
-	public Match addRound(Round round) throws IllegalArgumentException,
-			IllegalStateException {
+	public Match addRound(Round round) throws FScoreException {
 		if (round == null) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.round_cannot_be_null));
+			throw new FScoreException(R.string.round_cannot_be_null);
 		}
 
 		if (players.size() < 2) {
-			throw new IllegalStateException(
-					String.valueOf(R.string.match_must_have_at_least_2_players));
+			throw new FScoreException(
+					R.string.match_must_have_at_least_2_players);
 		}
 
 		round.setMatchId(this.getId());

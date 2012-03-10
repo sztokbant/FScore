@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.dao.RoundDAO;
 import br.net.du.fscore.persist.table.RoundTable;
@@ -57,7 +58,7 @@ public class RoundDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testSaveExisting() {
+	public void testSaveExisting() throws FScoreException {
 		round.setNumberOfCards(7);
 		dao.save(round);
 
@@ -93,12 +94,12 @@ public class RoundDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testRetrieve() {
+	public void testRetrieve() throws FScoreException {
 		Round round2 = dao.retrieve(round.getId());
 		assertEquals(round, round2);
 	}
 
-	public void testRetrieveRoundsForMatch() {
+	public void testRetrieveRoundsForMatch() throws FScoreException {
 		long matchId = 19;
 
 		List<Round> rounds = new ArrayList<Round>();

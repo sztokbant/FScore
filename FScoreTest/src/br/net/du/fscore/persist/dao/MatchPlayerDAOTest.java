@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.MatchPlayerKey;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
@@ -69,7 +70,7 @@ public class MatchPlayerDAOTest extends AndroidTestCase {
 		assertFalse(dao.exists(key));
 	}
 
-	public void testIsOrphan() {
+	public void testIsOrphan() throws FScoreException {
 		Player player = new Player("Dummy Player");
 		player.setId(11);
 		assertTrue(dao.isOrphan(player));

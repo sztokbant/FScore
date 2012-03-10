@@ -29,6 +29,7 @@ import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 
 public class SingleRound extends Activity {
@@ -61,7 +62,13 @@ public class SingleRound extends Activity {
 	protected void onResume() {
 		super.onResume();
 		dataManager.openDb();
-		refreshPlayerRoundsList();
+
+		try {
+			refreshPlayerRoundsList();
+		} catch (FScoreException e) {
+			new ActivityUtils().showErrorDialog(SingleRound.this,
+					getString(e.getMessageId()));
+		}
 
 		String title = getString(R.string.round) + " - "
 				+ round.getNumberOfCards() + " ";
@@ -123,9 +130,9 @@ public class SingleRound extends Activity {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
 							getString(R.string.msg_enter_number_between_0_and)
 									+ " " + round.getNumberOfCards() + ".");
-				} catch (IllegalArgumentException e) {
+				} catch (FScoreException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
-							getString(Integer.parseInt(e.getMessage())));
+							getString(e.getMessageId()));
 				}
 			}
 		};
@@ -166,9 +173,9 @@ public class SingleRound extends Activity {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
 							getString(R.string.msg_enter_number_between_0_and)
 									+ round.getNumberOfCards() + ".");
-				} catch (IllegalArgumentException e) {
+				} catch (FScoreException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
-							getString(Integer.parseInt(e.getMessage())));
+							getString(e.getMessageId()));
 				}
 			}
 		};
@@ -260,14 +267,19 @@ public class SingleRound extends Activity {
 				playerRound.setWins(PlayerRound.EMPTY);
 			}
 
-			dataManager.saveMatch(match);
-			refreshPlayerRoundsList();
+			try {
+				dataManager.saveMatch(match);
+				refreshPlayerRoundsList();
+			} catch (FScoreException e) {
+				new ActivityUtils().showErrorDialog(SingleRound.this,
+						getString(e.getMessageId()));
+			}
 		}
 
 		return false;
 	}
 
-	private void refreshPlayerRoundsList() {
+	private void refreshPlayerRoundsList() throws FScoreException {
 		playerRounds.clear();
 
 		match = dataManager.retrieveMatch(matchId);

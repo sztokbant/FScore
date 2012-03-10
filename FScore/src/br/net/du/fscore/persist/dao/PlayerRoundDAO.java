@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.PlayerRound;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.table.PlayerRoundTable;
 import br.net.du.fscore.persist.table.PlayerRoundTable.PlayerRoundColumns;
@@ -82,7 +83,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		return exists;
 	}
 
-	public PlayerRound retrieve(long id) {
+	public PlayerRound retrieve(long id) throws FScoreException {
 		PlayerRound playerRound = null;
 
 		Cursor cursor = db.query(PlayerRoundTable.NAME,
@@ -104,7 +105,7 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		return playerRound;
 	}
 
-	public List<PlayerRound> retrievePlayerRoundsForRound(long roundId) {
+	public List<PlayerRound> retrievePlayerRoundsForRound(long roundId) throws FScoreException {
 		List<PlayerRound> myList = new ArrayList<PlayerRound>();
 
 		Cursor cursor = db.query(PlayerRoundTable.NAME,
@@ -130,7 +131,8 @@ public class PlayerRoundDAO implements Dao<PlayerRound> {
 		return myList;
 	}
 
-	private PlayerRound buildPlayerRoundFromCursor(Cursor cursor) {
+	private PlayerRound buildPlayerRoundFromCursor(Cursor cursor)
+			throws FScoreException {
 		PlayerRound playerRound = null;
 
 		if (cursor != null) {

@@ -1,5 +1,6 @@
 package br.net.du.fscore.model;
 
+import br.net.du.fscore.model.exceptions.FScoreException;
 import junit.framework.TestCase;
 
 public class PlayerRoundTest extends TestCase {
@@ -47,7 +48,7 @@ public class PlayerRoundTest extends TestCase {
 		assertFalse(playerRound1.equals(playerRound2));
 	}
 
-	public void testDifferentPlayersImpliesDifference() {
+	public void testDifferentPlayersImpliesDifference() throws FScoreException {
 		assertEquals(playerRound1, playerRound2);
 		playerRound2.setPlayer(new Player("Player Two"));
 		assertFalse(playerRound1.equals(playerRound2));
@@ -65,7 +66,7 @@ public class PlayerRoundTest extends TestCase {
 		assertFalse(playerRound1.equals(playerRound2));
 	}
 
-	public void testGetScore() {
+	public void testGetScore() throws FScoreException {
 		// new instance
 		PlayerRound playerRound = new PlayerRound(new Player("Name"));
 		assertEquals(0, playerRound.getScore());

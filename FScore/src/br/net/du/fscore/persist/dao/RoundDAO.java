@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.table.RoundTable;
 import br.net.du.fscore.persist.table.RoundTable.RoundColumns;
@@ -62,7 +63,7 @@ public class RoundDAO implements Dao<Round> {
 		}
 	}
 
-	public Round retrieve(long id) {
+	public Round retrieve(long id) throws FScoreException {
 		Round round = null;
 		Cursor cursor = db.query(RoundTable.NAME, RoundColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
@@ -78,7 +79,7 @@ public class RoundDAO implements Dao<Round> {
 		return round;
 	}
 
-	public List<Round> retrieveRoundsForMatch(long matchId) {
+	public List<Round> retrieveRoundsForMatch(long matchId) throws FScoreException {
 		List<Round> myList = new ArrayList<Round>();
 
 		Cursor cursor = db.query(RoundTable.NAME, RoundColumns.get(),
@@ -128,7 +129,7 @@ public class RoundDAO implements Dao<Round> {
 		return myList;
 	}
 
-	private Round buildRoundFromCursor(Cursor cursor) {
+	private Round buildRoundFromCursor(Cursor cursor) throws FScoreException {
 		Round round = null;
 
 		if (cursor != null) {

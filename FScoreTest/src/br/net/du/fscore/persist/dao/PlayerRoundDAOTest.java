@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerRoundDAO;
@@ -70,7 +71,7 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testSaveExisting() {
+	public void testSaveExisting() throws FScoreException {
 		dao.save(playerRound);
 
 		Player player2 = new Player("Other");
@@ -119,13 +120,13 @@ public class PlayerRoundDAOTest extends AndroidTestCase {
 		assertFalse(dao.exists(playerRound));
 	}
 
-	public void testRetrieve() {
+	public void testRetrieve() throws FScoreException {
 		dao.save(playerRound);
 		PlayerRound playerRound2 = dao.retrieve(playerRound.getId());
 		assertEquals(playerRound, playerRound2);
 	}
 
-	public void testRetrievePlayerRoundsForRound() {
+	public void testRetrievePlayerRoundsForRound() throws FScoreException {
 		dao.save(playerRound);
 
 		List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();

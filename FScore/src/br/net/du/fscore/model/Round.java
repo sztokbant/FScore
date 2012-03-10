@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.net.du.fscore.R;
+import br.net.du.fscore.model.exceptions.FScoreException;
 
 public class Round implements Serializable, Comparable<Round> {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +17,7 @@ public class Round implements Serializable, Comparable<Round> {
 	private long matchId;
 	private List<PlayerRound> playerRounds = null;
 
-	public Round(long numberOfCards) throws IllegalArgumentException {
+	public Round(long numberOfCards) throws FScoreException {
 		this.setNumberOfCards(numberOfCards);
 		playerRounds = new ArrayList<PlayerRound>();
 	}
@@ -33,11 +34,10 @@ public class Round implements Serializable, Comparable<Round> {
 		return numberOfCards;
 	}
 
-	public void setNumberOfCards(long numberOfCards)
-			throws IllegalArgumentException {
+	public void setNumberOfCards(long numberOfCards) throws FScoreException {
 		if (numberOfCards <= 0) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.num_of_cards_must_be_greater_than_0));
+			throw new FScoreException(
+					R.string.num_of_cards_must_be_greater_than_0);
 		}
 
 		this.numberOfCards = numberOfCards;
@@ -47,17 +47,14 @@ public class Round implements Serializable, Comparable<Round> {
 		return playerRounds;
 	}
 
-	public Round addPlayerRound(PlayerRound playerRound)
-			throws IllegalStateException, IllegalArgumentException {
+	public Round addPlayerRound(PlayerRound playerRound) throws FScoreException {
 		if (playerRound == null) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.playerround_cannot_be_null));
+			throw new FScoreException(R.string.playerround_cannot_be_null);
 		}
 
 		for (PlayerRound pr : playerRounds) {
 			if (pr.getPlayer().equals(playerRound.getPlayer())) {
-				throw new IllegalStateException(
-						String.valueOf(R.string.player_already_in_this_round));
+				throw new FScoreException(R.string.player_already_in_this_round);
 			}
 		}
 
@@ -66,51 +63,50 @@ public class Round implements Serializable, Comparable<Round> {
 		return this;
 	}
 
-	public void setBet(Player player, long bet) throws IllegalArgumentException {
+	public void setBet(Player player, long bet) throws FScoreException {
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		if (bet < 0 || bet > numberOfCards) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.bet_must_be_between_0_and_rounds_cards));
+			throw new FScoreException(
+					R.string.bet_must_be_between_0_and_rounds_cards);
 		}
 
 		if (bet == getForbiddenBet(player)) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.msg_your_bet_cannot_be));
+			throw new FScoreException(R.string.msg_your_bet_cannot_be);
 		}
 
 		selectedPlayerRound.setBet(bet);
 	}
 
-	public void setWins(Player player, long wins)
-			throws IllegalArgumentException, IllegalStateException {
+	public void setWins(Player player, long wins) throws FScoreException {
 		for (PlayerRound playerRound : playerRounds) {
 			if (playerRound.getPlayer().equals(player)) {
 				continue;
 			}
 
 			if (playerRound.getBet() == PlayerRound.EMPTY) {
-				throw new IllegalStateException(
-						String.valueOf(R.string.cannot_set_wins_before_all_bets));
+				throw new FScoreException(
+						R.string.cannot_set_wins_before_all_bets);
 			}
 		}
 
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		if (wins < 0 || wins > numberOfCards) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.wins_must_be_between_0_and_rounds_cards));
+			throw new FScoreException(
+					R.string.wins_must_be_between_0_and_rounds_cards);
 		}
 
 		if (!isAllowedWins(player, wins)) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.total_wins_must_be_equal_rounds_cards));
+			throw new FScoreException(
+					R.string.total_wins_must_be_equal_rounds_cards);
 		}
 
 		selectedPlayerRound.setWins(wins);
 	}
 
-	private boolean isAllowedWins(Player player, long wins) {
+	private boolean isAllowedWins(Player player, long wins)
+			throws FScoreException {
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
 		long winsSum = wins;
@@ -132,8 +128,7 @@ public class Round implements Serializable, Comparable<Round> {
 		return false;
 	}
 
-	private PlayerRound getPlayerRound(Player player)
-			throws IllegalArgumentException {
+	private PlayerRound getPlayerRound(Player player) throws FScoreException {
 		PlayerRound selectedPlayerRound = null;
 
 		for (PlayerRound playerRound : playerRounds) {
@@ -144,14 +139,13 @@ public class Round implements Serializable, Comparable<Round> {
 		}
 
 		if (selectedPlayerRound == null) {
-			throw new IllegalArgumentException(
-					String.valueOf(R.string.player_not_found));
+			throw new FScoreException(R.string.player_not_found);
 		}
 
 		return selectedPlayerRound;
 	}
 
-	public long getForbiddenBet(Player player) {
+	public long getForbiddenBet(Player player) throws FScoreException {
 		if (!isLastPlayerToBet()) {
 			return NO_FORBIDDEN_BET;
 		}

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.test.AndroidTestCase;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 import br.net.du.fscore.persist.dao.PlayerDAO;
 import br.net.du.fscore.persist.table.PlayerTable;
@@ -55,7 +56,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testSaveExisting() {
+	public void testSaveExisting() throws FScoreException {
 		player.setName("Name Player");
 		dao.save(player);
 
@@ -90,18 +91,18 @@ public class PlayerDAOTest extends AndroidTestCase {
 		cursor.close();
 	}
 
-	public void testRetrieve() {
+	public void testRetrieve() throws FScoreException {
 		Player player2 = dao.retrieve(player.getId());
 		assertEquals(player, player2);
 	}
 
-	public void testRetrieveAll() {
+	public void testRetrieveAll() throws FScoreException {
 		List<Player> playerList = dao.retrieveAll();
 		assertEquals(1, playerList.size());
 		assertEquals(player, playerList.get(0));
 	}
 
-	public void testFind() {
+	public void testFind() throws FScoreException {
 		Player player2 = dao.find("Player Name");
 		assertEquals(player, player2);
 	}

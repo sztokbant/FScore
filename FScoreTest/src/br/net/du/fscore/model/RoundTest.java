@@ -1,5 +1,6 @@
 package br.net.du.fscore.model;
 
+import br.net.du.fscore.model.exceptions.FScoreException;
 import android.test.AndroidTestCase;
 
 public class RoundTest extends AndroidTestCase {
@@ -55,13 +56,15 @@ public class RoundTest extends AndroidTestCase {
 		assertFalse(round1.equals(round2));
 	}
 
-	public void testDifferentNumberOfCardsImpliesDifference() {
+	public void testDifferentNumberOfCardsImpliesDifference()
+			throws FScoreException {
 		assertEquals(round1, round2);
 		round1.setNumberOfCards(3);
 		assertFalse(round1.equals(round2));
 	}
 
-	public void testDifferentSetOfPlayerRoundsImpliesDifference() {
+	public void testDifferentSetOfPlayerRoundsImpliesDifference()
+			throws FScoreException {
 		assertEquals(round1, round2);
 		round2.addPlayerRound(new PlayerRound(new Player("Another")));
 		assertFalse(round1.equals(round2));
@@ -71,7 +74,7 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round1.addPlayerRound(new PlayerRound(new Player("Player One")));
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
@@ -80,12 +83,12 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round1.addPlayerRound(null);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 	}
 
-	public void testSetBetForPlayer() {
+	public void testSetBetForPlayer() throws FScoreException {
 		Round round = new Round(5);
 
 		Player player1 = new Player("Player 1");
@@ -108,21 +111,21 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round.setBet(player4, 9);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		try {
 			round.setBet(player4, 0);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		round.setBet(player4, 2);
 	}
 
-	public void testSetWinsForPlayer() {
+	public void testSetWinsForPlayer() throws FScoreException {
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 
@@ -135,7 +138,7 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round.setWins(player1, 2);
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -144,7 +147,7 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round.setWins(player1, 2);
 			fail("should have thrown an Exception");
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -154,33 +157,33 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round.setWins(player2, 9);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		try {
 			round.setWins(player2, 2);
 			fail("should have thrown an Exception");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		round.setBet(player2, 3);
 	}
 
-	public void testNumberOfCardsMustBeGreaterThanZero() {
+	public void testNumberOfCardsMustBeGreaterThanZero() throws FScoreException {
 		Round round = null;
 		try {
 			round = new Round(0);
 			fail("should have thrown an Exeption");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		try {
 			round = new Round(-1);
 			fail("should have thrown an Exeption");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -189,14 +192,14 @@ public class RoundTest extends AndroidTestCase {
 		try {
 			round.setNumberOfCards(0);
 			fail("should have thrown an Exeption");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
 		try {
 			round.setNumberOfCards(-1);
 			fail("should have thrown an Exeption");
-		} catch (IllegalArgumentException e) {
+		} catch (FScoreException e) {
 			assertTrue(true);
 		}
 
@@ -204,7 +207,7 @@ public class RoundTest extends AndroidTestCase {
 		assertEquals(47, round.getNumberOfCards());
 	}
 
-	public void testGetForbiddenBet() {
+	public void testGetForbiddenBet() throws FScoreException {
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 		Player player3 = new Player("Player 3");
@@ -228,7 +231,7 @@ public class RoundTest extends AndroidTestCase {
 		assertEquals(0, round.getForbiddenBet(player2));
 	}
 
-	public void testIsComplete() {
+	public void testIsComplete() throws FScoreException {
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 		Player player3 = new Player("Player 3");
@@ -252,7 +255,7 @@ public class RoundTest extends AndroidTestCase {
 		assertEquals(true, round.isComplete());
 	}
 
-	public void testHasAllBets() {
+	public void testHasAllBets() throws FScoreException {
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 		Player player3 = new Player("Player 3");
@@ -276,7 +279,7 @@ public class RoundTest extends AndroidTestCase {
 		assertEquals(true, round.hasAllBets());
 	}
 
-	public void testHasAnyWins() {
+	public void testHasAnyWins() throws FScoreException {
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 

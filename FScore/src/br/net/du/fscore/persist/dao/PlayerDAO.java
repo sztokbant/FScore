@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 import br.net.du.fscore.model.Player;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.TableColumnsUtils;
 import br.net.du.fscore.persist.table.PlayerTable;
 import br.net.du.fscore.persist.table.PlayerTable.PlayerColumns;
@@ -59,7 +60,7 @@ public class PlayerDAO implements Dao<Player> {
 		}
 	}
 
-	public Player retrieve(long id) {
+	public Player retrieve(long id) throws FScoreException {
 		Player player = null;
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
 				BaseColumns._ID + " = ?", new String[] { String.valueOf(id) },
@@ -75,7 +76,7 @@ public class PlayerDAO implements Dao<Player> {
 		return player;
 	}
 
-	public List<Player> retrieveAll() {
+	public List<Player> retrieveAll() throws FScoreException {
 		List<Player> myList = new ArrayList<Player>();
 
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(), null, // where
@@ -99,7 +100,7 @@ public class PlayerDAO implements Dao<Player> {
 		return myList;
 	}
 
-	public Player find(String name) {
+	public Player find(String name) throws FScoreException {
 		long playerId = 0L;
 
 		Cursor cursor = db.query(PlayerTable.NAME, PlayerColumns.get(),
@@ -121,7 +122,7 @@ public class PlayerDAO implements Dao<Player> {
 		return this.retrieve(playerId);
 	}
 
-	private Player buildPlayerFromCursor(Cursor cursor) {
+	private Player buildPlayerFromCursor(Cursor cursor) throws FScoreException {
 		Player player = null;
 
 		if (cursor != null) {

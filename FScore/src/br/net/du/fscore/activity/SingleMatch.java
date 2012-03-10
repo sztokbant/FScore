@@ -38,6 +38,7 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerScore;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 
 // Tabs based on tutorial at http://joshclemm.com/blog/?p=59
@@ -78,7 +79,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		dataManager = new DataManager(this);
 
 		matchId = (Long) getIntent().getSerializableExtra("selectedMatchId");
-		match = dataManager.retrieveMatch(matchId);
+
+		try {
+			match = dataManager.retrieveMatch(matchId);
+		} catch (FScoreException e) {
+			new ActivityUtils().showErrorDialog(SingleMatch.this,
+					getString(e.getMessageId()));
+		}
 
 		SingleMatch.this.setTitle(match.toString());
 
@@ -128,10 +135,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		super.onResume();
 		dataManager.openDb();
 
-		match = dataManager.retrieveMatch(matchId);
-
-		refreshPlayersTab();
-		refreshRoundsTab();
+		try {
+			match = dataManager.retrieveMatch(matchId);
+			refreshPlayersTab();
+			refreshRoundsTab();
+		} catch (FScoreException e) {
+			new ActivityUtils().showErrorDialog(SingleMatch.this,
+					getString(e.getMessageId()));
+		}
 	}
 
 	@Override
@@ -146,9 +157,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 			dataManager.saveMatch(match);
 			unregisterForContextMenu(playerScoresView);
 			openRound(round);
-		} catch (IllegalStateException e) {
+		} catch (FScoreException e) {
 			new ActivityUtils().showErrorDialog(SingleMatch.this,
-					getString(Integer.parseInt(e.getMessage())));
+					getString(e.getMessageId()));
 		}
 	}
 
@@ -246,17 +257,24 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 				return new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						boolean playerDeleted = match
-								.deletePlayer(selectedPlayer);
-						if (playerDeleted) {
-							Toast.makeText(
-									SingleMatch.this,
-									getString(R.string.deleting) + " "
-											+ selectedPlayer + "...",
-									Toast.LENGTH_SHORT).show();
+						boolean playerDeleted;
+						try {
+							playerDeleted = match.deletePlayer(selectedPlayer);
 
-							dataManager.saveMatch(match);
-							refreshPlayersTab();
+							if (playerDeleted) {
+								Toast.makeText(
+										SingleMatch.this,
+										getString(R.string.deleting) + " "
+												+ selectedPlayer + "...",
+										Toast.LENGTH_SHORT).show();
+
+								dataManager.saveMatch(match);
+								refreshPlayersTab();
+							}
+						} catch (FScoreException e) {
+							new ActivityUtils().showErrorDialog(
+									SingleMatch.this,
+									getString(e.getMessageId()));
 						}
 					}
 				};

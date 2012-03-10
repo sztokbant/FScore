@@ -9,6 +9,7 @@ import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
 import br.net.du.fscore.model.Round;
+import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.dao.MatchDAO;
 import br.net.du.fscore.persist.dao.MatchPlayerDAO;
 import br.net.du.fscore.persist.dao.PlayerDAO;
@@ -67,7 +68,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertTrue(dataManager.openDb());
 	}
 
-	public void testSaveNewMatch() {
+	public void testSaveNewMatch() throws FScoreException {
 		Match match = new Match("Match Name");
 
 		Player player1 = new Player("A Player");
@@ -133,7 +134,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, match2);
 	}
 
-	public void testSaveAnExistingMatchAfterAddingAPlayer() {
+	public void testSaveAnExistingMatchAfterAddingAPlayer() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
@@ -169,7 +170,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
-	public void testSaveAnExistingMatchAfterRemovingAPlayer() {
+	public void testSaveAnExistingMatchAfterRemovingAPlayer() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
@@ -205,7 +206,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
-	public void testSaveAnExistingMatchAfterAddingARound() {
+	public void testSaveAnExistingMatchAfterAddingARound() throws FScoreException {
 		Match match1 = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
@@ -253,7 +254,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match1, match2);
 	}
 
-	public void testSaveAnExistingMatchAfterRemovingARound() {
+	public void testSaveAnExistingMatchAfterRemovingARound() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("A Second Player");
@@ -322,7 +323,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(matchId));
 	}
 
-	public void testSaveAnExistingMatchAfterUpdatingARound() {
+	public void testSaveAnExistingMatchAfterUpdatingARound() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player = new Player("A Player");
 		Player player2 = new Player("Another Player");
@@ -356,7 +357,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, dataManager.retrieveMatch(match.getId()));
 	}
 
-	public void testRetrieveMatch() {
+	public void testRetrieveMatch() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Another Player");
@@ -374,7 +375,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(match, match2);
 	}
 
-	public void testRetrieveAllMatches() {
+	public void testRetrieveAllMatches() throws FScoreException {
 		Match match = new Match("Match Name");
 		Player player1 = new Player("A Player");
 		Player player2 = new Player("Another Player");
@@ -393,7 +394,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(matches, dataManager.retrieveAllMatches());
 	}
 
-	public void testDeleteMatch() {
+	public void testDeleteMatch() throws FScoreException {
 		Match match = new Match("Match Name");
 
 		Player player1 = new Player("A Player");
@@ -445,7 +446,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertNull(playerRoundDao.retrieve(playerRound2Id));
 	}
 
-	public void testDeletingAMatchWontDeleteNonOrphanPlayers() {
+	public void testDeletingAMatchWontDeleteNonOrphanPlayers() throws FScoreException {
 		// initial state
 		Match match1 = new Match("Match One");
 		Match match2 = new Match("Match Two");
@@ -474,7 +475,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertTrue(matchPlayerDao.exists(key2));
 	}
 
-	public void testRetrievePlayers() {
+	public void testRetrievePlayers() throws FScoreException {
 		PlayerTable.clear(db);
 
 		MatchPlayerDAO matchPlayerDao = new MatchPlayerDAO(db);
@@ -497,7 +498,7 @@ public class DataManagerTest extends AndroidTestCase {
 		PlayerTable.clear(db);
 	}
 
-	public void testRetrieveRoundById() {
+	public void testRetrieveRoundById() throws FScoreException {
 		Player player = new Player("My Player");
 		playerDao.save(player);
 
@@ -517,7 +518,7 @@ public class DataManagerTest extends AndroidTestCase {
 		assertEquals(round1, round2);
 	}
 
-	public void testSaveRoundWithRepeatedPlayer() {
+	public void testSaveRoundWithRepeatedPlayer() throws FScoreException {
 		Player player1 = new Player("player 1");
 		playerDao.save(player1);
 
