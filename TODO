@@ -15,21 +15,3 @@ KNOWN ISSUES
 
 TODO for future releases
   * i18n: pt + en
-
-
-FEEDBACK
-
-2012-03-01
-
-Ricardo Levinzon 17:42:08
-nao seria melhor colocar o total de rounds que se planeja jogar no começo?
-outra funcionalidade adicional que voce poderia pensar é se o jogador quer que o próprio software defina o naipe da vez (pra por exemplo quando voce está na ultima rodada e não sobra carta para abrir...) 17:42:58
-mesma coisa para sortear o foda-se inicial e quem da as cartas 17:43:28
- 
-eduardo.sztokbant 17:50:50
-1) quando o cara da "new round" ele ja coloca o numero de cartas do round anterior + 1 ou -1 (se ja está voltando), aí ele decide a hora que quiser se joga mais um round ou não. ele considera que nao pode adicionar mais quando ja voltou até o 1.
-forçar a galera a decidir de antemão eu acho que não bate com a realidade, muitas vezes a galera decide na hora se faz a volta ou não.
-
-2) gostei da ideia do software sortear o naipe, apesar de me parecer algo de prioridade baixa pra implementar (a galera pode sortear uma carta antes de distribuir, por exemplo)
-
-3) gostei tb, atualmente ta na mão do usuario inputar as apostas e quando é a última aposta a preencher ele força o foda-se conforme as apostas anteriores
