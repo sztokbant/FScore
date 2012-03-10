@@ -129,7 +129,7 @@ public class MatchList extends Activity {
 						dataManager.deleteMatch(selectedMatch);
 
 						Toast.makeText(MatchList.this,
-								selectedMatch.getName() + " deleted",
+								"'" + selectedMatch.getName() + "' deleted",
 								Toast.LENGTH_SHORT).show();
 
 						// it's not necessary to reload the full list
