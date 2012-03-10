@@ -100,9 +100,10 @@ public class MatchList extends Activity {
 				return new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(MatchList.this,
-								"Deleting " + selectedMatch.getName() + "...",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(
+								MatchList.this,
+								"Deleting '" + selectedMatch.toString()
+										+ "'...", Toast.LENGTH_SHORT).show();
 
 						dataManager.deleteMatch(selectedMatch);
 
