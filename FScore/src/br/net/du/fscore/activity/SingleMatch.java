@@ -9,6 +9,7 @@ import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.ContextMenu;
@@ -139,6 +140,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		Button addBtn = new Button(SingleMatch.this);
 		addBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
+		addBtn.setTypeface(Typeface.DEFAULT_BOLD);
+		addBtn.setCompoundDrawablePadding(8);
 
 		if (tag == PLAYERS_TAB_TAG) {
 			if (match.getRounds().isEmpty()) {
