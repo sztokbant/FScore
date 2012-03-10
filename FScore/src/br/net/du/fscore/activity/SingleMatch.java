@@ -13,15 +13,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -96,28 +99,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		dataManager.closeDb();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem newRound = menu.add(0, 0, 0, "New Round");
-		newRound.setIcon(R.drawable.new_round);
-
-		MenuItem addPlayer = menu.add(0, 1, 0, "Add Player");
-		addPlayer.setIcon(R.drawable.add_players);
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			createNewRound();
-		} else if (item.getItemId() == 1) {
-			addNewPlayer();
-		}
-
-		return false;
-	}
-
 	private void createNewRound() {
 		try {
 			Round round = match.newRound();
@@ -127,15 +108,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		} catch (IllegalStateException e) {
 			new ActivityUtils().showErrorDialog(SingleMatch.this,
 					e.getMessage());
-		}
-	}
-
-	private void addNewPlayer() {
-		if (!match.getRounds().isEmpty()) {
-			new ActivityUtils().showErrorDialog(SingleMatch.this,
-					"Cannot add more players after match has started.");
-		} else {
-			getAddPlayerDialog().show();
 		}
 	}
 
@@ -160,13 +132,50 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 	@Override
 	public View createTabContent(String tag) {
+		LinearLayout layout = new LinearLayout(SingleMatch.this);
+		layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
+		layout.setOrientation(LinearLayout.VERTICAL);
+
+		Button addBtn = new Button(SingleMatch.this);
+		addBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
+
 		if (tag == PLAYERS_TAB_TAG) {
-			return playerScoresView;
+			if (match.getRounds().isEmpty()) {
+				addBtn.setText("Add Player");
+				addBtn.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.add_players, 0, 0, 0);
+
+				addBtn.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						getAddPlayerDialog().show();
+					}
+				});
+
+				layout.addView(addBtn, new LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			}
+
+			layout.addView(playerScoresView);
 		} else if (tag == ROUNDS_TAB_TAG) {
-			return roundView;
+			addBtn.setText("New Round");
+			addBtn.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.new_round, 0, 0, 0);
+
+			addBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					createNewRound();
+				}
+			});
+
+			layout.addView(addBtn, new LayoutParams(LayoutParams.FILL_PARENT,
+					LayoutParams.WRAP_CONTENT));
+			layout.addView(roundView);
 		}
 
-		return null;
+		return layout;
 	}
 
 	private AlertDialog.Builder getAddPlayerDialog() {
