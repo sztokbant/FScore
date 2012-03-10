@@ -66,6 +66,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 	private DataManager dataManager;
 
+	private Button addPlayerBtn;
+	private Button newRoundBtn;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,9 +81,46 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		SingleMatch.this.setTitle(match.toString());
 
+		createAddPlayerButton();
+		createNewRoundButton();
+
 		createRoundsListAdapter();
 		createPlayersListAdapter();
 		makeTabs();
+	}
+
+	private void createNewRoundButton() {
+		newRoundBtn = new Button(SingleMatch.this);
+		newRoundBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
+		newRoundBtn.setTypeface(Typeface.DEFAULT_BOLD);
+		newRoundBtn.setCompoundDrawablePadding(8);
+		newRoundBtn.setText("New Round");
+		newRoundBtn.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.new_round, 0, 0, 0);
+
+		newRoundBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				createNewRound();
+			}
+		});
+	}
+
+	private void createAddPlayerButton() {
+		addPlayerBtn = new Button(SingleMatch.this);
+		addPlayerBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
+		addPlayerBtn.setTypeface(Typeface.DEFAULT_BOLD);
+		addPlayerBtn.setCompoundDrawablePadding(8);
+		addPlayerBtn.setText("Add Player");
+		addPlayerBtn.setCompoundDrawablesWithIntrinsicBounds(
+				R.drawable.add_players, 0, 0, 0);
+
+		addPlayerBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				getAddPlayerDialog().show();
+			}
+		});
 	}
 
 	@Override
@@ -125,6 +165,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 	@Override
 	public void onTabChanged(String tabName) {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
+			if (!match.getRounds().isEmpty()) {
+				addPlayerBtn.setEnabled(false);
+			}
+
 			refreshPlayersList();
 		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
 			refreshRoundsList();
@@ -138,43 +182,14 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 				LayoutParams.FILL_PARENT));
 		layout.setOrientation(LinearLayout.VERTICAL);
 
-		Button addBtn = new Button(SingleMatch.this);
-		addBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
-		addBtn.setTypeface(Typeface.DEFAULT_BOLD);
-		addBtn.setCompoundDrawablePadding(8);
-
 		if (tag == PLAYERS_TAB_TAG) {
-			if (match.getRounds().isEmpty()) {
-				addBtn.setText("Add Player");
-				addBtn.setCompoundDrawablesWithIntrinsicBounds(
-						R.drawable.add_players, 0, 0, 0);
-
-				addBtn.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
-						getAddPlayerDialog().show();
-					}
-				});
-
-				layout.addView(addBtn, new LayoutParams(
-						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			}
+			layout.addView(addPlayerBtn, new LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 			layout.addView(playerScoresView);
 		} else if (tag == ROUNDS_TAB_TAG) {
-			addBtn.setText("New Round");
-			addBtn.setCompoundDrawablesWithIntrinsicBounds(
-					R.drawable.new_round, 0, 0, 0);
-
-			addBtn.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					createNewRound();
-				}
-			});
-
-			layout.addView(addBtn, new LayoutParams(LayoutParams.FILL_PARENT,
-					LayoutParams.WRAP_CONTENT));
+			layout.addView(newRoundBtn, new LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 			layout.addView(roundView);
 		}
 
