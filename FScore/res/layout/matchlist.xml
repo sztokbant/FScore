@@ -11,7 +11,7 @@
         android:drawableLeft="@drawable/add"
         android:drawablePadding="4sp"
         android:gravity="left|center_vertical"
-        android:text="New Match"
+        android:text="@string/new_match"
         android:textStyle="bold" />
 
     <ListView
