@@ -94,7 +94,6 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		newRoundBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
 		newRoundBtn.setTypeface(Typeface.DEFAULT_BOLD);
 		newRoundBtn.setCompoundDrawablePadding(8);
-		newRoundBtn.setText("New Round");
 		newRoundBtn.setCompoundDrawablesWithIntrinsicBounds(
 				R.drawable.new_round, 0, 0, 0);
 
@@ -130,8 +129,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		match = dataManager.retrieveMatch(matchId);
 
-		refreshPlayersList();
-		refreshRoundsList();
+		refreshPlayersTab();
+		refreshRoundsTab();
 	}
 
 	@Override
@@ -165,13 +164,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 	@Override
 	public void onTabChanged(String tabName) {
 		if (tabName.equals(PLAYERS_TAB_TAG)) {
-			if (!match.getRounds().isEmpty()) {
-				addPlayerBtn.setEnabled(false);
-			}
-
-			refreshPlayersList();
+			refreshPlayersTab();
 		} else if (tabName.equals(ROUNDS_TAB_TAG)) {
-			refreshRoundsList();
+			refreshRoundsTab();
 		}
 	}
 
@@ -219,7 +214,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 					match.with(player);
 					dataManager.saveMatch(match);
 					tabHost.setCurrentTabByTag(PLAYERS_TAB_TAG);
-					refreshPlayersList();
+					refreshPlayersTab();
 				} catch (Exception e) {
 					new ActivityUtils().showErrorDialog(SingleMatch.this,
 							e.getMessage());
@@ -254,7 +249,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 									Toast.LENGTH_SHORT).show();
 
 							dataManager.saveMatch(match);
-							refreshPlayersList();
+							refreshPlayersTab();
 						}
 					}
 				};
@@ -339,14 +334,31 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		startActivity(singleRound);
 	}
 
-	private void refreshPlayersList() {
+	private void refreshPlayersTab() {
+		if (!match.getRounds().isEmpty()) {
+			addPlayerBtn.setEnabled(false);
+			addPlayerBtn.setText("Cannot add players anymore");
+		}
+
 		playerScores.clear();
 		playerScores.addAll(match.getPlayerScores());
 		Collections.sort(playerScores);
 		playerScoresAdapter.notifyDataSetChanged();
 	}
 
-	private void refreshRoundsList() {
+	private void refreshRoundsTab() {
+		if (match.getPlayers().size() < 2) {
+			newRoundBtn.setEnabled(false);
+			newRoundBtn.setText("Add some players first");
+		} else {
+			newRoundBtn.setEnabled(true);
+			if (match.getRounds().isEmpty()) {
+				newRoundBtn.setText("Start Match!");
+			} else {
+				newRoundBtn.setText("Begin Next Round");
+			}
+		}
+
 		rounds.clear();
 		rounds.addAll(match.getRounds());
 		roundAdapter.notifyDataSetChanged();
