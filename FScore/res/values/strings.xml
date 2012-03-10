@@ -52,9 +52,7 @@
 	<string name="max_num_of_players_reached">Maximum number of players reached.</string>
 	<string name="name_cannot_be_empty">Name cannot be empty.</string>
 	<string name="name_cannot_be_null">Name cannot be null.</string>
-	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and deck/number
-		of players.
-	</string>
+	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and 52/number of players.</string>
 	<string name="num_of_cards_must_be_greater_than_0">Number of cards must be greater than 0.</string>
 	<string name="ok">Ok</string>
 	<string name="player">Player</string>

@@ -9,6 +9,3 @@ Refactor it!
 
 KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
-
-TODO for BETA
-  * i18n: pt + en
