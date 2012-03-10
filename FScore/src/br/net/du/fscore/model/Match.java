@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.text.format.DateFormat;
+import br.net.du.fscore.R;
 
 public class Match implements Serializable, Comparable<Match> {
 	private static final long serialVersionUID = 1L;
@@ -65,21 +66,22 @@ public class Match implements Serializable, Comparable<Match> {
 			IllegalStateException {
 		if (players.size() >= 51) {
 			throw new IllegalStateException(
-					"Maximmum number of players reached.");
+					String.valueOf(R.string.max_num_of_players_reached));
 		}
 
 		if (player == null) {
-			throw new IllegalArgumentException("Player cannot be null.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.player_cannot_be_null));
 		}
 
 		if (this.players.contains(player)) {
-			throw new IllegalArgumentException("Player '" + player.getName()
-					+ "' already in this match.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.player_already_in_this_match));
 		}
 
 		if (!rounds.isEmpty()) {
 			throw new IllegalStateException(
-					"Cannot add players after the match has started.");
+					String.valueOf(R.string.cannot_add_players_after_match_started));
 		}
 
 		players.add(player);
@@ -89,7 +91,7 @@ public class Match implements Serializable, Comparable<Match> {
 	public boolean deletePlayer(Player player) throws IllegalStateException {
 		if (!rounds.isEmpty()) {
 			throw new IllegalStateException(
-					"Cannot delete players after the match has started.");
+					String.valueOf(R.string.cannot_delete_players_after_match_started));
 		}
 
 		if (!players.contains(player)) {
@@ -107,12 +109,13 @@ public class Match implements Serializable, Comparable<Match> {
 
 	public Round newRound() throws IllegalStateException {
 		if (!rounds.isEmpty() && !rounds.get(rounds.size() - 1).isComplete()) {
-			throw new IllegalStateException("Last round is incomplete.");
+			throw new IllegalStateException(
+					String.valueOf(R.string.last_round_incomplete));
 		}
 
 		long nextRoundsCards = getNumberOfCardsSuggestion();
 		if (nextRoundsCards == 0) {
-			throw new IllegalStateException("Match is over.");
+			throw new IllegalStateException(String.valueOf(R.string.match_over));
 		}
 
 		return this.newRound(nextRoundsCards);
@@ -122,12 +125,12 @@ public class Match implements Serializable, Comparable<Match> {
 			IllegalStateException {
 		if (players.size() < 2) {
 			throw new IllegalStateException(
-					"Match must have at least 2 players to begin.");
+					String.valueOf(R.string.match_must_have_at_least_2_players));
 		}
 
 		if (numberOfCards < 1 || numberOfCards > getMaxCardsPerRound()) {
-			throw new IllegalArgumentException("numberOfCards must be between "
-					+ String.valueOf(1) + " and " + getMaxCardsPerRound() + ".");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.num_of_cards_must_be_between_1_and_max));
 		}
 
 		Round round = new Round(numberOfCards);
@@ -146,12 +149,13 @@ public class Match implements Serializable, Comparable<Match> {
 	public Match addRound(Round round) throws IllegalArgumentException,
 			IllegalStateException {
 		if (round == null) {
-			throw new IllegalArgumentException("Round cannot be null.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.round_cannot_be_null));
 		}
 
 		if (players.size() < 2) {
 			throw new IllegalStateException(
-					"Match must have at least 2 players to begin");
+					String.valueOf(R.string.match_must_have_at_least_2_players));
 		}
 
 		round.setMatchId(this.getId());

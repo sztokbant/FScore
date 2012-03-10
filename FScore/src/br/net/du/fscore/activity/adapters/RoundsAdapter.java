@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import br.net.du.fscore.R;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Round;
 
@@ -22,7 +23,15 @@ public class RoundsAdapter extends ArrayAdapter<Round> {
 	@Override
 	public View getView(int position, View view, ViewGroup group) {
 		TextView item = new TextView(context);
-		item.setText(getItem(position).toString());
+
+		Round round = getItem(position);
+
+		String title = context.getString(R.string.round) + " - "
+				+ round.getNumberOfCards() + " ";
+		title += (round.getNumberOfCards() == 1) ? context
+				.getString(R.string.card) : context.getString(R.string.cards);
+
+		item.setText(title);
 		item.setTextSize(new ActivityUtils().getAdapterFontSize());
 		item.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
 				new ActivityUtils().getAdapterVerticalPadding(),

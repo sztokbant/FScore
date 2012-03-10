@@ -63,7 +63,12 @@ public class SingleRound extends Activity {
 		dataManager.openDb();
 		refreshPlayerRoundsList();
 
-		SingleRound.this.setTitle(round.toString());
+		String title = getString(R.string.round) + " - "
+				+ round.getNumberOfCards() + " ";
+		title += (round.getNumberOfCards() == 1) ? getString(R.string.card)
+				: getString(R.string.cards);
+
+		SingleRound.this.setTitle(title);
 	}
 
 	@Override
@@ -77,9 +82,9 @@ public class SingleRound extends Activity {
 			ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(selectedPlayerRound.getPlayer().toString());
 		MenuItem bet = menu.add(0, 0, 0, getString(R.string.bet));
-		bet.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+		bet.setOnMenuItemClickListener(setBetOrWinsClickListener());
 		MenuItem wins = menu.add(0, 1, 0, getString(R.string.wins));
-		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
+		wins.setOnMenuItemClickListener(setBetOrWinsClickListener());
 	}
 
 	private AlertDialog.Builder getBetDialog() throws IllegalStateException {
@@ -113,13 +118,14 @@ public class SingleRound extends Activity {
 					round.setBet(selectedPlayerRound.getPlayer(), bet);
 					dataManager.saveMatch(match);
 					refreshPlayerRoundsList();
+
 				} catch (NumberFormatException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
 							getString(R.string.msg_enter_number_between_0_and)
-									+ round.getNumberOfCards() + ".");
+									+ " " + round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
-							e.getMessage());
+							getString(Integer.parseInt(e.getMessage())));
 				}
 			}
 		};
@@ -162,13 +168,13 @@ public class SingleRound extends Activity {
 									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
-							e.getMessage());
+							getString(Integer.parseInt(e.getMessage())));
 				}
 			}
 		};
 	}
 
-	private OnMenuItemClickListener playerRoundDeleteClickListener() {
+	private OnMenuItemClickListener setBetOrWinsClickListener() {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {

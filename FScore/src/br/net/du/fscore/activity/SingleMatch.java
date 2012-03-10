@@ -144,11 +144,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		try {
 			Round round = match.newRound();
 			dataManager.saveMatch(match);
-			openRound(round);
 			unregisterForContextMenu(playerScoresView);
+			openRound(round);
 		} catch (IllegalStateException e) {
 			new ActivityUtils().showErrorDialog(SingleMatch.this,
-					e.getMessage());
+					getString(Integer.parseInt(e.getMessage())));
 		}
 	}
 
@@ -219,7 +219,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 					refreshPlayersTab();
 				} catch (Exception e) {
 					new ActivityUtils().showErrorDialog(SingleMatch.this,
-							e.getMessage());
+							getString(Integer.parseInt(e.getMessage())));
 				}
 			}
 		};
@@ -270,13 +270,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		tabHost.addTab(tabHost
 				.newTabSpec(PLAYERS_TAB_TAG)
-				.setIndicator(PLAYERS_TAB_TAG,
+				.setIndicator(getString(R.string.players),
 						getResources().getDrawable(R.drawable.players))
 				.setContent(SingleMatch.this));
 
 		tabHost.addTab(tabHost
 				.newTabSpec(ROUNDS_TAB_TAG)
-				.setIndicator(ROUNDS_TAB_TAG,
+				.setIndicator(getString(R.string.rounds),
 						getResources().getDrawable(R.drawable.rounds))
 				.setContent(SingleMatch.this));
 	}

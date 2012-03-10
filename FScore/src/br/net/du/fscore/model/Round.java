@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.net.du.fscore.R;
+
 public class Round implements Serializable, Comparable<Round> {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,7 @@ public class Round implements Serializable, Comparable<Round> {
 			throws IllegalArgumentException {
 		if (numberOfCards <= 0) {
 			throw new IllegalArgumentException(
-					"Number of cards must be greater than 0.");
+					String.valueOf(R.string.num_of_cards_must_be_greater_than_0));
 		}
 
 		this.numberOfCards = numberOfCards;
@@ -48,14 +50,14 @@ public class Round implements Serializable, Comparable<Round> {
 	public Round addPlayerRound(PlayerRound playerRound)
 			throws IllegalStateException, IllegalArgumentException {
 		if (playerRound == null) {
-			throw new IllegalArgumentException("playerRound cannot be null.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.playerround_cannot_be_null));
 		}
 
 		for (PlayerRound pr : playerRounds) {
 			if (pr.getPlayer().equals(playerRound.getPlayer())) {
-				throw new IllegalStateException("Player "
-						+ playerRound.getPlayer().getName()
-						+ " already in this round.");
+				throw new IllegalStateException(
+						String.valueOf(R.string.player_already_in_this_round));
 			}
 		}
 
@@ -67,14 +69,14 @@ public class Round implements Serializable, Comparable<Round> {
 	public void setBet(Player player, long bet) throws IllegalArgumentException {
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
-		if (bet > numberOfCards) {
-			throw new IllegalArgumentException("Bet must be between 0 and "
-					+ numberOfCards + ".");
+		if (bet < 0 || bet > numberOfCards) {
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.bet_must_be_between_0_and_rounds_cards));
 		}
 
 		if (bet == getForbiddenBet(player)) {
-			throw new IllegalArgumentException("Sorry, your bet cannot be "
-					+ bet + ".");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.msg_your_bet_cannot_be));
 		}
 
 		selectedPlayerRound.setBet(bet);
@@ -89,20 +91,20 @@ public class Round implements Serializable, Comparable<Round> {
 
 			if (playerRound.getBet() == PlayerRound.EMPTY) {
 				throw new IllegalStateException(
-						"Cannot set wins while not all players have placed bets.");
+						String.valueOf(R.string.cannot_set_wins_before_all_bets));
 			}
 		}
 
 		PlayerRound selectedPlayerRound = getPlayerRound(player);
 
-		if (wins > numberOfCards) {
-			throw new IllegalArgumentException("Wins cannot be greater than "
-					+ numberOfCards + ".");
+		if (wins < 0 || wins > numberOfCards) {
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.wins_must_be_between_0_and_rounds_cards));
 		}
 
 		if (!isAllowedWins(player, wins)) {
 			throw new IllegalArgumentException(
-					"Total wins must be equal to round's cards.");
+					String.valueOf(R.string.total_wins_must_be_equal_rounds_cards));
 		}
 
 		selectedPlayerRound.setWins(wins);
@@ -142,7 +144,8 @@ public class Round implements Serializable, Comparable<Round> {
 		}
 
 		if (selectedPlayerRound == null) {
-			throw new IllegalArgumentException("Player not found!");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.player_not_found));
 		}
 
 		return selectedPlayerRound;

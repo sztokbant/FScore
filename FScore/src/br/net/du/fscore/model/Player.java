@@ -2,6 +2,8 @@ package br.net.du.fscore.model;
 
 import java.io.Serializable;
 
+import br.net.du.fscore.R;
+
 public class Player implements Serializable, Comparable<Player> {
 	private static final long serialVersionUID = 1L;
 
@@ -23,13 +25,15 @@ public class Player implements Serializable, Comparable<Player> {
 
 	public void setName(String name) {
 		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.name_cannot_be_null));
 		}
 
 		name = name.trim();
 
 		if (name.equals("")) {
-			throw new IllegalArgumentException("Name cannot be empty.");
+			throw new IllegalArgumentException(
+					String.valueOf(R.string.name_cannot_be_empty));
 		}
 
 		this.name = capitalizeFirstLetter(name);
