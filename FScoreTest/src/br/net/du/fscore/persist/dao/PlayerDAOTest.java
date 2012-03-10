@@ -28,6 +28,7 @@ public class PlayerDAOTest extends AndroidTestCase {
 
 		PlayerTable.clear(db);
 		dao = new PlayerDAO(db);
+
 		player = new Player("Player Name");
 		dao.save(player);
 	}

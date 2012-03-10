@@ -29,6 +29,7 @@ public class MatchDAOTest extends AndroidTestCase {
 
 		MatchTable.clear(db);
 		dao = new MatchDAO(db);
+
 		match = new Match("Match Name");
 		dao.save(match);
 	}
@@ -53,6 +54,7 @@ public class MatchDAOTest extends AndroidTestCase {
 		assertEquals("Match Name", cursor.getString(1));
 		assertEquals(match.getDate().getTimeInMillis(), cursor.getLong(2));
 		assertEquals(1, match.getId());
+		assertFalse(cursor.moveToNext());
 
 		cursor.close();
 	}
