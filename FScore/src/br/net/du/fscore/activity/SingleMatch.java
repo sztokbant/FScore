@@ -203,11 +203,11 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 				.setNegativeButton("Cancel", null);
 	}
 
-	private OnClickListener getDoAddPlayerClick(final EditText winsInput) {
+	private OnClickListener getDoAddPlayerClick(final EditText nameInput) {
 		return new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Editable value = winsInput.getText();
+				Editable value = nameInput.getText();
 
 				String name = value.toString();
 
