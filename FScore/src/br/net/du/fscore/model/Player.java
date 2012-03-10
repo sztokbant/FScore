@@ -9,13 +9,7 @@ public class Player implements Serializable, Comparable<Player> {
 	private String name;
 
 	public Player(String name) throws IllegalArgumentException {
-		name = name.trim();
-
-		if (name.equals("")) {
-			throw new IllegalArgumentException("Name cannot be empty.");
-		}
-
-		this.setName(capitalizeFirstLetter(name));
+		this.setName(name);
 	}
 
 	private String capitalizeFirstLetter(String name) {
@@ -28,7 +22,17 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null.");
+		}
+
+		name = name.trim();
+
+		if (name.equals("")) {
+			throw new IllegalArgumentException("Name cannot be empty.");
+		}
+
+		this.name = capitalizeFirstLetter(name);
 	}
 
 	public long getId() {
