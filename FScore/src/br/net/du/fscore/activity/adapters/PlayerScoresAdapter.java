@@ -3,9 +3,12 @@ package br.net.du.fscore.activity.adapters;
 import java.util.List;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.net.du.fscore.model.PlayerScore;
 
@@ -20,8 +23,30 @@ public class PlayerScoresAdapter extends ArrayAdapter<PlayerScore> {
 
 	@Override
 	public View getView(int position, View view, ViewGroup group) {
-		TextView item = new TextView(context);
-		item.setText(getItem(position).toString());
-		return item;
+		PlayerScore playerScore = getItem(position);
+
+		LinearLayout layout = new LinearLayout(context);
+		layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
+		layout.setOrientation(LinearLayout.HORIZONTAL);
+
+		TextView name = new TextView(context);
+		name.setText(playerScore.getPlayer().getName());
+		name.setGravity(Gravity.LEFT + Gravity.CENTER_VERTICAL);
+		name.setTextSize(18);
+		name.setPadding(0, 8, 0, 8);
+
+		TextView score = new TextView(context);
+		score.setText(String.valueOf(playerScore.getScore()));
+		score.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
+		score.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
+		score.setTextSize(18);
+		score.setPadding(0, 8, 0, 8);
+
+		layout.addView(name);
+		layout.addView(score);
+
+		return layout;
 	}
 }
