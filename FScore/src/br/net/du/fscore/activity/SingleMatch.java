@@ -229,9 +229,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 					dataManager.saveMatch(match);
 					tabHost.setCurrentTabByTag(PLAYERS_TAB_TAG);
 					refreshPlayersTab();
-				} catch (Exception e) {
+				} catch (FScoreException e) {
 					new ActivityUtils().showErrorDialog(SingleMatch.this,
-							getString(Integer.parseInt(e.getMessage())));
+							getString(e.getMessageId()));
 				}
 			}
 		};
