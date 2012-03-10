@@ -111,7 +111,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		addPlayerBtn.setGravity(Gravity.CENTER_VERTICAL + Gravity.LEFT);
 		addPlayerBtn.setTypeface(Typeface.DEFAULT_BOLD);
 		addPlayerBtn.setCompoundDrawablePadding(8);
-		addPlayerBtn.setText("Add Player");
+		addPlayerBtn.setText(getString(R.string.add_player));
 		addPlayerBtn.setCompoundDrawablesWithIntrinsicBounds(
 				R.drawable.add_players, 0, 0, 0);
 
@@ -157,7 +157,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 			ContextMenuInfo menuInfo) {
 		if (view == playerScoresView) {
 			menu.setHeaderTitle(selectedPlayer.toString());
-			MenuItem delete = menu.add(0, 0, 0, "Delete");
+			MenuItem delete = menu.add(0, 0, 0,
+					getString(R.string.delete_player));
 			delete.setOnMenuItemClickListener(playerDeleteDialog());
 		}
 	}
@@ -196,10 +197,12 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		final EditText input = new EditText(SingleMatch.this);
 
 		return new AlertDialog.Builder(SingleMatch.this)
-				.setTitle("Add player to match").setMessage("Player name")
+				.setTitle(R.string.add_player_to_match)
+				.setMessage(getString(R.string.player_name))
 				.setView(input)
-				.setPositiveButton("Ok", getDoAddPlayerClick(input))
-				.setNegativeButton("Cancel", null);
+				.setPositiveButton(getString(R.string.ok),
+						getDoAddPlayerClick(input))
+				.setNegativeButton(getString(R.string.cancel), null);
 	}
 
 	private OnClickListener getDoAddPlayerClick(final EditText nameInput) {
@@ -228,10 +231,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 			public boolean onMenuItemClick(MenuItem item) {
 				// delete
 				new AlertDialog.Builder(SingleMatch.this)
-						.setTitle("Delete " + selectedPlayer)
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", getDoDeletePlayerClick())
-						.setNegativeButton("No", null).show();
+						.setTitle(
+								getString(R.string.delete) + " "
+										+ selectedPlayer)
+						.setMessage(getString(R.string.are_you_sure))
+						.setPositiveButton(getString(R.string.yes),
+								getDoDeletePlayerClick())
+						.setNegativeButton(getString(R.string.no), null).show();
 
 				return true;
 			}
@@ -243,8 +249,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 						boolean playerDeleted = match
 								.deletePlayer(selectedPlayer);
 						if (playerDeleted) {
-							Toast.makeText(SingleMatch.this,
-									"Deleting " + selectedPlayer + "...",
+							Toast.makeText(
+									SingleMatch.this,
+									getString(R.string.deleting) + " "
+											+ selectedPlayer + "...",
 									Toast.LENGTH_SHORT).show();
 
 							dataManager.saveMatch(match);
@@ -334,7 +342,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 	private void refreshPlayersTab() {
 		if (!match.getRounds().isEmpty()) {
 			addPlayerBtn.setEnabled(false);
-			addPlayerBtn.setText("Cannot add players anymore");
+			addPlayerBtn
+					.setText(getString(R.string.cannot_add_players_anymore));
 		}
 
 		playerScores.clear();
@@ -346,13 +355,13 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 	private void refreshRoundsTab() {
 		if (match.getPlayers().size() < 2) {
 			newRoundBtn.setEnabled(false);
-			newRoundBtn.setText("Add some players first");
+			newRoundBtn.setText(getString(R.string.add_some_players_first));
 		} else {
 			newRoundBtn.setEnabled(true);
 			if (match.getRounds().isEmpty()) {
-				newRoundBtn.setText("Start Match!");
+				newRoundBtn.setText(getString(R.string.start_match));
 			} else {
-				newRoundBtn.setText("Begin Next Round");
+				newRoundBtn.setText(getString(R.string.begin_next_round));
 			}
 		}
 

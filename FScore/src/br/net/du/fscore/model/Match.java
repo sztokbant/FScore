@@ -65,21 +65,21 @@ public class Match implements Serializable, Comparable<Match> {
 			IllegalStateException {
 		if (players.size() >= 51) {
 			throw new IllegalStateException(
-					"Maximmum number of players reached");
+					"Maximmum number of players reached.");
 		}
 
 		if (player == null) {
-			throw new IllegalArgumentException("Player cannot be null");
+			throw new IllegalArgumentException("Player cannot be null.");
 		}
 
 		if (this.players.contains(player)) {
 			throw new IllegalArgumentException("Player '" + player.getName()
-					+ "' already in this match");
+					+ "' already in this match.");
 		}
 
 		if (!rounds.isEmpty()) {
 			throw new IllegalStateException(
-					"Cannot add players after the match has started");
+					"Cannot add players after the match has started.");
 		}
 
 		players.add(player);
@@ -89,7 +89,7 @@ public class Match implements Serializable, Comparable<Match> {
 	public boolean deletePlayer(Player player) throws IllegalStateException {
 		if (!rounds.isEmpty()) {
 			throw new IllegalStateException(
-					"Cannot delete players after the match has started");
+					"Cannot delete players after the match has started.");
 		}
 
 		if (!players.contains(player)) {
@@ -122,12 +122,12 @@ public class Match implements Serializable, Comparable<Match> {
 			IllegalStateException {
 		if (players.size() < 2) {
 			throw new IllegalStateException(
-					"Match must have at least 2 players to begin");
+					"Match must have at least 2 players to begin.");
 		}
 
 		if (numberOfCards < 1 || numberOfCards > getMaxCardsPerRound()) {
 			throw new IllegalArgumentException("numberOfCards must be between "
-					+ String.valueOf(1) + " and " + getMaxCardsPerRound());
+					+ String.valueOf(1) + " and " + getMaxCardsPerRound() + ".");
 		}
 
 		Round round = new Round(numberOfCards);
@@ -146,7 +146,7 @@ public class Match implements Serializable, Comparable<Match> {
 	public Match addRound(Round round) throws IllegalArgumentException,
 			IllegalStateException {
 		if (round == null) {
-			throw new IllegalArgumentException("Round cannot be null");
+			throw new IllegalArgumentException("Round cannot be null.");
 		}
 
 		if (players.size() < 2) {

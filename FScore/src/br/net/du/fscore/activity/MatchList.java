@@ -56,10 +56,13 @@ public class MatchList extends Activity {
 				final EditText input = new EditText(MatchList.this);
 
 				new AlertDialog.Builder(MatchList.this)
-						.setTitle("New F*-se Match")
-						.setMessage("Match description").setView(input)
-						.setPositiveButton("Ok", getDoNewMatchClick(input))
-						.setNegativeButton("Cancel", null).show();
+						.setTitle(getString(R.string.new_f_match))
+						.setMessage(getString(R.string.match_desc))
+						.setView(input)
+						.setPositiveButton(getString(R.string.ok),
+								getDoNewMatchClick(input))
+						.setNegativeButton(getString(R.string.cancel), null)
+						.show();
 			}
 		};
 	}
@@ -72,9 +75,10 @@ public class MatchList extends Activity {
 
 				if (name.equals("")) {
 					new ActivityUtils().showErrorDialog(MatchList.this,
-							"Please enter a description for the new match.");
+							getString(R.string.msg_enter_new_match_desc));
 				} else {
-					Match match = new Match("F*-se Match - " + name);
+					Match match = new Match(getString(R.string.f_match) + " - "
+							+ name);
 					matches.add(0, match);
 					dataManager.saveMatch(match);
 					adapter.notifyDataSetChanged();
@@ -102,10 +106,11 @@ public class MatchList extends Activity {
 			ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(selectedMatch.getName());
 
-		MenuItem editDescription = menu.add(0, 0, 0, "Edit description");
+		MenuItem editDescription = menu.add(0, 0, 0,
+				getString(R.string.edit_desc));
 		editDescription.setOnMenuItemClickListener(editDescriptionDialog());
 
-		MenuItem delete = menu.add(0, 1, 0, "Delete match");
+		MenuItem delete = menu.add(0, 1, 0, getString(R.string.delete_match));
 		delete.setOnMenuItemClickListener(matchDeleteDialog());
 	}
 
@@ -114,10 +119,13 @@ public class MatchList extends Activity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				new AlertDialog.Builder(MatchList.this)
-						.setTitle("Deleting '" + selectedMatch.getName() + "'")
-						.setMessage("Are you sure?")
-						.setPositiveButton("Yes", getDoMatchDeleteClick())
-						.setNegativeButton("No", null).show();
+						.setTitle(
+								getString(R.string.deleting) + " '"
+										+ selectedMatch.getName() + "'")
+						.setMessage(getString(R.string.are_you_sure))
+						.setPositiveButton(getString(R.string.yes),
+								getDoMatchDeleteClick())
+						.setNegativeButton(getString(R.string.no), null).show();
 
 				return true;
 			}
@@ -128,8 +136,10 @@ public class MatchList extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						dataManager.deleteMatch(selectedMatch);
 
-						Toast.makeText(MatchList.this,
-								"'" + selectedMatch.getName() + "' deleted",
+						Toast.makeText(
+								MatchList.this,
+								"'" + selectedMatch.getName() + "' "
+										+ getString(R.string.match_deleted),
 								Toast.LENGTH_SHORT).show();
 
 						// it's not necessary to reload the full list
@@ -147,10 +157,14 @@ public class MatchList extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				final EditText input = new EditText(MatchList.this);
 
-				new AlertDialog.Builder(MatchList.this).setTitle("F*-se Match")
-						.setMessage("Enter new description").setView(input)
-						.setPositiveButton("Ok", getDoUpdateDescription(input))
-						.setNegativeButton("Cancel", null).show();
+				new AlertDialog.Builder(MatchList.this)
+						.setTitle(getString(R.string.f_match))
+						.setMessage(getString(R.string.enter_new_desc))
+						.setView(input)
+						.setPositiveButton(getString(R.string.ok),
+								getDoUpdateDescription(input))
+						.setNegativeButton(getString(R.string.cancel), null)
+						.show();
 
 				return true;
 			}
@@ -163,11 +177,11 @@ public class MatchList extends Activity {
 						String name = nameInput.getText().toString().trim();
 
 						if (name.equals("")) {
-							new ActivityUtils()
-									.showErrorDialog(MatchList.this,
-											"Please enter a description for the match.");
+							new ActivityUtils().showErrorDialog(MatchList.this,
+									getString(R.string.msg_enter_match_desc));
 						} else {
-							selectedMatch.setName("F*-se Match - " + name);
+							selectedMatch.setName(getString(R.string.f_match)
+									+ " - " + name);
 							dataManager.saveMatch(selectedMatch);
 							adapter.notifyDataSetChanged();
 						}

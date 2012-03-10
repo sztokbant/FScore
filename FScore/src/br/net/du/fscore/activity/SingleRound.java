@@ -76,16 +76,16 @@ public class SingleRound extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View view,
 			ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(selectedPlayerRound.getPlayer().toString());
-		MenuItem bet = menu.add(0, 0, 0, "Bet");
+		MenuItem bet = menu.add(0, 0, 0, getString(R.string.bet));
 		bet.setOnMenuItemClickListener(playerRoundDeleteClickListener());
-		MenuItem wins = menu.add(0, 1, 0, "Wins");
+		MenuItem wins = menu.add(0, 1, 0, getString(R.string.wins));
 		wins.setOnMenuItemClickListener(playerRoundDeleteClickListener());
 	}
 
 	private AlertDialog.Builder getBetDialog() throws IllegalStateException {
 		if (round.hasAnyWins()) {
 			throw new IllegalStateException(
-					"Cannot set bet after setting any player's wins.");
+					getString(R.string.cannot_set_bet_after_wins));
 		}
 
 		final EditText betInput = new EditText(SingleRound.this);
@@ -93,9 +93,11 @@ public class SingleRound extends Activity {
 
 		return new AlertDialog.Builder(SingleRound.this)
 				.setTitle(selectedPlayerRound.getPlayer().toString())
-				.setMessage("Bet").setView(betInput)
-				.setPositiveButton("Ok", getDoMakeBetClick(betInput))
-				.setNegativeButton("Cancel", null);
+				.setMessage(getString(R.string.bet))
+				.setView(betInput)
+				.setPositiveButton(getString(R.string.ok),
+						getDoMakeBetClick(betInput))
+				.setNegativeButton(getString(R.string.cancel), null);
 	}
 
 	private OnClickListener getDoMakeBetClick(final EditText betInput) {
@@ -112,9 +114,8 @@ public class SingleRound extends Activity {
 					dataManager.saveMatch(match);
 					refreshPlayerRoundsList();
 				} catch (NumberFormatException e) {
-					new ActivityUtils().showErrorDialog(
-							SingleRound.this,
-							"Please enter a number between 0 and "
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							getString(R.string.msg_enter_number_between_0_and)
 									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
@@ -127,7 +128,7 @@ public class SingleRound extends Activity {
 	private AlertDialog.Builder getWinsDialog() throws IllegalStateException {
 		if (!round.hasAllBets()) {
 			throw new IllegalStateException(
-					"Cannot set wins while not all players have placed bets.");
+					getString(R.string.cannot_set_wins_before_all_bets));
 		}
 
 		final EditText winsInput = new EditText(SingleRound.this);
@@ -135,9 +136,11 @@ public class SingleRound extends Activity {
 
 		return new AlertDialog.Builder(SingleRound.this)
 				.setTitle(selectedPlayerRound.getPlayer().toString())
-				.setMessage("Wins").setView(winsInput)
-				.setPositiveButton("Ok", getDoMakeWinsClick(winsInput))
-				.setNegativeButton("Cancel", null);
+				.setMessage(getString(R.string.wins))
+				.setView(winsInput)
+				.setPositiveButton(getString(R.string.ok),
+						getDoMakeWinsClick(winsInput))
+				.setNegativeButton(getString(R.string.cancel), null);
 	}
 
 	private OnClickListener getDoMakeWinsClick(final EditText winsInput) {
@@ -154,9 +157,8 @@ public class SingleRound extends Activity {
 					refreshPlayerRoundsList();
 
 				} catch (NumberFormatException e) {
-					new ActivityUtils().showErrorDialog(
-							SingleRound.this,
-							"Please enter a number between 0 and "
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							getString(R.string.msg_enter_number_between_0_and)
 									+ round.getNumberOfCards() + ".");
 				} catch (IllegalArgumentException e) {
 					new ActivityUtils().showErrorDialog(SingleRound.this,
@@ -239,7 +241,7 @@ public class SingleRound extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem resetWins = menu.add(0, 0, 0, "Reset Wins");
+		MenuItem resetWins = menu.add(0, 0, 0, getString(R.string.reset_wins));
 		resetWins.setIcon(R.drawable.reset_wins);
 
 		return super.onCreateOptionsMenu(menu);
