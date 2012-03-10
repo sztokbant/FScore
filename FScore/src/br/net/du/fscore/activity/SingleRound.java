@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -234,6 +235,28 @@ public class SingleRound extends Activity {
 		});
 
 		registerForContextMenu(playerRoundsView);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem resetWins = menu.add(0, 0, 0, "Reset Wins");
+		resetWins.setIcon(R.drawable.reset_wins);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == 0) {
+			for (PlayerRound playerRound : round.getPlayerRounds()) {
+				playerRound.setWins(PlayerRound.EMPTY);
+			}
+
+			dataManager.saveMatch(match);
+			refreshPlayerRoundsList();
+		}
+
+		return false;
 	}
 
 	private void refreshPlayerRoundsList() {

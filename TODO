@@ -13,9 +13,6 @@ KNOWN ISSUES
 "GHOST" ISSUES
 * intermitent 'SQLiteException: unable to close due to unfinalised statements' upon running test suite (testSaveAnExistingMatchAfterRemovingARound)
 
-TODO for next ALPHA
-- fix issue that doesn't allow user to change round info (reset round option is an alternative)
-
 TODO for future releases
   * i18n: pt + en
 
