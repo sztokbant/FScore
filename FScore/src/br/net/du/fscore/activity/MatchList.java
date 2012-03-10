@@ -19,10 +19,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.net.du.fscore.R;
 import br.net.du.fscore.activity.adapters.MatchesAdapter;
+import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.persist.DataManager;
 
@@ -51,11 +53,33 @@ public class MatchList extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Match match = new Match("Match");
-				matches.add(0, match);
-				dataManager.saveMatch(match);
-				adapter.notifyDataSetChanged();
-				openMatch(match);
+				final EditText input = new EditText(MatchList.this);
+
+				new AlertDialog.Builder(MatchList.this)
+						.setTitle("New F*-se Match")
+						.setMessage("Match description").setView(input)
+						.setPositiveButton("Ok", getDoNewMatchClick(input))
+						.setNegativeButton("Cancel", null).show();
+			}
+		};
+	}
+
+	private OnClickListener getDoNewMatchClick(final EditText nameInput) {
+		return new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String name = nameInput.getText().toString().trim();
+
+				if (name.equals("")) {
+					new ActivityUtils().showErrorDialog(MatchList.this,
+							"Please enter a description for the new match.");
+				} else {
+					Match match = new Match("F*-se Match - " + name);
+					matches.add(0, match);
+					dataManager.saveMatch(match);
+					adapter.notifyDataSetChanged();
+					openMatch(match);
+				}
 			}
 		};
 	}
@@ -78,8 +102,10 @@ public class MatchList extends Activity {
 			ContextMenuInfo menuInfo) {
 		menu.setHeaderTitle(selectedMatch.getName());
 
-		MenuItem delete = menu.add(0, 0, 0, "Delete");
+		MenuItem editDescription = menu.add(0, 0, 0, "Edit description");
+		editDescription.setOnMenuItemClickListener(editDescriptionDialog());
 
+		MenuItem delete = menu.add(0, 1, 0, "Delete match");
 		delete.setOnMenuItemClickListener(matchDeleteDialog());
 	}
 
@@ -87,8 +113,8 @@ public class MatchList extends Activity {
 		return new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				// delete
-				new AlertDialog.Builder(MatchList.this).setTitle("Delete")
+				new AlertDialog.Builder(MatchList.this)
+						.setTitle("Deleting '" + selectedMatch.getName() + "'")
 						.setMessage("Are you sure?")
 						.setPositiveButton("Yes", getDoMatchDeleteClick())
 						.setNegativeButton("No", null).show();
@@ -100,16 +126,51 @@ public class MatchList extends Activity {
 				return new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(
-								MatchList.this,
-								"Deleting '" + selectedMatch.toString()
-										+ "'...", Toast.LENGTH_SHORT).show();
-
 						dataManager.deleteMatch(selectedMatch);
+
+						Toast.makeText(MatchList.this,
+								selectedMatch.getName() + " deleted",
+								Toast.LENGTH_SHORT).show();
 
 						// it's not necessary to reload the full list
 						matches.remove(selectedMatch);
 						adapter.notifyDataSetChanged();
+					}
+				};
+			}
+		};
+	}
+
+	private OnMenuItemClickListener editDescriptionDialog() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				final EditText input = new EditText(MatchList.this);
+
+				new AlertDialog.Builder(MatchList.this).setTitle("F*-se Match")
+						.setMessage("Enter new description").setView(input)
+						.setPositiveButton("Ok", getDoUpdateDescription(input))
+						.setNegativeButton("Cancel", null).show();
+
+				return true;
+			}
+
+			private OnClickListener getDoUpdateDescription(
+					final EditText nameInput) {
+				return new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String name = nameInput.getText().toString().trim();
+
+						if (name.equals("")) {
+							new ActivityUtils()
+									.showErrorDialog(MatchList.this,
+											"Please enter a description for the match.");
+						} else {
+							selectedMatch.setName("F*-se Match - " + name);
+							dataManager.saveMatch(selectedMatch);
+							adapter.notifyDataSetChanged();
+						}
 					}
 				};
 			}
