@@ -95,17 +95,12 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testDifferentPlayersImpliesDifference() {
-		String name = "Same Name";
-		Match aMatch = new Match(name);
-		Match anotherMatch = new Match(name);
-		anotherMatch.setDate(aMatch.getDate());
+		match1.rounds.clear();
+		match2.rounds.clear();
+		assertEquals(match1, match2);
 
-		aMatch.with(new Player(name));
-		anotherMatch.with(new Player(name));
-
-		assertEquals(aMatch, anotherMatch);
-		aMatch.with(new Player("Another Player"));
-		assertFalse(aMatch.equals(anotherMatch));
+		match1.with(new Player("Yet Another"));
+		assertFalse(match1.equals(match2));
 	}
 
 	public void testDifferentRoundsImpliesDifference() {
@@ -115,6 +110,8 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testPlayerCannotBeNull() {
+		match1.rounds.clear();
+
 		try {
 			match1.with(null);
 			fail("Player should not be null");
@@ -124,13 +121,8 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testCannotAddPlayersAfterMatchHasStarted() {
-		Match match = new Match("Match");
-		match.with(new Player("Player 1")).with(new Player("Player 2"));
-
-		match.addRound(new Round(3));
-
 		try {
-			match.with(new Player("Player 3"));
+			match1.with(new Player("Player 3"));
 			fail("Should have thrown an Exception");
 		} catch (IllegalStateException e) {
 			assertTrue(true);
@@ -138,14 +130,17 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testCannotAddMoreThan51Players() {
-		Match match = new Match("Match");
+		match1.getRounds().clear();
+		match1.getPlayers().clear();
 
 		for (int i = 0; i < 51; i++) {
-			match.with(new Player("Player " + String.valueOf(i)));
+			match1.with(new Player("Player " + String.valueOf(i)));
 		}
 
+		assertEquals(51, match1.getPlayers().size());
+
 		try {
-			match.with(new Player("Yet Another"));
+			match1.with(new Player("Yet Another"));
 			fail("should have thrown an Exception");
 		} catch (IllegalStateException e) {
 			assertTrue(true);
@@ -171,7 +166,7 @@ public class MatchTest extends AndroidTestCase {
 		}
 	}
 
-	public void testNewRoundNoArgs() {
+	public void testNewRoundNoArgsShouldIntelligentlySetItsNumberOfCards() {
 		Match match = new Match("Match");
 
 		Player player1 = new Player("1");
@@ -180,61 +175,38 @@ public class MatchTest extends AndroidTestCase {
 
 		match.with(player1).with(player2).with(player3);
 
-		Round currentRound = match.newRound();
-		long numberOfCards = currentRound.getNumberOfCards();
+		Round currentRound;
 
-		assertEquals(1, match.getRounds().size());
-		assertEquals(1, match.getRounds().get(0).getNumberOfCards());
-
-		currentRound.setBet(player1, 0);
-		currentRound.setBet(player2, 0);
-		currentRound.setBet(player3, numberOfCards - 1);
-
-		currentRound.setWins(player1, 0);
-		currentRound.setWins(player2, 0);
-		currentRound.setWins(player3, numberOfCards);
-
-		for (int i = 0; i < 16; i++) {
+		// ascending loop
+		for (int i = 0; i < 17; i++) {
 			currentRound = match.newRound();
-			numberOfCards = currentRound.getNumberOfCards();
+
+			assertEquals(i + 1, match.getRounds().size());
+			assertEquals(i + 1, match.getRounds().get(i).getNumberOfCards());
 
 			currentRound.setBet(player1, 0);
 			currentRound.setBet(player2, 0);
-			currentRound.setBet(player3, numberOfCards - 1);
+			currentRound.setBet(player3, currentRound.getNumberOfCards() - 1);
 
 			currentRound.setWins(player1, 0);
 			currentRound.setWins(player2, 0);
-			currentRound.setWins(player3, numberOfCards);
+			currentRound.setWins(player3, currentRound.getNumberOfCards());
 		}
 
-		assertEquals(17, match.getRounds().size());
-		assertEquals(17, match.getRounds().get(16).getNumberOfCards());
-
-		currentRound = match.newRound();
-		numberOfCards = currentRound.getNumberOfCards();
-
-		currentRound.setBet(player1, 0);
-		currentRound.setBet(player2, 0);
-		currentRound.setBet(player3, numberOfCards - 1);
-
-		currentRound.setWins(player1, 0);
-		currentRound.setWins(player2, 0);
-		currentRound.setWins(player3, numberOfCards);
-
-		assertEquals(18, match.getRounds().size());
-		assertEquals(16, match.getRounds().get(17).getNumberOfCards());
-
-		for (int i = 0; i < 15; i++) {
+		// descending loop
+		for (int i = 16, nRounds = 18; i > 0; i--, nRounds++) {
 			currentRound = match.newRound();
-			numberOfCards = currentRound.getNumberOfCards();
+
+			assertEquals(nRounds, match.getRounds().size());
+			assertEquals(i + 1, match.getRounds().get(i).getNumberOfCards());
 
 			currentRound.setBet(player1, 0);
 			currentRound.setBet(player2, 0);
-			currentRound.setBet(player3, numberOfCards - 1);
+			currentRound.setBet(player3, currentRound.getNumberOfCards() - 1);
 
 			currentRound.setWins(player1, 0);
 			currentRound.setWins(player2, 0);
-			currentRound.setWins(player3, numberOfCards);
+			currentRound.setWins(player3, currentRound.getNumberOfCards());
 		}
 
 		assertEquals(33, match.getRounds().size());
@@ -267,8 +239,7 @@ public class MatchTest extends AndroidTestCase {
 			assertTrue(true);
 		}
 
-		match.newRound(7);
-		Round round = match.getRounds().get(0);
+		Round round = match.newRound(7);
 		assertEquals(2, round.getPlayerRounds().size());
 		assertEquals(new Player("A Player"), round.getPlayerRounds().get(0)
 				.getPlayer());
@@ -278,14 +249,18 @@ public class MatchTest extends AndroidTestCase {
 	}
 
 	public void testCannotAddRoundIfMatchHasLessThan2Players() {
-		match1.getRounds().remove(0);
+		match1.getRounds().clear();
 		match1.deletePlayer(player1);
+
 		try {
 			match1.addRound(round1);
 			fail("should not be able to add round when less than 2 players");
 		} catch (IllegalStateException e) {
 			assertTrue(true);
 		}
+
+		match1.with(player1);
+		match1.addRound(round1);
 	}
 
 	public void testDeletePlayer() {
@@ -296,7 +271,7 @@ public class MatchTest extends AndroidTestCase {
 			assertTrue(true);
 		}
 
-		match1.getRounds().remove(round1);
+		match1.getRounds().clear();
 
 		assertEquals(2, match1.getPlayers().size());
 
@@ -315,18 +290,13 @@ public class MatchTest extends AndroidTestCase {
 	public void testNewRoundMaxCards() {
 		Match match = new Match("Match");
 
-		Player player1 = new Player("1");
-		Player player2 = new Player("2");
-		Player player3 = new Player("3");
-		Player player4 = new Player("4");
-
-		match.with(player1).with(player2);
+		match.with(new Player("1")).with(new Player("2"));
 		assertEquals(25, match.getMaxCardsPerRound());
 
-		match.with(player3);
+		match.with(new Player("3"));
 		assertEquals(17, match.getMaxCardsPerRound());
 
-		match.with(player4);
+		match.with(new Player("4"));
 		assertEquals(12, match.getMaxCardsPerRound());
 
 		try {
@@ -339,92 +309,45 @@ public class MatchTest extends AndroidTestCase {
 		match.newRound(match.getMaxCardsPerRound());
 	}
 
-	public void testNumberOfCardsSuggestion() {
-		Match match = new Match("Match");
-
-		Player player1 = new Player("1");
-		Player player2 = new Player("2");
-		Player player3 = new Player("3");
-		Player player4 = new Player("4");
-
-		match.with(player1).with(player2).with(player3).with(player4);
-
-		long suggestion = match.getNumberOfCardsSuggestion();
-		assertEquals(1, suggestion);
-
-		for (long i = 1; i < match.getMaxCardsPerRound(); i++) {
-			match.newRound(i);
-			suggestion = match.getNumberOfCardsSuggestion();
-			assertEquals(i + 1, suggestion);
-		}
-
-		for (long i = match.getMaxCardsPerRound() - 1; i > 1; i--) {
-			match.newRound(i);
-			suggestion = match.getNumberOfCardsSuggestion();
-			assertEquals(i - 1, suggestion);
-		}
-
-		match.newRound(1);
-		assertEquals(0, match.getNumberOfCardsSuggestion());
-	}
-
 	public void testGetScores() {
-		Match match = new Match("Match");
+		match1.getRounds().clear();
 
-		Player player1 = new Player("1");
-		Player player2 = new Player("2");
 		Player player3 = new Player("3");
-		match.with(player1).with(player2).with(player3);
+		match1.with(player3);
 
 		Round round1 = new Round(7);
-		PlayerRound pr1_1 = new PlayerRound(player1);
-		pr1_1.setBet(4).setWins(5); // 5
-		round1.addPlayerRound(pr1_1);
-		PlayerRound pr1_2 = new PlayerRound(player2);
-		pr1_2.setBet(2).setWins(2); // 7
-		round1.addPlayerRound(pr1_2);
-		PlayerRound pr1_3 = new PlayerRound(player3);
-		pr1_3.setBet(7).setWins(0); // 0
-		round1.addPlayerRound(pr1_3);
+		round1.addPlayerRound(new PlayerRound(player1).setBet(4).setWins(5)); // 5
+		round1.addPlayerRound(new PlayerRound(player2).setBet(2).setWins(2)); // 7
+		round1.addPlayerRound(new PlayerRound(player3).setBet(7).setWins(0)); // 0
 
 		Round round2 = new Round(8);
-		PlayerRound pr2_1 = new PlayerRound(player1);
-		pr2_1.setBet(8).setWins(3); // 5+3 = 8
-		round2.addPlayerRound(pr2_1);
-		PlayerRound pr2_2 = new PlayerRound(player2);
-		pr2_2.setBet(0).setWins(2); // 7+2 = 9
-		round2.addPlayerRound(pr2_2);
-		PlayerRound pr2_3 = new PlayerRound(player3);
-		pr2_3.setBet(0).setWins(0); // 0+5 = 5
-		round2.addPlayerRound(pr2_3);
+		round2.addPlayerRound(new PlayerRound(player1).setBet(8).setWins(3)); // 3
+		round2.addPlayerRound(new PlayerRound(player2).setBet(0).setWins(2)); // 2
+		round2.addPlayerRound(new PlayerRound(player3).setBet(0).setWins(0)); // 5
 
 		Round round3 = new Round(9);
-		PlayerRound pr3_1 = new PlayerRound(player1);
-		pr3_1.setBet(5).setWins(5); // 8+10 = 18
-		round3.addPlayerRound(pr3_1);
-		PlayerRound pr3_2 = new PlayerRound(player2);
-		pr3_2.setBet(6).setWins(1); // 9+1 = 10
-		round3.addPlayerRound(pr3_2);
-		PlayerRound pr3_3 = new PlayerRound(player3);
-		pr3_3.setBet(3).setWins(3); // 5+8 = 13
-		round3.addPlayerRound(pr3_3);
+		round3.addPlayerRound(new PlayerRound(player1).setBet(5).setWins(5)); // 10
+		round3.addPlayerRound(new PlayerRound(player2).setBet(6).setWins(1)); // 1
+		round3.addPlayerRound(new PlayerRound(player3).setBet(3).setWins(3)); // 8
 
-		match.addRound(round1).addRound(round2).addRound(round3);
+		match1.addRound(round1).addRound(round2).addRound(round3);
 
-		List<PlayerScore> scores = match.getPlayerScores();
+		List<PlayerScore> scores = match1.getPlayerScores();
 
 		assertEquals(3, scores.size());
+		assertEquals(player1, scores.get(0).getPlayer());
 		assertEquals(18, scores.get(0).getScore());
+		assertEquals(player2, scores.get(1).getPlayer());
 		assertEquals(10, scores.get(1).getScore());
+		assertEquals(player3, scores.get(2).getPlayer());
 		assertEquals(13, scores.get(2).getScore());
 	}
 
 	public void testCannotAddDuplicatedPlayers() {
-		Match match = new Match();
-		match.with(new Player("Player Name"));
+		match1.getRounds().clear();
 
 		try {
-			match.with(new Player("Player Name"));
+			match1.with(new Player(player1.getName()));
 			fail("should have thrown an exception");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
