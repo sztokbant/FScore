@@ -15,17 +15,15 @@ public class RoundTest extends AndroidTestCase {
 		super.setUp();
 
 		round1 = new Round(7);
-		round2 = new Round(7);
-
 		playerRound1 = new PlayerRound(new Player("Player One"));
 		playerRound1.setBet(7);
 		playerRound1.setWins(4);
+		round1.addPlayerRound(playerRound1);
 
+		round2 = new Round(7);
 		playerRound2 = new PlayerRound(new Player("Player One"));
 		playerRound2.setBet(7);
 		playerRound2.setWins(4);
-
-		round1.addPlayerRound(playerRound1);
 		round2.addPlayerRound(playerRound2);
 	}
 
@@ -125,15 +123,14 @@ public class RoundTest extends AndroidTestCase {
 	}
 
 	public void testSetWinsForPlayer() {
-		Round round = new Round(5);
-
 		Player player1 = new Player("Player 1");
 		Player player2 = new Player("Player 2");
 
 		PlayerRound playerRound1 = new PlayerRound(player1);
 		PlayerRound playerRound2 = new PlayerRound(player2);
 
-		round.addPlayerRound(playerRound1).addPlayerRound(playerRound2);
+		Round round = new Round(5).addPlayerRound(playerRound1).addPlayerRound(
+				playerRound2);
 
 		try {
 			round.setWins(player1, 2);
