@@ -78,8 +78,7 @@ public class MatchList extends Activity {
 					new ActivityUtils().showErrorDialog(MatchList.this,
 							getString(R.string.msg_enter_new_match_desc));
 				} else {
-					Match match = new Match(getString(R.string.f_match) + " - "
-							+ name);
+					Match match = new Match(name);
 					matches.add(0, match);
 					try {
 						dataManager.saveMatch(match);
