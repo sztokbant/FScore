@@ -10,6 +10,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.PlayerScore;
 
 public class PlayerScoresAdapter extends ArrayAdapter<PlayerScore> {
@@ -33,16 +34,22 @@ public class PlayerScoresAdapter extends ArrayAdapter<PlayerScore> {
 		TextView name = new TextView(context);
 		name.setText(playerScore.getPlayer().getName());
 		name.setGravity(Gravity.LEFT + Gravity.CENTER_VERTICAL);
-		name.setTextSize(18);
-		name.setPadding(0, 8, 0, 8);
+		name.setTextSize(new ActivityUtils().getAdapterFontSize());
+		name.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
 
 		TextView score = new TextView(context);
 		score.setText(String.valueOf(playerScore.getScore()));
 		score.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.FILL_PARENT));
 		score.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
-		score.setTextSize(18);
-		score.setPadding(0, 8, 0, 8);
+		score.setTextSize(new ActivityUtils().getAdapterFontSize());
+		score.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
 
 		layout.addView(name);
 		layout.addView(score);

@@ -10,6 +10,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.PlayerRound;
 
 public class PlayerRoundsAdapter extends ArrayAdapter<PlayerRound> {
@@ -34,23 +35,32 @@ public class PlayerRoundsAdapter extends ArrayAdapter<PlayerRound> {
 		TextView name = new TextView(context);
 		name.setText(playerRound.getPlayer().getName());
 		name.setGravity(Gravity.LEFT + Gravity.CENTER_VERTICAL);
-		name.setTextSize(18);
-		name.setPadding(4, 8, 4, 8);
+		name.setTextSize(new ActivityUtils().getAdapterFontSize());
+		name.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
 
 		TextView betWins = new TextView(context);
 		betWins.setText("(" + playerRound.getWinsRepresentation() + "/"
 				+ playerRound.getBetRepresentation() + ")");
 		betWins.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
-		betWins.setTextSize(18);
-		betWins.setPadding(4, 8, 4, 8);
+		betWins.setTextSize(new ActivityUtils().getAdapterFontSize());
+		betWins.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
 
 		TextView score = new TextView(context);
 		score.setText(String.valueOf(playerRound.getScore()));
-		 score.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-		 LayoutParams.FILL_PARENT));
+		score.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
 		score.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
-		score.setTextSize(18);
-		score.setPadding(4, 8, 4, 8);
+		score.setTextSize(new ActivityUtils().getAdapterFontSize());
+		score.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
 
 		layout.addView(name);
 		layout.addView(betWins);
