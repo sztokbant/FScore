@@ -61,6 +61,14 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 		return score;
 	}
 
+	public String getBetRepresentation() {
+		return (bet == EMPTY) ? "-" : String.valueOf(bet);
+	}
+
+	public String getWinsRepresentation() {
+		return (wins == EMPTY) ? "-" : String.valueOf(wins);
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -118,9 +126,9 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(player.toString() + " [" + getScore() + "] (");
-		sb.append((wins == EMPTY) ? "-" : wins);
+		sb.append(getWinsRepresentation());
 		sb.append("/");
-		sb.append((bet == EMPTY) ? "-" : bet);
+		sb.append(getBetRepresentation());
 		sb.append(")");
 		return sb.toString();
 	}
