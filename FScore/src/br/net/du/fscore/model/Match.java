@@ -46,7 +46,7 @@ public class Match implements Serializable, Comparable<Match> {
 		return 51 / players.size();
 	}
 
-	public long getNumberOfCardsSuggestion() {
+	private long getNumberOfCardsSuggestion() {
 		if (rounds.isEmpty()) {
 			return 1;
 		}
