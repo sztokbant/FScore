@@ -22,7 +22,8 @@
             android:name=".activity.SingleMatch" />
         <activity
             android:label="Round"
-            android:name=".activity.SingleRound" />
-        </application>
+            android:name=".activity.SingleRound"
+            android:theme="@android:style/Theme.Dialog" />
+    </application>
 
 </manifest>
