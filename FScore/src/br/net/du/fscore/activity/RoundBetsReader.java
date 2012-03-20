@@ -23,16 +23,23 @@ public class RoundBetsReader extends SingleRound {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		windowTitle.append(" - " + getString(R.string.bets));
+		this.setTitle(windowTitle);
+	}
+
+	@Override
 	protected AlertDialog.Builder getInputDialog() throws IllegalStateException {
 		if (round.hasAnyWins()) {
 			throw new IllegalStateException(
 					getString(R.string.cannot_set_bet_after_wins));
 		}
 
-		final EditText betInput = new EditText(RoundBetsReader.this);
+		final EditText betInput = new EditText(this);
 		betInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
-		return new AlertDialog.Builder(RoundBetsReader.this)
+		return new AlertDialog.Builder(this)
 				.setTitle(selectedPlayerRound.getPlayer().toString())
 				.setMessage(getString(R.string.bets))
 				.setView(betInput)

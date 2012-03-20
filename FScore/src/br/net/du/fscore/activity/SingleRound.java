@@ -37,6 +37,8 @@ public abstract class SingleRound extends Activity {
 
 	DataManager dataManager;
 
+	protected StringBuilder windowTitle;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,12 +64,13 @@ public abstract class SingleRound extends Activity {
 					getString(e.getMessageId()));
 		}
 
-		String title = getString(R.string.round) + " - "
-				+ round.getNumberOfCards() + " ";
-		title += (round.getNumberOfCards() == 1) ? getString(R.string.card)
-				: getString(R.string.cards);
+		windowTitle = new StringBuilder();
 
-		SingleRound.this.setTitle(title);
+		windowTitle.append(getString(R.string.round) + " - "
+				+ round.getNumberOfCards() + " ");
+		windowTitle
+				.append((round.getNumberOfCards() == 1) ? getString(R.string.card)
+						: getString(R.string.cards));
 	}
 
 	@Override

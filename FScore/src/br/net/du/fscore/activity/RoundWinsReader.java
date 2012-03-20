@@ -19,8 +19,14 @@ public class RoundWinsReader extends SingleRound {
 		super.onCreate(savedInstanceState);
 
 		final TextView instructions = (TextView) findViewById(R.id_singleround.text_instructions);
-		instructions
-				.setText(getString(R.string.enter_wins_for_each_player));
+		instructions.setText(getString(R.string.enter_wins_for_each_player));
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		windowTitle.append(" - " + getString(R.string.wins));
+		this.setTitle(windowTitle);
 	}
 
 	@Override
@@ -30,10 +36,10 @@ public class RoundWinsReader extends SingleRound {
 					getString(R.string.cannot_set_wins_before_all_bets));
 		}
 
-		final EditText winsInput = new EditText(RoundWinsReader.this);
+		final EditText winsInput = new EditText(this);
 		winsInput.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
-		return new AlertDialog.Builder(RoundWinsReader.this)
+		return new AlertDialog.Builder(this)
 				.setTitle(selectedPlayerRound.getPlayer().toString())
 				.setMessage(getString(R.string.wins))
 				.setView(winsInput)
