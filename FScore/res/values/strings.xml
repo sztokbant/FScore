@@ -8,10 +8,9 @@
 	<string name="app_name">FScore</string>
 	<string name="are_you_sure">Are you sure?</string>
 	<string name="begin_next_round">Begin Next Round</string>
-	<string name="bet">Bet</string>
 	<string name="bet_must_be_between_0_and_rounds_cards">Bet must be between 0 and round\'s number of cards
-		per player.
-	</string>
+		per player.</string>
+	<string name="bets">Bets</string>
 	<string name="cancel">Cancel</string>
 	<string name="cannot_add_players_after_match_started">Cannot add players after the match has started.
 	</string>
@@ -30,8 +29,9 @@
 	<string name="delete_player">Delete player</string>
 	<string name="deleting">Deleting</string>
 	<string name="edit_desc">Edit description</string>
-	<string name="enter_bets_and_wins_for_each_player">Enter bets and wins for each player</string>
+	<string name="enter_bets_for_each_player">Enter bets for each player</string>
 	<string name="enter_new_desc">Enter new description</string>
+	<string name="enter_wins_for_each_player">Enter wins for each player</string>
 	<string name="error">Error</string>
 	<string name="f_match">F*-se Match</string>
 	<string name="last_round_incomplete">Last round is not complete yet.</string>
@@ -52,7 +52,9 @@
 	<string name="max_num_of_players_reached">Maximum number of players reached.</string>
 	<string name="name_cannot_be_empty">Name cannot be empty.</string>
 	<string name="name_cannot_be_null">Name cannot be null.</string>
-	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and 52/number of players.</string>
+	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and 52/number of
+		players.
+	</string>
 	<string name="num_of_cards_must_be_greater_than_0">Number of cards must be greater than 0.</string>
 	<string name="ok">Ok</string>
 	<string name="player">Player</string>
@@ -60,7 +62,7 @@
 	<string name="player_already_in_this_match">Player already in this match.</string>
 	<string name="player_already_in_this_round">Player already in this round.</string>
 	<string name="player_cannot_be_null">Player cannot be null.</string>
-    <string name="player_deleted">deleted</string>
+	<string name="player_deleted">deleted</string>
 	<string name="player_name">Player name</string>
 	<string name="player_not_found">Player not found!</string>
 	<string name="playerround_cannot_be_null">PlayerRound cannot be null.</string>
@@ -74,7 +76,8 @@
 	</string>
 	<string name="wins">Wins</string>
 	<string name="wins_must_be_between_0_and_rounds_cards">Wins must be between 0 and round\'s number of
-		cards per player.
+		cards
+		per player.
 	</string>
 	<string name="yes">Yes</string>
 

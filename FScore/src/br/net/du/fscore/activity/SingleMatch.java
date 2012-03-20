@@ -154,10 +154,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 	private void createNewRound() {
 		try {
-			Round round = match.newRound();
+			selectedRound = match.newRound();
 			dataManager.saveMatch(match);
 			unregisterForContextMenu(playerScoresView);
-			openRound(round);
+			openSelectedRound();
 		} catch (FScoreException e) {
 			new ActivityUtils().showErrorDialog(SingleMatch.this,
 					getString(e.getMessageId()));
@@ -172,7 +172,28 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 			MenuItem delete = menu.add(0, 0, 0,
 					getString(R.string.delete_player));
 			delete.setOnMenuItemClickListener(playerDeleteDialog());
+		} else {
+			menu.setHeaderTitle(selectedRound.toString());
+			MenuItem bet = menu.add(0, 0, 0, getString(R.string.bets));
+			bet.setOnMenuItemClickListener(openSelectedRoundClickListener());
+			MenuItem wins = menu.add(0, 1, 0, getString(R.string.wins));
+			wins.setOnMenuItemClickListener(openSelectedRoundClickListener());
 		}
+	}
+
+	private OnMenuItemClickListener openSelectedRoundClickListener() {
+		return new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				if (item.getItemId() == 0) {
+					openSelectedRound(RoundBetsReader.class);
+				} else if (item.getItemId() == 1) {
+					openSelectedRound(RoundWinsReader.class);
+				}
+
+				return true;
+			}
+		};
 	}
 
 	@Override
@@ -334,7 +355,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				openRound((Round) roundAdapter.getItem(position));
+				selectedRound = (Round) roundAdapter.getItem(position);
+				openSelectedRound();
 			}
 		});
 
@@ -352,9 +374,20 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		registerForContextMenu(roundView);
 	}
 
-	protected void openRound(Round round) {
-		selectedRound = round;
-		Intent singleRound = new Intent(SingleMatch.this, SingleRound.class);
+	protected void openSelectedRound() {
+		Class<?> destinationActivity;
+
+		if (!selectedRound.hasAllBets()) {
+			destinationActivity = RoundBetsReader.class;
+		} else {
+			destinationActivity = RoundWinsReader.class;
+		}
+
+		openSelectedRound(destinationActivity);
+	}
+
+	private void openSelectedRound(Class<?> destinationActivity) {
+		Intent singleRound = new Intent(SingleMatch.this, destinationActivity);
 		singleRound.putExtra("selectedRoundId", selectedRound.getId());
 		singleRound.putExtra("matchId", match.getId());
 		startActivity(singleRound);

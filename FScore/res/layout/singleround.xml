@@ -8,7 +8,6 @@
         android:id="@+id_singleround/text_instructions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/enter_bets_and_wins_for_each_player"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="italic" />
 

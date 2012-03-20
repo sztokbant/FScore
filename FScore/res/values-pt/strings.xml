@@ -8,8 +8,8 @@
     <string name="app_name">FScore</string>
     <string name="are_you_sure">Você tem certeza?</string>
     <string name="begin_next_round">Iniciar Próxima Rodada</string>
-    <string name="bet">Aposta</string>
     <string name="bet_must_be_between_0_and_rounds_cards">A aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
+    <string name="bets">Apostas</string>
     <string name="cancel">Cancelar</string>
     <string name="cannot_add_players_after_match_started">Não é possível adicionar jogadores após o início da partida.</string>
     <string name="cannot_add_players_anymore">Não é mais possível adicionar jogadores</string>
@@ -22,8 +22,9 @@
     <string name="delete_match">Excluir partida</string>
     <string name="delete_player">Excluir jogador</string>
     <string name="edit_desc">Editar descrição</string>
-    <string name="enter_bets_and_wins_for_each_player">Insira as apostas e vitórias de cada jogador</string>
+    <string name="enter_bets_for_each_player">Insira as apostas de cada jogador</string>
     <string name="enter_new_desc">Insira a nova descrição</string>
+    <string name="enter_wins_for_each_player">Insira as vitórias de cada jogador</string>
     <string name="error">Erro</string>
     <string name="f_match">Partida de F*-se</string>
     <string name="last_round_incomplete">A última rodada ainda está incompleta.</string>
