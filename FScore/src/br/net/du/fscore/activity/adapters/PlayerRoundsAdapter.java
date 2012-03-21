@@ -10,6 +10,7 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.net.du.fscore.activity.RoundBetsReader;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.PlayerRound;
 
@@ -41,30 +42,25 @@ public class PlayerRoundsAdapter extends ArrayAdapter<PlayerRound> {
 				new ActivityUtils().getAdapterHorizontalPadding(),
 				new ActivityUtils().getAdapterVerticalPadding());
 
-		TextView betWins = new TextView(context);
-		betWins.setText("(" + playerRound.getWinsRepresentation() + "/"
-				+ playerRound.getBetRepresentation() + ")");
-		betWins.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
-		betWins.setTextSize(new ActivityUtils().getAdapterFontSize());
-		betWins.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
-				new ActivityUtils().getAdapterVerticalPadding(),
-				new ActivityUtils().getAdapterHorizontalPadding(),
-				new ActivityUtils().getAdapterVerticalPadding());
-
-		TextView score = new TextView(context);
-		score.setText(String.valueOf(playerRound.getScore()));
-		score.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT));
-		score.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
-		score.setTextSize(new ActivityUtils().getAdapterFontSize());
-		score.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
-				new ActivityUtils().getAdapterVerticalPadding(),
-				new ActivityUtils().getAdapterHorizontalPadding(),
-				new ActivityUtils().getAdapterVerticalPadding());
-
 		layout.addView(name);
-		layout.addView(betWins);
-		layout.addView(score);
+
+		TextView value = new TextView(context);
+		value.setGravity(Gravity.RIGHT + Gravity.CENTER_VERTICAL);
+		value.setTextSize(new ActivityUtils().getAdapterFontSize());
+		value.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT));
+		value.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding(),
+				new ActivityUtils().getAdapterHorizontalPadding(),
+				new ActivityUtils().getAdapterVerticalPadding());
+
+		if (context instanceof RoundBetsReader) {
+			value.setText(playerRound.getBetRepresentation());
+		} else {
+			value.setText(playerRound.getWinsRepresentation());
+		}
+
+		layout.addView(value);
 
 		return layout;
 	}
