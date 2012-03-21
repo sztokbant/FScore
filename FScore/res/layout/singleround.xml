@@ -14,6 +14,13 @@
     <ListView
         android:id="@+id_singleround/playerroundlist"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id_singleround/savebtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@+string/ok"
+        android:textStyle="bold" />
 
 </LinearLayout>
