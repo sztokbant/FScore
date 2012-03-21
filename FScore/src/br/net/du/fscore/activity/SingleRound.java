@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import br.net.du.fscore.R;
 import br.net.du.fscore.activity.adapters.PlayerRoundsAdapter;
@@ -50,6 +52,7 @@ public abstract class SingleRound extends Activity {
 		roundId = (Long) getIntent().getSerializableExtra("selectedRoundId");
 
 		createPlayerRoundsListAdapter();
+		createSaveButton();
 	}
 
 	@Override
@@ -122,6 +125,17 @@ public abstract class SingleRound extends Activity {
 		});
 
 		registerForContextMenu(playerRoundsView);
+	}
+
+	private void createSaveButton() {
+		Button saveButton = (Button) findViewById(R.id_singleround.savebtn);
+		saveButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				SingleRound.this.finish();
+			}
+		});
 	}
 
 	@Override
