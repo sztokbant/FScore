@@ -16,27 +16,26 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <TableLayout
         android:id="@+id_singleround/btnlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
+        android:stretchColumns="*" >
 
-        <Button
-            android:id="@+id_singleround/okbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@+string/ok"
-            android:textStyle="bold" />
+        <TableRow >
 
-        <Button
-            android:id="@+id_singleround/cancelbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@+string/cancel"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <Button
+                android:id="@+id_singleround/okbtn"
+                android:layout_gravity="center"
+                android:text="@+string/ok"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id_singleround/cancelbtn"
+                android:layout_gravity="center"
+                android:text="@+string/cancel"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>
