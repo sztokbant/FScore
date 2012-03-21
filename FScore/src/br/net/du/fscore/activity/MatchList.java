@@ -237,7 +237,8 @@ public class MatchList extends Activity {
 	protected void openMatch(Match match) {
 		selectedMatch = match;
 		Intent singleMatch = new Intent(MatchList.this, SingleMatch.class);
-		singleMatch.putExtra("selectedMatchId", selectedMatch.getId());
+		singleMatch.putExtra("matchId", selectedMatch.getId());
+		singleMatch.putExtra("selectedTabTag", SingleMatch.PLAYERS_TAB_TAG);
 		startActivity(singleMatch);
 	}
 

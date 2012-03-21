@@ -78,7 +78,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		dataManager = new DataManager(this);
 
-		matchId = (Long) getIntent().getSerializableExtra("selectedMatchId");
+		matchId = (Long) getIntent().getSerializableExtra("matchId");
 
 		try {
 			match = dataManager.retrieveMatch(matchId);
@@ -95,7 +95,10 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 
 		createRoundsListAdapter();
 		createPlayersListAdapter();
-		makeTabs();
+
+		String selectedTabTag = (String) getIntent().getSerializableExtra(
+				"selectedTabTag");
+		makeTabs(selectedTabTag);
 	}
 
 	private void createNewRoundButton() {
@@ -306,7 +309,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		};
 	}
 
-	private void makeTabs() {
+	private void makeTabs(String selectedTabTag) {
 		tabHost = getTabHost();
 		tabHost.setOnTabChangedListener(this);
 
@@ -321,6 +324,8 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 				.setIndicator(getString(R.string.rounds),
 						getResources().getDrawable(R.drawable.rounds))
 				.setContent(SingleMatch.this));
+
+		tabHost.setCurrentTabByTag(selectedTabTag);
 	}
 
 	private void createPlayersListAdapter() {
