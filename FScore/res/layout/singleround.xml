@@ -16,11 +16,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id_singleround/savebtn"
+    <LinearLayout
+        android:id="@+id_singleround/btnlayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@+string/ok"
-        android:textStyle="bold" />
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id_singleround/okbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@+string/ok"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id_singleround/cancelbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@+string/cancel"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

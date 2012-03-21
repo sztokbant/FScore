@@ -53,6 +53,7 @@ public abstract class SingleRound extends Activity {
 
 		createPlayerRoundsListAdapter();
 		createSaveButton();
+		createCancelButton();
 	}
 
 	@Override
@@ -128,7 +129,18 @@ public abstract class SingleRound extends Activity {
 	}
 
 	private void createSaveButton() {
-		Button saveButton = (Button) findViewById(R.id_singleround.savebtn);
+		Button saveButton = (Button) findViewById(R.id_singleround.okbtn);
+		saveButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				SingleRound.this.finish();
+			}
+		});
+	}
+
+	private void createCancelButton() {
+		Button saveButton = (Button) findViewById(R.id_singleround.cancelbtn);
 		saveButton.setOnClickListener(new OnClickListener() {
 
 			@Override
