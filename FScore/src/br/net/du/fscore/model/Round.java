@@ -122,14 +122,15 @@ public class Round implements Serializable, Comparable<Round> {
 			if (playerRound.getBet() < 0
 					|| playerRound.getBet() > numberOfCards) {
 				throw new FScoreException(
-						R.string.bet_must_be_between_0_and_rounds_cards);
+						R.string.each_bet_must_be_between_0_and_rounds_cards);
 			}
 
 			totalBets += playerRound.getBet();
 		}
 
 		if (totalBets == numberOfCards) {
-			throw new FScoreException(R.string.msg_your_bet_cannot_be);
+			throw new FScoreException(
+					R.string.total_bets_cannot_be_equal_rounds_cards);
 		}
 	}
 
@@ -140,7 +141,7 @@ public class Round implements Serializable, Comparable<Round> {
 			if (playerRound.getWins() < 0
 					|| playerRound.getWins() > numberOfCards) {
 				throw new FScoreException(
-						R.string.wins_must_be_between_0_and_rounds_cards);
+						R.string.each_win_must_be_between_0_and_rounds_cards);
 			}
 
 			totalWins += playerRound.getWins();

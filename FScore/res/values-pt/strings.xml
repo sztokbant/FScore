@@ -21,6 +21,8 @@
     <string name="delete">Excluir</string>
     <string name="delete_match">Excluir partida</string>
     <string name="delete_player">Excluir jogador</string>
+    <string name="each_bet_must_be_between_0_and_rounds_cards">Cada aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
+    <string name="each_win_must_be_between_0_and_rounds_cards">Cada vitória deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
     <string name="edit_desc">Editar descrição</string>
     <string name="enter_bets_for_each_player">Insira as apostas de cada jogador</string>
     <string name="enter_new_desc">Insira a nova descrição</string>
@@ -59,6 +61,7 @@
     <string name="rounds">Rodadas</string>
     <string name="round_cannot_be_null">Rodada não pode ser null.</string>
     <string name="start_match">Iniciar Partida!</string>
+    <string name="total_bets_cannot_be_equal_rounds_cards">O número total de apostas não pode ser igual ao número de cartas por jogador desta rodada.</string>
     <string name="total_wins_must_be_equal_rounds_cards">O número total de vitórias deve ser igual ao número de cartas por jogador desta rodada.</string>
     <string name="wins">Vitórias</string>
     <string name="wins_must_be_between_0_and_rounds_cards">O número de vitórias deve estar entre 0 e o número de cartas por jogador desta rodada.</string>
