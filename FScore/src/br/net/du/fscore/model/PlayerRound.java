@@ -83,14 +83,7 @@ public class PlayerRound implements Serializable, Comparable<PlayerRound> {
 
 	@Override
 	public int compareTo(PlayerRound other) {
-		Long myScore = this.getScore();
-		Long otherScore = other.getScore();
-
-		if (myScore.equals(otherScore)) {
-			return this.player.compareTo(other.getPlayer());
-		}
-
-		return (-1) * myScore.compareTo(otherScore);
+		return this.player.compareTo(other.getPlayer());
 	}
 
 	@Override
