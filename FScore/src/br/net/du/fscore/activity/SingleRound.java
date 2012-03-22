@@ -7,8 +7,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -157,33 +155,6 @@ public abstract class SingleRound extends Activity {
 				SingleRound.this.finish();
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem resetWins = menu.add(0, 0, 0, getString(R.string.reset_wins));
-		resetWins.setIcon(R.drawable.reset_wins);
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == 0) {
-			for (PlayerRound playerRound : round.getPlayerRounds()) {
-				playerRound.setWins(PlayerRound.EMPTY);
-			}
-
-			try {
-				dataManager.saveMatch(match);
-				refreshPlayerRoundsList();
-			} catch (FScoreException e) {
-				new ActivityUtils().showErrorDialog(SingleRound.this,
-						getString(e.getMessageId()));
-			}
-		}
-
-		return false;
 	}
 
 	void refreshPlayerRoundsList() throws FScoreException {
