@@ -48,6 +48,11 @@ public class RoundWinsReader extends SingleRound {
 				.setNegativeButton(getString(R.string.cancel), null);
 	}
 
+	@Override
+	protected void validateInput() throws FScoreException {
+		round.validateWins();
+	}
+
 	private OnClickListener getDoMakeWinsClick(final EditText winsInput) {
 		return new OnClickListener() {
 			@Override
@@ -56,11 +61,8 @@ public class RoundWinsReader extends SingleRound {
 
 				try {
 					long wins = Long.parseLong(value.toString());
-
-					round.setWins(selectedPlayerRound.getPlayer(), wins);
-					dataManager.saveMatch(match);
-					refreshPlayerRoundsList();
-
+					round.setWinsRelaxed(selectedPlayerRound.getPlayer(), wins);
+					playerRoundAdapter.notifyDataSetChanged();
 				} catch (NumberFormatException e) {
 					new ActivityUtils().showErrorDialog(RoundWinsReader.this,
 							getString(R.string.msg_enter_number_between_0_and)

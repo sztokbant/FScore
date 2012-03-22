@@ -48,20 +48,21 @@ public class RoundBetsReader extends SingleRound {
 				.setNegativeButton(getString(R.string.cancel), null);
 	}
 
+	@Override
+	protected void validateInput() throws FScoreException {
+		round.validateBets();
+	}
+
 	private OnClickListener getDoMakeBetClick(final EditText betInput) {
 		return new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-
 				Editable value = betInput.getText();
 
 				try {
 					long bet = Long.parseLong(value.toString());
-
-					round.setBet(selectedPlayerRound.getPlayer(), bet);
-					dataManager.saveMatch(match);
-					refreshPlayerRoundsList();
-
+					round.setBetRelaxed(selectedPlayerRound.getPlayer(), bet);
+					playerRoundAdapter.notifyDataSetChanged();
 				} catch (NumberFormatException e) {
 					new ActivityUtils().showErrorDialog(RoundBetsReader.this,
 							getString(R.string.msg_enter_number_between_0_and)

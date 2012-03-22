@@ -105,6 +105,53 @@ public class Round implements Serializable, Comparable<Round> {
 		selectedPlayerRound.setWins(wins);
 	}
 
+	public void setBetRelaxed(Player player, long bet) throws FScoreException {
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
+		selectedPlayerRound.setBet(bet);
+	}
+
+	public void setWinsRelaxed(Player player, long wins) throws FScoreException {
+		PlayerRound selectedPlayerRound = getPlayerRound(player);
+		selectedPlayerRound.setWins(wins);
+	}
+
+	public void validateBets() throws FScoreException {
+		long totalBets = 0;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getBet() < 0
+					|| playerRound.getBet() > numberOfCards) {
+				throw new FScoreException(
+						R.string.bet_must_be_between_0_and_rounds_cards);
+			}
+
+			totalBets += playerRound.getBet();
+		}
+
+		if (totalBets == numberOfCards) {
+			throw new FScoreException(R.string.msg_your_bet_cannot_be);
+		}
+	}
+
+	public void validateWins() throws FScoreException {
+		long totalWins = 0;
+
+		for (PlayerRound playerRound : playerRounds) {
+			if (playerRound.getWins() < 0
+					|| playerRound.getWins() > numberOfCards) {
+				throw new FScoreException(
+						R.string.wins_must_be_between_0_and_rounds_cards);
+			}
+
+			totalWins += playerRound.getWins();
+		}
+
+		if (totalWins != numberOfCards) {
+			throw new FScoreException(
+					R.string.total_wins_must_be_equal_rounds_cards);
+		}
+	}
+
 	private boolean isAllowedWins(Player player, long wins)
 			throws FScoreException {
 		PlayerRound selectedPlayerRound = getPlayerRound(player);

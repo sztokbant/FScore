@@ -27,7 +27,7 @@ import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 
 public abstract class SingleRound extends Activity {
-	private ArrayAdapter<PlayerRound> playerRoundAdapter;
+	ArrayAdapter<PlayerRound> playerRoundAdapter;
 	private List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
 	PlayerRound selectedPlayerRound;
 
@@ -134,10 +134,19 @@ public abstract class SingleRound extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				SingleRound.this.finish();
+				try {
+					validateInput();
+					dataManager.saveMatch(match);
+					SingleRound.this.finish();
+				} catch (FScoreException e) {
+					new ActivityUtils().showErrorDialog(SingleRound.this,
+							getString(e.getMessageId()));
+				}
 			}
 		});
 	}
+
+	protected abstract void validateInput() throws FScoreException;
 
 	private void createCancelButton() {
 		Button saveButton = (Button) findViewById(R.id_singleround.cancelbtn);
