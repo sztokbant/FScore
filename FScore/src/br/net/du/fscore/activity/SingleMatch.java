@@ -382,7 +382,9 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 	protected void openSelectedRound() {
 		Class<?> destinationActivity;
 
-		if (!selectedRound.hasAllBets()) {
+		if (selectedRound.isComplete()) {
+			destinationActivity = SingleRound.class;
+		} else if (!selectedRound.hasAllBets()) {
 			destinationActivity = RoundBetsReader.class;
 		} else {
 			destinationActivity = RoundWinsReader.class;

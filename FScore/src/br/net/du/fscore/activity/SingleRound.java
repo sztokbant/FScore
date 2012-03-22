@@ -20,7 +20,7 @@ import br.net.du.fscore.model.Round;
 import br.net.du.fscore.model.exceptions.FScoreException;
 import br.net.du.fscore.persist.DataManager;
 
-public abstract class SingleRound extends Activity {
+public class SingleRound extends Activity {
 	ArrayAdapter<PlayerRound> playerRoundAdapter;
 	private List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
 	PlayerRound selectedPlayerRound;

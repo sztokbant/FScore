@@ -21,6 +21,10 @@
             android:label="Match"
             android:name=".activity.SingleMatch" />
         <activity
+            android:label="Round"
+            android:name=".activity.SingleRound"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
             android:label="Round Bets"
             android:name=".activity.RoundBetsReader"
             android:theme="@android:style/Theme.Dialog" />
