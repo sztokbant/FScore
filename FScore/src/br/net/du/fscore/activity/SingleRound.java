@@ -5,13 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +24,7 @@ public abstract class SingleRound extends Activity {
 	ArrayAdapter<PlayerRound> playerRoundAdapter;
 	private List<PlayerRound> playerRounds = new ArrayList<PlayerRound>();
 	PlayerRound selectedPlayerRound;
+	ListView playerRoundsView;
 
 	Match match;
 	private long matchId;
@@ -50,8 +47,6 @@ public abstract class SingleRound extends Activity {
 		roundId = (Long) getIntent().getSerializableExtra("selectedRoundId");
 
 		createPlayerRoundsListAdapter();
-		createSaveButton();
-		createCancelButton();
 	}
 
 	@Override
@@ -81,75 +76,17 @@ public abstract class SingleRound extends Activity {
 		dataManager.closeDb();
 	}
 
-	protected abstract AlertDialog.Builder getInputDialog()
-			throws IllegalStateException;
-
-	private void createPlayerRoundsListAdapter() {
-		final ListView playerRoundsView = (ListView) findViewById(R.id_singleround.playerroundlist);
+	protected void createPlayerRoundsListAdapter() {
+		playerRoundsView = (ListView) findViewById(R.id_singleround.playerroundlist);
 		playerRoundAdapter = new PlayerRoundsAdapter(this, 0, playerRounds);
 		playerRoundsView.setAdapter(playerRoundAdapter);
-
-		playerRoundsView
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> adapterView,
-							View view, int position, long id) {
-						// for context menu title and deleting
-						List<PlayerRound> playerRounds = round
-								.getPlayerRounds();
-						Collections.sort(playerRounds);
-						selectedPlayerRound = playerRounds.get(position);
-
-						// won't consume the action
-						return false;
-					}
-				});
-
-		playerRoundsView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-
-				List<PlayerRound> playerRounds = round.getPlayerRounds();
-				Collections.sort(playerRounds);
-				selectedPlayerRound = playerRounds.get(position);
-
-				try {
-					getInputDialog().show();
-				} catch (IllegalStateException e) {
-					new ActivityUtils().showErrorDialog(SingleRound.this,
-							e.getMessage());
-				}
-			}
-		});
-
-		registerForContextMenu(playerRoundsView);
 	}
 
-	private void createSaveButton() {
-		Button saveButton = (Button) findViewById(R.id_singleround.okbtn);
-		saveButton.setOnClickListener(new OnClickListener() {
+	protected void createDismissButton(String text) {
+		Button dismissButton = (Button) findViewById(R.id_singleround.dismissbtn);
+		dismissButton.setText(text);
 
-			@Override
-			public void onClick(View v) {
-				try {
-					validateInput();
-					dataManager.saveMatch(match);
-					SingleRound.this.finish();
-				} catch (FScoreException e) {
-					new ActivityUtils().showErrorDialog(SingleRound.this,
-							getString(e.getMessageId()));
-				}
-			}
-		});
-	}
-
-	protected abstract void validateInput() throws FScoreException;
-
-	private void createCancelButton() {
-		Button saveButton = (Button) findViewById(R.id_singleround.cancelbtn);
-		saveButton.setOnClickListener(new OnClickListener() {
-
+		dismissButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SingleRound.this.finish();

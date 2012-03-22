@@ -31,9 +31,8 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id_singleround/cancelbtn"
+                android:id="@+id_singleround/dismissbtn"
                 android:layout_gravity="center"
-                android:text="@+string/cancel"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>

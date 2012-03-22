@@ -12,7 +12,7 @@ import br.net.du.fscore.R;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.exceptions.FScoreException;
 
-public class RoundWinsReader extends SingleRound {
+public class RoundWinsReader extends RoundReader {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
