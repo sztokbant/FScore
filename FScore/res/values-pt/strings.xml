@@ -8,6 +8,7 @@
     <string name="app_name">FScore</string>
     <string name="are_you_sure">Você tem certeza?</string>
     <string name="begin_next_round">Iniciar Próxima Rodada</string>
+    <string name="bet">Aposta</string>
     <string name="bet_must_be_between_0_and_rounds_cards">A aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
     <string name="bets">Apostas</string>
     <string name="cancel">Cancelar</string>

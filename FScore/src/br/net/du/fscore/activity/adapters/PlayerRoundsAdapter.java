@@ -10,7 +10,9 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.net.du.fscore.R;
 import br.net.du.fscore.activity.RoundBetsReader;
+import br.net.du.fscore.activity.RoundWinsReader;
 import br.net.du.fscore.activity.util.ActivityUtils;
 import br.net.du.fscore.model.PlayerRound;
 
@@ -56,8 +58,18 @@ public class PlayerRoundsAdapter extends ArrayAdapter<PlayerRound> {
 
 		if (context instanceof RoundBetsReader) {
 			value.setText(playerRound.getBetRepresentation());
-		} else {
+		} else if (context instanceof RoundWinsReader) {
 			value.setText(playerRound.getWinsRepresentation());
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append("(" + context.getString(R.string.bet) + ": "
+					+ playerRound.getBetRepresentation());
+			sb.append(" | " + context.getString(R.string.wins) + ": ");
+			sb.append(playerRound.getWinsRepresentation());
+			sb.append(") ");
+			sb.append(playerRound.getScore());
+
+			value.setText(sb.toString());
 		}
 
 		layout.addView(value);
