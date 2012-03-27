@@ -17,11 +17,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" />
 
-    <TableLayout
+    <LinearLayout
         android:id="@+id_singleround/btnlayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*" >
-    </TableLayout>
+        android:layout_height="wrap_content" >
+    </LinearLayout>
 
 </LinearLayout>

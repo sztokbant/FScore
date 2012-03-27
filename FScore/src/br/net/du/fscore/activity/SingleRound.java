@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.TableLayout.LayoutParams;
-import android.widget.TableRow;
 import br.net.du.fscore.R;
 import br.net.du.fscore.activity.adapters.PlayerRoundsAdapter;
 import br.net.du.fscore.activity.util.ActivityUtils;
@@ -62,18 +61,13 @@ public class SingleRound extends Activity {
 	}
 
 	protected void addButtonsToActivity() {
-		TableRow row = new TableRow(this);
-		row.setLayoutParams(new TableRow.LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT));
+		LinearLayout buttonsLayout = (LinearLayout) findViewById(R.id_singleround.btnlayout);
 
 		for (Button button : buttons) {
 			button.setGravity(Gravity.CENTER);
-			row.addView(button, new TableRow.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			buttonsLayout.addView(button, new LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
 		}
-
-		TableLayout tableLayout = (TableLayout) findViewById(R.id_singleround.btnlayout);
-		tableLayout.addView(row);
 	}
 
 	@Override
