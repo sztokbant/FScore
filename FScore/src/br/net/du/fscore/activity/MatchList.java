@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -122,6 +123,22 @@ public class MatchList extends Activity {
 
 		MenuItem delete = menu.add(0, 1, 0, getString(R.string.delete_match));
 		delete.setOnMenuItemClickListener(matchDeleteDialog());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem sync = menu.add(0, 0, 0, "About");
+		// sync.setIcon(R.drawable.dial);
+		sync.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				new ActivityUtils().showInfoDialog(MatchList.this, "About",
+						"by Eduardo Sztokbant");
+				return false;
+			}
+		});
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	private OnMenuItemClickListener matchDeleteDialog() {
