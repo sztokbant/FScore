@@ -7,8 +7,6 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
-import br.net.du.fscore.R;
 import br.net.du.fscore.model.Match;
 import br.net.du.fscore.model.Player;
 import br.net.du.fscore.model.PlayerRound;
@@ -55,7 +53,7 @@ public class DataManager {
 				db.close();
 				return true;
 			} catch (SQLiteException e) {
-				Log.w("DataManager", e.getMessage());
+				// Log.w("DataManager", e.getMessage());
 			}
 		}
 
@@ -95,8 +93,8 @@ public class DataManager {
 
 			db.setTransactionSuccessful();
 		} catch (SQLException e) {
-			Log.e(context.getResources().getString(R.string.app_name),
-					"Error saving match (transaction rolled back)", e);
+			// Log.e(context.getResources().getString(R.string.app_name),
+			// "Error saving match (transaction rolled back)", e);
 			matchId = 0L;
 		} finally {
 			db.endTransaction();
@@ -151,8 +149,8 @@ public class DataManager {
 			db.setTransactionSuccessful();
 			result = true;
 		} catch (SQLException e) {
-			Log.e(context.getResources().getString(R.string.app_name),
-					"Error deleting match (transaction rolled back)", e);
+			// Log.e(context.getResources().getString(R.string.app_name),
+			// "Error deleting match (transaction rolled back)", e);
 		} finally {
 			db.endTransaction();
 		}
@@ -222,7 +220,7 @@ public class DataManager {
 		if (toDeleteRoundIds.size() > 0) {
 			for (Long roundId : toDeleteRoundIds) {
 				// DEBUG
-				Log.i("FScore", "deleting round " + roundId);
+				// Log.i("FScore", "deleting round " + roundId);
 				deleteRoundById(roundId);
 			}
 		}
@@ -248,8 +246,8 @@ public class DataManager {
 
 	public void saveRound(Round round) throws FScoreException {
 		if (round.getMatchId() == 0) {
-			Log.e(context.getResources().getString(R.string.app_name),
-					"Cannot save a round that has never been saved by a match");
+			// Log.e(context.getResources().getString(R.string.app_name),
+			// "Cannot save a round that has never been saved by a match");
 			return;
 		}
 
@@ -257,8 +255,8 @@ public class DataManager {
 			db.beginTransaction();
 			saveRoundNoTransaction(round);
 		} catch (SQLException e) {
-			Log.e(context.getResources().getString(R.string.app_name),
-					"Error saving round (transaction rolled back)", e);
+			// Log.e(context.getResources().getString(R.string.app_name),
+			// "Error saving round (transaction rolled back)", e);
 		} finally {
 			db.endTransaction();
 		}
@@ -268,7 +266,7 @@ public class DataManager {
 		roundDao.save(round);
 
 		// DEBUG
-		Log.i("FScore", "saving round " + round.getId());
+		// Log.i("FScore", "saving round " + round.getId());
 
 		for (PlayerRound playerRound : round.getPlayerRounds()) {
 			playerRound.setRoundId(round.getId());
@@ -281,7 +279,7 @@ public class DataManager {
 			playerRoundDao.save(playerRound);
 
 			// DEBUG
-			Log.i("FScore", "saved playerround " + playerRound.getId());
+			// Log.i("FScore", "saved playerround " + playerRound.getId());
 		}
 
 		List<PlayerRound> toDeletePlayerRounds = playerRoundDao
@@ -289,7 +287,7 @@ public class DataManager {
 		toDeletePlayerRounds.removeAll(round.getPlayerRounds());
 		for (PlayerRound playerRound : toDeletePlayerRounds) {
 			// DEBUG
-			Log.i("FScore", "deleting playerround " + playerRound.getId());
+			// Log.i("FScore", "deleting playerround " + playerRound.getId());
 			playerRoundDao.delete(playerRound);
 		}
 	}
