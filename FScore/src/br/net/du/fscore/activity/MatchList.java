@@ -128,7 +128,7 @@ public class MatchList extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem sync = menu.add(0, 0, 0, getString(R.string.about));
-		// sync.setIcon(R.drawable.dial);
+		sync.setIcon(R.drawable.information);
 		sync.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
