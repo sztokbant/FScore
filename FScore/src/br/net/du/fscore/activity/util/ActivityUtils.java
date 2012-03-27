@@ -9,11 +9,13 @@ public class ActivityUtils {
 	private static final int ADAPTER_VERTICAL_PADDING = 8;
 	private static final int ADAPTER_FONT_SIZE = 18;
 
-	public void showErrorDialog(Context context, String message) {
-		new AlertDialog.Builder(context)
-				.setTitle(context.getString(R.string.error))
-				.setMessage(message)
+	public void showInfoDialog(Context context, String title, String message) {
+		new AlertDialog.Builder(context).setTitle(title).setMessage(message)
 				.setPositiveButton(context.getString(R.string.ok), null).show();
+	}
+
+	public void showErrorDialog(Context context, String message) {
+		showInfoDialog(context, context.getString(R.string.error), message);
 	}
 
 	public int getAdapterHorizontalPadding() {
