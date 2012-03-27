@@ -1,8 +1,12 @@
 #!/bin/sh
 
-FSCORE_LOC=`find ./FScore/src -type f -name *.java -exec cat {} \; | nl | tail -1 | awk '{ print $1 }'`
-FSCORE_TEST_LOC=`find ./FScoreTest/src -type f -name *.java -exec cat {} \; | nl | tail -1 | awk '{ print $1 }'`
+PROJ_NAME="FScore"
+PROJ_DIR=./FScore/src
+TEST_DIR=./FScoreTest/src
 
-echo $FSCORE_LOC - FScore
-echo $FSCORE_TEST_LOC - FScoreTest
-echo $(($FSCORE_LOC + $FSCORE_TEST_LOC)) - Total
+PROJ_LOC=`find $PROJ_DIR -type f -name *.java -exec cat {} \; | nl | tail -1 | awk '{ print $1 }'`
+TEST_LOC=`find $TEST_DIR -type f -name *.java -exec cat {} \; | nl | tail -1 | awk '{ print $1 }'`
+
+echo $PROJ_LOC - $PROJ_NAME
+echo $TEST_LOC - ${PROJ_NAME}Test
+echo $(($PROJ_LOC + $TEST_LOC)) - Total
