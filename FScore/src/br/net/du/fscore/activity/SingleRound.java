@@ -67,7 +67,9 @@ public class SingleRound extends Activity {
 				LayoutParams.FILL_PARENT));
 
 		for (Button button : buttons) {
-			row.addView(button);
+			button.setGravity(Gravity.CENTER);
+			row.addView(button, new TableRow.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		}
 
 		TableLayout tableLayout = (TableLayout) findViewById(R.id_singleround.btnlayout);
@@ -109,7 +111,6 @@ public class SingleRound extends Activity {
 
 	protected Button createDismissButton(String text) {
 		Button dismissButton = new Button(this);
-		dismissButton.setGravity(Gravity.CENTER);
 		dismissButton.setText(text);
 
 		dismissButton.setOnClickListener(new OnClickListener() {

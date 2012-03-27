@@ -14,7 +14,8 @@
     <ListView
         android:id="@+id_singleround/playerroundlist"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
     <TableLayout
         android:id="@+id_singleround/btnlayout"
