@@ -21,20 +21,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*" >
-
-        <TableRow >
-
-            <Button
-                android:id="@+id_singleround/okbtn"
-                android:layout_gravity="center"
-                android:text="@+string/ok"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id_singleround/dismissbtn"
-                android:layout_gravity="center"
-                android:textStyle="bold" />
-        </TableRow>
     </TableLayout>
 
 </LinearLayout>

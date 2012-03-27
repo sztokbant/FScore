@@ -21,8 +21,6 @@ public abstract class RoundReader extends SingleRound {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		createDismissButton(getString(R.string.cancel));
-		createSaveButton();
 	}
 
 	@Override
@@ -31,15 +29,24 @@ public abstract class RoundReader extends SingleRound {
 		createListViewClickListeners();
 	}
 
+	@Override
+	protected void createButtons() {
+		buttons.clear();
+		buttons.add(createSaveButton());
+		buttons.add(createDismissButton(getString(R.string.cancel)));
+		addButtonsToActivity();
+	}
+
 	protected abstract void validateInput() throws FScoreException;
 
 	protected abstract AlertDialog.Builder getInputDialog()
 			throws IllegalStateException;
 
-	private void createSaveButton() {
-		Button saveButton = (Button) findViewById(R.id_singleround.okbtn);
-		saveButton.setOnClickListener(new OnClickListener() {
+	private Button createSaveButton() {
+		Button saveButton = new Button(this);
+		saveButton.setText(R.string.ok);
 
+		saveButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try {
@@ -52,6 +59,8 @@ public abstract class RoundReader extends SingleRound {
 				}
 			}
 		});
+
+		return saveButton;
 	}
 
 	private void createListViewClickListeners() {
