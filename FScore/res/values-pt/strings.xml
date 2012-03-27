@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="about">Sobre</string>
     <string name="add_player">Adicionar Jogador</string>
     <string name="add_player_to_match">Adicionar jogador à partida</string>
     <string name="add_some_players_first">Adicione alguns jogadores primeiro</string>
@@ -11,6 +12,7 @@
     <string name="bet">Aposta</string>
     <string name="bet_must_be_between_0_and_rounds_cards">A aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
     <string name="bets">Apostas</string>
+    <string name="by">por</string>
     <string name="cancel">Cancelar</string>
     <string name="cannot_add_players_after_match_started">Não é possível adicionar jogadores após o início da partida.</string>
     <string name="cannot_add_players_anymore">Não é mais possível adicionar jogadores</string>
@@ -22,6 +24,7 @@
     <string name="delete">Excluir</string>
     <string name="delete_match">Excluir partida</string>
     <string name="delete_player">Excluir jogador</string>
+    <string name="deleting">Excluindo</string>
     <string name="each_bet_must_be_between_0_and_rounds_cards">Cada aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
     <string name="each_win_must_be_between_0_and_rounds_cards">Cada vitória deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
     <string name="edit_desc">Editar descrição</string>

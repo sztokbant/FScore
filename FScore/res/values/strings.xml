@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="about">About</string>
 	<string name="add_player">Add Player</string>
 	<string name="add_player_to_match">Add player to match</string>
 	<string name="add_some_players_first">Add some players first</string>
@@ -13,6 +14,7 @@
 		per player.
 	</string>
 	<string name="bets">Bets</string>
+	<string name="by">by</string>
 	<string name="cancel">Cancel</string>
 	<string name="cannot_add_players_after_match_started">Cannot add players after the match has started.
 	</string>

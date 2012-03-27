@@ -127,13 +127,15 @@ public class MatchList extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem sync = menu.add(0, 0, 0, "About");
+		MenuItem sync = menu.add(0, 0, 0, getString(R.string.about));
 		// sync.setIcon(R.drawable.dial);
 		sync.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				new ActivityUtils().showInfoDialog(MatchList.this, "About",
-						"by Eduardo Sztokbant");
+				new ActivityUtils().showInfoDialog(MatchList.this,
+						getString(R.string.about), getString(R.string.by)
+								+ " Eduardo Sztokbant" + "\n" + "www.du.net.br"
+								+ "\n" + "du@du.net.br");
 				return false;
 			}
 		});
