@@ -82,6 +82,11 @@ public class SingleRound extends Activity {
 					getString(e.getMessageId()));
 		}
 
+		this.makeWindowTitle();
+		this.setTitle(windowTitle);
+	}
+
+	protected void makeWindowTitle() {
 		windowTitle = new StringBuilder();
 
 		windowTitle.append(getString(R.string.round) + " - "
