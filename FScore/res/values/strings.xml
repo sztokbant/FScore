@@ -20,6 +20,7 @@
   <string name="cannot_set_wins_before_all_bets">Cannot set wins while not all players have placed bets.</string>
   <string name="card">card</string>
   <string name="cards">cards</string>
+  <string name="current_round_incomplete">Current round has not finished yet.</string>
   <string name="delete">Delete</string>
   <string name="delete_match">Delete match</string>
   <string name="delete_player">Delete player</string>
@@ -33,7 +34,6 @@
   <string name="enter_wins_for_each_player">Enter wins for each player</string>
   <string name="enter_wins">enter wins</string>
   <string name="error">Error</string>
-  <string name="last_round_incomplete">Last round has not finished yet.</string>
   <string name="match">Match</string>
   <string name="match_deleted">deleted</string>
   <string name="msg_enter_match_desc">Please enter a description for the match.</string>

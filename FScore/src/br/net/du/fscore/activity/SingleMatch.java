@@ -117,7 +117,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 					selectedRound = rounds.get(rounds.size() - 1);
 
 					Toast.makeText(SingleMatch.this,
-							getString(R.string.last_round_incomplete),
+							getString(R.string.current_round_incomplete),
 							Toast.LENGTH_SHORT).show();
 
 					openSelectedRound();

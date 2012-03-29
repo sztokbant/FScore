@@ -106,7 +106,7 @@ public class Match implements Serializable, Comparable<Match> {
 
 	public Round newRound() throws FScoreException {
 		if (!rounds.isEmpty() && !rounds.get(rounds.size() - 1).isComplete()) {
-			throw new FScoreException(R.string.last_round_incomplete);
+			throw new FScoreException(R.string.current_round_incomplete);
 		}
 
 		long nextRoundsCards = getNumberOfCardsSuggestion();
