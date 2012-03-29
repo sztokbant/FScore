@@ -58,7 +58,7 @@ public class MatchList extends Activity {
 				final EditText input = new EditText(MatchList.this);
 
 				new AlertDialog.Builder(MatchList.this)
-						.setTitle(getString(R.string.new_f_match))
+						.setTitle(getString(R.string.new_match))
 						.setMessage(getString(R.string.match_desc))
 						.setView(input)
 						.setPositiveButton(getString(R.string.ok),
@@ -187,7 +187,7 @@ public class MatchList extends Activity {
 				final EditText input = new EditText(MatchList.this);
 
 				new AlertDialog.Builder(MatchList.this)
-						.setTitle(getString(R.string.f_match))
+						.setTitle(getString(R.string.match))
 						.setMessage(getString(R.string.enter_new_desc))
 						.setView(input)
 						.setPositiveButton(getString(R.string.ok),

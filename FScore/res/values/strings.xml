@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
 	<string name="about">About</string>
 	<string name="add_player">Add Player</string>
 	<string name="add_player_to_match">Add player to match</string>
@@ -10,61 +9,44 @@
 	<string name="are_you_sure">Are you sure?</string>
 	<string name="begin_next_round">Begin Next Round</string>
 	<string name="bet">Bet</string>
-	<string name="bet_must_be_between_0_and_rounds_cards">Bet must be between 0 and the round\'s number of cards
-		per player.
-	</string>
+	<string name="bet_must_be_between_0_and_rounds_cards">Bet must be between 0 and the round\'s number of cards per player.</string>
 	<string name="bets">Bets</string>
 	<string name="by">by</string>
 	<string name="cancel">Cancel</string>
-	<string name="cannot_add_players_after_match_started">Cannot add players after the match has started.
-	</string>
+	<string name="cannot_add_players_after_match_started">Cannot add players after the match has started.</string>
 	<string name="cannot_add_players_anymore">Cannot add players anymore</string>
-	<string name="cannot_delete_players_after_match_started">Cannot delete players after the match has started.
-	</string>
-	<string name="cannot_set_bet_after_wins">Cannot set bet after setting any player\'s wins.
-	</string>
-	<string name="cannot_set_wins_before_all_bets">Cannot set wins while not all players have placed
-		bets.
-	</string>
+	<string name="cannot_delete_players_after_match_started">Cannot delete players after the match has started.</string>
+	<string name="cannot_set_bet_after_wins">Cannot set bet after setting any player\'s wins.</string>
+	<string name="cannot_set_wins_before_all_bets">Cannot set wins while not all players have placed bets.</string>
 	<string name="card">card</string>
 	<string name="cards">cards</string>
 	<string name="delete">Delete</string>
 	<string name="delete_match">Delete match</string>
 	<string name="delete_player">Delete player</string>
 	<string name="deleting">Deleting</string>
-	<string name="each_bet_must_be_between_0_and_rounds_cards">Each bet must be between 0 and the round\'s number of
-		cards per player.
-	</string>
-	<string name="each_win_must_be_between_0_and_rounds_cards">Each win must be between 0 and the round\'s number of
-		cards per player.
-	</string>
+	<string name="each_bet_must_be_between_0_and_rounds_cards">Each bet must be between 0 and the round\'s number of cards per player.</string>
+	<string name="each_win_must_be_between_0_and_rounds_cards">Each win must be between 0 and the round\'s number of cards per player.</string>
 	<string name="edit_desc">Edit description</string>
 	<string name="enter_bets_for_each_player">Enter bets for each player</string>
 	<string name="enter_new_desc">Enter new description</string>
 	<string name="enter_wins_for_each_player">Enter wins for each player</string>
 	<string name="error">Error</string>
-	<string name="f_match">F*-se Match</string>
 	<string name="last_round_incomplete">Last round is not complete yet.</string>
+	<string name="match">Match</string>
 	<string name="match_deleted">deleted</string>
 	<string name="msg_enter_match_desc">Please enter a description for the match.</string>
-	<string name="msg_enter_new_match_desc">Please enter a description for the new match.
-	</string>
+	<string name="msg_enter_new_match_desc">Please enter a description for the new match.</string>
 	<string name="msg_enter_number_between_0_and">Please enter a number between 0 and</string>
-	<string name="msg_your_bet_cannot_be">Too bad, this is the only value your bet cannot be!
-	</string>
-	<string name="new_match">New Match</string>
-	<string name="new_f_match">New F*-se Match</string>
-	<string name="no">No</string>
+	<string name="msg_your_bet_cannot_be">Too bad, this is the only value your bet cannot be!</string>
 	<string name="match_desc">Match description</string>
-	<string name="match_must_have_at_least_2_players">Match must have at least 2 players to begin.
-	</string>
+	<string name="match_must_have_at_least_2_players">Match must have at least 2 players to begin.</string>
 	<string name="match_over">Match is over.</string>
 	<string name="max_num_of_players_reached">Maximum number of players reached.</string>
 	<string name="name_cannot_be_empty">Name cannot be empty.</string>
 	<string name="name_cannot_be_null">Name cannot be null.</string>
-	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and 52/number of
-		players.
-	</string>
+	<string name="new_match">New Match</string>
+	<string name="no">No</string>
+	<string name="num_of_cards_must_be_between_1_and_max">Number of cards must be between 1 and 52/number of players.</string>
 	<string name="num_of_cards_must_be_greater_than_0">Number of cards must be greater than 0.</string>
 	<string name="ok">Ok</string>
 	<string name="player">Player</string>
@@ -81,17 +63,9 @@
 	<string name="rounds">Rounds</string>
 	<string name="round_cannot_be_null">Round cannot be null.</string>
 	<string name="start_match">Start Match!</string>
-	<string name="total_bets_cannot_be_equal_rounds_cards">Total bets cannot be equal to the round\'s number of
-		cards per player.
-	</string>
-	<string name="total_wins_must_be_equal_rounds_cards">Total wins must be equal to the round\'s number of
-		cards per player.
-	</string>
+	<string name="total_bets_cannot_be_equal_rounds_cards">Total bets cannot be equal to the round\'s number of cards per player.</string>
+	<string name="total_wins_must_be_equal_rounds_cards">Total wins must be equal to the round\'s number of cards per player.</string>
 	<string name="wins">Wins</string>
-	<string name="wins_must_be_between_0_and_rounds_cards">Wins must be between 0 and the round\'s number of
-		cards
-		per player.
-	</string>
+	<string name="wins_must_be_between_0_and_rounds_cards">Wins must be between 0 and the round\'s number of cards per player.</string>
 	<string name="yes">Yes</string>
-
 </resources>

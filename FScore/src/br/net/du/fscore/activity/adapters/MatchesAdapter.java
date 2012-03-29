@@ -24,7 +24,7 @@ public class MatchesAdapter extends ArrayAdapter<Match> {
 	public View getView(int position, View view, ViewGroup group) {
 		TextView item = new TextView(context);
 		Match match = getItem(position);
-		item.setText(context.getString(R.string.f_match) + " - "
+		item.setText(context.getString(R.string.match) + " - "
 				+ match.getName() + "\n" + match.getFormattedWhen());
 		item.setTextSize(new ActivityUtils().getAdapterFontSize());
 		item.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),

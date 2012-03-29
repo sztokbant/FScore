@@ -87,7 +87,7 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 					getString(e.getMessageId()));
 		}
 
-		SingleMatch.this.setTitle(getString(R.string.f_match) + " - "
+		SingleMatch.this.setTitle(getString(R.string.match) + " - "
 				+ match.getName());
 
 		createAddPlayerButton();
