@@ -27,11 +27,13 @@
   <string name="each_bet_must_be_between_0_and_rounds_cards">Cada aposta deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
   <string name="each_win_must_be_between_0_and_rounds_cards">Cada vitória deve estar entre 0 e o número total de cartas por jogador desta rodada.</string>
   <string name="edit_desc">Editar descrição</string>
+  <string name="enter_bets">insira as apostas</string>
   <string name="enter_bets_for_each_player">Insira as apostas de cada jogador</string>
   <string name="enter_new_desc">Insira a nova descrição</string>
+  <string name="enter_wins">insira as vitórias</string>
   <string name="enter_wins_for_each_player">Insira as vitórias de cada jogador</string>
   <string name="error">Erro</string>
-  <string name="last_round_incomplete">A última rodada ainda está incompleta.</string>
+  <string name="last_round_incomplete">A última rodada ainda não está encerrada.</string>
   <string name="match">Partida</string>
   <string name="match_deleted">excluída</string>
   <string name="match_desc">Descrição da partida</string>

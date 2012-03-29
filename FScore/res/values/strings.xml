@@ -27,11 +27,13 @@
   <string name="each_bet_must_be_between_0_and_rounds_cards">Each bet must be between 0 and the round\'s number of cards per player.</string>
   <string name="each_win_must_be_between_0_and_rounds_cards">Each win must be between 0 and the round\'s number of cards per player.</string>
   <string name="edit_desc">Edit description</string>
+  <string name="enter_bets">enter bets</string>
   <string name="enter_bets_for_each_player">Enter bets for each player</string>
   <string name="enter_new_desc">Enter new description</string>
   <string name="enter_wins_for_each_player">Enter wins for each player</string>
+  <string name="enter_wins">enter wins</string>
   <string name="error">Error</string>
-  <string name="last_round_incomplete">Last round is not complete yet.</string>
+  <string name="last_round_incomplete">Last round has not finished yet.</string>
   <string name="match">Match</string>
   <string name="match_deleted">deleted</string>
   <string name="msg_enter_match_desc">Please enter a description for the match.</string>

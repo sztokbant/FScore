@@ -31,6 +31,18 @@ public class RoundsAdapter extends ArrayAdapter<Round> {
 		title += (round.getNumberOfCards() == 1) ? context
 				.getString(R.string.card) : context.getString(R.string.cards);
 
+		if (!round.isComplete()) {
+			title += " (";
+
+			if (round.hasAllBets()) {
+				title += context.getString(R.string.enter_wins);
+			} else {
+				title += context.getString(R.string.enter_bets);
+			}
+
+			title += ")";
+		}
+
 		item.setText(title);
 		item.setTextSize(new ActivityUtils().getAdapterFontSize());
 		item.setPadding(new ActivityUtils().getAdapterHorizontalPadding(),
