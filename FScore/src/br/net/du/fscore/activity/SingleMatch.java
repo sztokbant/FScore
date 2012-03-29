@@ -112,7 +112,18 @@ public class SingleMatch extends TabActivity implements OnTabChangeListener,
 		newRoundBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				createNewRound();
+				if (!rounds.isEmpty()
+						&& !rounds.get(rounds.size() - 1).isComplete()) {
+					selectedRound = rounds.get(rounds.size() - 1);
+
+					Toast.makeText(SingleMatch.this,
+							getString(R.string.last_round_incomplete),
+							Toast.LENGTH_SHORT).show();
+
+					openSelectedRound();
+				} else {
+					createNewRound();
+				}
 			}
 		});
 	}
