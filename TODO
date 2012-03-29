@@ -10,9 +10,10 @@ Refactor it!
 KNOWN ISSUES
 * DataManager.saveRound() doesn't seem to be working properly when called from outside DataManager
 
-UI Desired Improvements
+Desired Improvements
 - number spinner instead of text box for bets and wins input
   -> should show only allowed values
   -> should update allowed values according to input from other players
 - images for "Ok" and "Cancel" buttons
 - game instructions
+- proper app icon
