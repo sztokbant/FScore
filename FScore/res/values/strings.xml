@@ -58,7 +58,7 @@
 	<string name="player_name">Player name</string>
 	<string name="player_not_found">Player not found!</string>
 	<string name="playerround_cannot_be_null">PlayerRound cannot be null.</string>
-	<string name="reset_wins">Reset Wins</string>
+	<string name="result">Result</string>
 	<string name="round">Round</string>
 	<string name="rounds">Rounds</string>
 	<string name="round_cannot_be_null">Round cannot be null.</string>

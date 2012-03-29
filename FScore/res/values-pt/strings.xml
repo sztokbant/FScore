@@ -58,7 +58,7 @@
   <string name="player_name">Nome do jogador</string>
   <string name="player_not_found">Jogador não encontrado!</string>
   <string name="playerround_cannot_be_null">PlayerRound não pode ser null.</string>
-  <string name="reset_wins">Zerar Vitórias</string>
+	<string name="result">Resultado</string>
   <string name="round">Rodada</string>
   <string name="rounds">Rodadas</string>
   <string name="round_cannot_be_null">Rodada não pode ser null.</string>

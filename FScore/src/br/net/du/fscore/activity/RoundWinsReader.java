@@ -23,8 +23,7 @@ public class RoundWinsReader extends RoundReader {
 	}
 
 	@Override
-	protected void makeWindowTitle() {
-		super.makeWindowTitle();
+	protected void addCustomWindowTitle() {
 		windowTitle.append(" - " + getString(R.string.wins));
 	}
 

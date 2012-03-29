@@ -82,18 +82,26 @@ public class SingleRound extends Activity {
 					getString(e.getMessageId()));
 		}
 
-		this.makeWindowTitle();
+		this.makeDefaultWindowTitle();
 		this.setTitle(windowTitle);
 	}
 
-	protected void makeWindowTitle() {
+	private void makeDefaultWindowTitle() {
 		windowTitle = new StringBuilder();
 
-		windowTitle.append(getString(R.string.round) + " - "
-				+ round.getNumberOfCards() + " ");
 		windowTitle
+				.append(getString(R.string.round))
+				.append(" - ")
+				.append(round.getNumberOfCards())
+				.append(" ")
 				.append((round.getNumberOfCards() == 1) ? getString(R.string.card)
 						: getString(R.string.cards));
+
+		addCustomWindowTitle();
+	}
+
+	protected void addCustomWindowTitle() {
+		windowTitle.append(" - ").append(getString(R.string.result));
 	}
 
 	@Override
