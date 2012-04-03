@@ -18,4 +18,4 @@ Neste jogo, antes de iniciar cada rodada e após observar suas próprias cartas,
 
 Na primeira rodada cada jogador recebe 1 carta e a cada rodada o número de cartas por jogador é aumentado em 1. Quando não há mais cartas suficientes para continuar aumentando, o número de cartas por jogador começa a diminuir  até a última rodada, onde cada jogador recebe 1 carta novamente.
 
-O código do FScore está disponível em http://github.com/sztokbant/FScore
+O código fonte do FScore está disponível em http://github.com/sztokbant/FScore
