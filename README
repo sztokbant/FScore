@@ -1,0 +1,7 @@
+FScore is an open-source application to keep track of card games' scores. It currently supports the "Foda-se" card game, a popular game in Brazil also known as "Dane-se", "Oh Hell", "Oh Shit", "Elevator", "Blackout", "Bust", "Boerenbridge" and "Up and Down the River".
+
+In this game, before initiating each round and after observing his own cards, each player bets how many hands they will win. By the end of the round, the players receive 1 point for each hand won plus 5 points if they got their bets right.
+
+At the first round each player receives 1 card and at each round the number of cards per player is increased by 1. By the time where there are not enough cards to keep increasing, the number of cards per player starts to decrease until the last round, where each player receives 1 card again.
+
+The source code for FScore is available at http://github.com/sztokbant/FScore
