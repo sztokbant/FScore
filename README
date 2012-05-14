@@ -1,6 +1,6 @@
 English
 
-FScore is an open-source application to keep track of card games' scores. It currently supports the "Foda-se" card game, a popular game in Brazil also known as "Dane-se", "Oh Hell", "Oh Shit", "Elevator", "Blackout", "Bust", "Boerenbridge" and "Up and Down the River".
+FScore is an open-source application to keep track of card games' scores. It currently supports the "Foda-se" card game, a popular game in Brazil also known as "Twin", "Dane-se", "Oh Hell", "Oh Shit", "Elevator", "Blackout", "Bust", "Boerenbridge" and "Up and Down the River".
 
 In this game, before initiating each round and after observing his own cards, each player bets how many hands they will win. By the end of the round, the players receive 1 point for each hand won plus 5 points if they got their bets right.
 
@@ -12,7 +12,7 @@ The source code for FScore is available at http://github.com/sztokbant/FScore
 
 Português
 
-FScore é um aplicativo de código aberto para anotar a pontuação de jogos de baralho. Atualmente suporta o jogo "Foda-se", um jogo popular no Brasil também conhecido como "Dane-se", "Oh Hell", "Oh Shit", "Elevador", "Blackout", "Bust", "Boerenbridge" e "Up and Down the River".
+FScore é um aplicativo de código aberto para anotar a pontuação de jogos de baralho. Atualmente suporta o jogo "Foda-se", um jogo popular no Brasil também conhecido como "Twin", "Dane-se", "Oh Hell", "Oh Shit", "Elevador", "Blackout", "Bust", "Boerenbridge" e "Up and Down the River".
 
 Neste jogo, antes de iniciar cada rodada e após observar suas próprias cartas, cada jogador aposta quantas mãos irá fazer. Ao final da rodada, os jogadores recebem 1 ponto para cada mão feita e mais 5 pontos caso tenham acertado a aposta.
 
